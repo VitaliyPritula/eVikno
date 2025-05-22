@@ -1,77 +1,30 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import tw from "twrnc";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import "../../global.css";
-export default function HomeScreen() {
+const MyComponent: React.FC = () => {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText className='flex' type="title">Welcome!
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto a voluptatum, dolores ullam omnis modi. Molestiae autem, aperiam cupiditate culpa fugiat, accusantium maxime inventore nobis quidem nostrum est debitis ab.</p>
-        </ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
-}
+    <SafeAreaView style={tw`flex-1 bg-black max-w-[350px] mx-auto`}>
+      <View style={tw`flex-1 justify-center items-center`}>
+        <Text
+          style={tw`text-white text-center text-[16px] font-bold !font-ptsansnarrow`}>
+          Платформа, що з`єднує інструктора і учня просто перед практичним іспитом в СЦ
+        </Text>
+      </View>
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+      <View style={tw`px-4 gap-3`}>
+        <TouchableOpacity style={tw`bg-[#44E9E8] hover:bg-[#A3FF44] py-3 rounded-[23px]`}>
+          <Text style={tw`text-btn text-center !font-ptsansnarrow font-bold`}>Я студент</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={tw`bg-[#8BD73D] py-3 rounded-[23px]`}>
+          <Text style={tw`text-btn text-center !font-ptsansnarrow font-bold`}>Я інструктор</Text>
+        </TouchableOpacity>
+      </View>
+       <Text style={tw`text-center text-white !font-ptsansnarrow font-bold pt-[32px] mb-[15px]`}>Маршрут  замість очікування</Text>
+      
+    </SafeAreaView>
+  );
+};
+
+export default MyComponent;
