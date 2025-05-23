@@ -1,16 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [
+  content: [
     "./App.{js,jsx,ts,tsx}",
     "./app/**/*.{js,jsx,ts,tsx}",
-    "./components/**/*.{js,jsx,ts,tsx}"
+    "./components/**/*.{js,jsx,ts,tsx}",
   ],
   presets: [require("nativewind/preset")],
   theme: {
-        colors: {
+    colors: {
       black: "#000",
-      white: "#fff",
+      white: "#FDFDFD",
       btn: "#101010",
+      text:"#C7C7C7",
       "btn-next": "#4F525D",
       grey: "#646464",
       gren: "#8BD73D",
@@ -40,8 +41,8 @@ module.exports = {
     extend: {
       fontFamily: {
         marcellus: ["Marcellus", "serif"],
-        manrope: ['Manrope', "sans-serif"],
-        ptsansnarrow: ['PT Sans Narrow', "sans-serif"],
+        manrope: ["Manrope", "sans-serif"],
+        ptsansnarrow: ["PT Sans Narrow", "sans-serif"],
       },
     },
   },
