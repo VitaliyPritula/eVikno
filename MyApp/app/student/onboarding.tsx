@@ -32,11 +32,11 @@ export default function StudentOnboarding() {
     if (step < steps.length - 1) {
       setStep((prev) => prev + 1);
     } else {
-      router.replace("/student"); // Переходимо до головного екрану учня
+      router.replace("/student/welcom"); // Переходимо до головного екрану учня
     }
   };
 
-  const { title, subtitle, text } = steps[step];
+  const { title, subtitle } = steps[step];
 
   return (
     <View style={tw`flex-1 bg-black px-4 justify-center relative`}>
@@ -62,14 +62,7 @@ export default function StudentOnboarding() {
             </Text>
           )}
         </View>
-        <View>
-          {text && (
-            <Text
-              style={tw`text-white text-m text-[#F89C3A] text-center absolute -right-20 top-40 tracking-[-0.30px]`}>
-              {text}
-            </Text>
-          )}
-        </View>
+        
       </View>
 
       {/* Кнопка "Далі" */}

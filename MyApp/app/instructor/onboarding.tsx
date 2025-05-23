@@ -33,7 +33,7 @@ export default function StudentOnboarding() {
     if (step < steps.length - 1) {
       setStep((prev) => prev + 1);
     } else {
-      router.replace("/instructor"); // Переходимо до головного екрану учня
+      router.replace("/instructor/welcom"); // Переходимо до головного екрану учня
     }
   };
 
@@ -53,12 +53,11 @@ export default function StudentOnboarding() {
       {/* Контент */}
       <View style={tw`flex-1 justify-center items-center`}>
         <View style={tw`border-2 border-white  rounded-xl py-4 `}>
-          <Text
-            style={tw`text-white text-[20px] font-bold text-center mb-8 !font-ptsansnarrow`}>
+          <Text style={[tw`text-white text-[20px] font-bold text-center mb-8`, { fontFamily: "ptsans" }]}>
             {title}
           </Text>
           {subtitle && (
-            <Text style={tw`text-white text-m text-center tracking-[-0.30px]`}>
+            <Text style={[tw`text-white text-m text-center tracking-[-0.30px], , { fontFamily: "ptsans" }`]}>
               {subtitle}
             </Text>
           )}

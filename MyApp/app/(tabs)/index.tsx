@@ -4,7 +4,7 @@ import tw from "twrnc";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
-const MyComponent: React.FC = () => {
+const Main: React.FC = () => {
   const router = useRouter();
 
   return (
@@ -41,4 +41,4 @@ const MyComponent: React.FC = () => {
   );
 };
 
-export default MyComponent;
+export default Main;
