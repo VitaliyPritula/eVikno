@@ -18,7 +18,7 @@ const steps = [
       "Увімкни додаток, коли хочеш працювати. Сформуй зручний час — решту зробимо ми.",
   },
   {
-    title: "ТЩомісячно фіксована підписка",
+    title: "Щомісячно фіксована підписка",
     subtitle:
       "Без комісій з кожного заняття. Один раз на місяць — прозоро та вигідно.",
     text: "Перші 7 днів — безкоштовно",
@@ -40,24 +40,31 @@ export default function StudentOnboarding() {
   const { title, subtitle, text } = steps[step];
 
   return (
-    <View style={tw`flex-1 bg-black px-4 justify-center relative`}>
+    <View style={tw`flex-1 bg-black px-4 pt-12 justify-center relative`}>
       <StatusBar style="light" />
-
       {/* Прогрес */}
       <ProgressBar
         progress={(step + 1) / steps.length}
         color="#893DD7"
         style={tw`h-1 my-1`}
       />
-
       {/* Контент */}
       <View style={tw`flex-1 justify-center items-center`}>
-        <View style={tw`border-2 border-white  rounded-xl py-4 `}>
-          <Text style={[tw`text-white text-[20px] font-bold text-center mb-8`, { fontFamily: "ptsans" }]}>
+        <View
+          style={tw`border-2 border-white  rounded-xl px-[10px] py-[16px] `}>
+          <Text
+            style={[
+              tw`text-white text-[22px] leading-[25px] font-bold text-center mb-8`,
+              { fontFamily: "ptsansnaBold" },
+            ]}>
             {title}
           </Text>
           {subtitle && (
-            <Text style={[tw`text-white text-m text-center tracking-[-0.30px], , { fontFamily: "ptsans" }`]}>
+            <Text
+              style={[
+                tw`text-white text-m text-center`,
+                { fontFamily: "manrope" },
+              ]}>
               {subtitle}
             </Text>
           )}
@@ -65,7 +72,7 @@ export default function StudentOnboarding() {
         <View>
           {text && (
             <Text
-              style={tw`text-white text-m text-[#F89C3A] text-center absolute -right-20 top-40 tracking-[-0.30px]`}>
+              style={[tw`text-[18px] text-[#F89C3A] text-center absolute -right-36 font-semibold top-40 tracking-[-0.30px]`, {fontFamily:"manrope"}]}>
               {text}
             </Text>
           )}

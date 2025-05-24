@@ -8,7 +8,7 @@ import tw from "twrnc";
 
 const steps = [
   {
-    title: "Тренуйся просто перед іспитом",
+    title: "Тренуйся \n просто перед іспитом",
     subtitle:
       "Сконтактуй з вільним інструктором, поки чекаєш на іспит і проїдь маршрут ще раз.",
   },
@@ -39,7 +39,7 @@ export default function StudentOnboarding() {
   const { title, subtitle } = steps[step];
 
   return (
-    <View style={tw`flex-1 bg-black px-4 justify-center relative`}>
+    <View style={tw`flex-1 bg-black px-4 pt-12 justify-center relative`}>
       <StatusBar style="light" />
 
       {/* Прогрес */}
@@ -51,25 +51,23 @@ export default function StudentOnboarding() {
 
       {/* Контент */}
       <View style={tw`flex-1 justify-center items-center`}>
-        <View style={tw`border-2 border-white  rounded-xl py-4 `}>
+        <View style={tw`border-2 border-white  rounded-xl px-[10px] py-[16px] `}>
           <Text
-            style={tw`text-white text-[20px] font-bold text-center mb-8 !font-ptsansnarrow`}>
+            style={[tw`text-white text-[20px] leading-[25px] px-[10px] font-bold text-center mb-8`, { fontFamily: "ptsansnaBold" },]}>
             {title}
           </Text>
           {subtitle && (
-            <Text style={tw`text-white text-m text-center tracking-[-0.30px]`}>
+            <Text style={[tw`text-white text-m text-center px-[10px]`, {fontFamily:"manrope"},]}>
               {subtitle}
             </Text>
           )}
         </View>
-        
       </View>
-
       {/* Кнопка "Далі" */}
       <TouchableOpacity
         style={tw`bg-[#4F525D] py-3 px-5 rounded-full mb-10 flex-row items-center justify-center ml-auto`}
         onPress={handleNext}>
-        <Text style={tw`text-white font-bold text-base`}>Далі</Text>
+        <Text style={[tw`text-white font-bold text-bas`, {fontFamily:"manrope"},]}>Далі</Text>
         <Icon name="chevron-forward" size={28} color="#fff" />
       </TouchableOpacity>
     </View>
