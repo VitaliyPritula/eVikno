@@ -21,7 +21,7 @@ export default function StudentScreen() {
   const [search, setSearch] = useState("");
   const router = useRouter();
   const handleRegister = () => {
-    router.push("/register"); // ⬅️ Переходить на сторінку реєстрації
+    router.push("/instructor/register"); // ⬅️ Переходить на сторінку реєстрації
   };
 
   return (
@@ -33,7 +33,7 @@ export default function StudentScreen() {
 
       {/* Пролистуваний вміст */}
       <ScrollView
-        contentContainerStyle={tw`pb-10 px-[15px] items-center`}
+        contentContainerStyle={tw`pb-15 px-[15px] items-center`}
         showsVerticalScrollIndicator={false}>
         <View style={tw`max-w-[320px] mx-auto pt-6`}>
           <Text
@@ -149,7 +149,7 @@ export default function StudentScreen() {
                 onPress={() =>
                   router.push("/instructor/pdf-viewer?file=privacy")
                 }>
-                <Text style={tw`text-white underline text-center mt-8`}>
+                <Text style={tw`text-white text-[16px] tracking-[-0.32px] underline mt-8`}>
                   Політика конфіденційності
                 </Text>
               </TouchableOpacity>
@@ -157,7 +157,7 @@ export default function StudentScreen() {
                 onPress={() =>
                   router.push("/instructor/pdf-viewer?file=terms")
                 }>
-                <Text style={tw`text-white underline text-center mt-3`}>
+                <Text style={tw`text-white text-[16px] tracking-[-0.32px] underline mt-3 !w-full`}>
                   Правила користування платформою
                 </Text>
               </TouchableOpacity>
