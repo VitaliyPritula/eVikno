@@ -51,7 +51,7 @@ export default function StudentOnboarding() {
       {/* Контент */}
       <View style={tw`flex-1 justify-center items-center`}>
         <View
-          style={tw`border-2 border-white  rounded-xl px-[10px] py-[16px] `}>
+          style={tw`border-2 border-white rounded-xl px-[10px] py-[16px] `}>
           <Text
             style={[
               tw`text-white text-[22px] leading-[25px] font-bold text-center mb-8`,
@@ -72,7 +72,7 @@ export default function StudentOnboarding() {
         <View>
           {text && (
             <Text
-              style={[tw`text-[18px] text-[#F89C3A] text-center absolute -right-36 font-semibold top-40 tracking-[-0.30px]`, {fontFamily:"manrope"}]}>
+              style={[tw`text-[17px] text-[#F89C3A] text-center absolute -right-36 font-bold top-40 tracking-[-0.30px]`, {fontFamily:"manrope"}]}>
               {text}
             </Text>
           )}
@@ -83,7 +83,7 @@ export default function StudentOnboarding() {
       <TouchableOpacity
         style={tw`bg-[#4F525D] py-3 px-5 rounded-full mb-10 flex-row items-center justify-center ml-auto`}
         onPress={handleNext}>
-        <Text style={tw`text-white font-bold text-base`}>Далі</Text>
+        <Text style={[tw`text-white font-bold text-base`, {fontFamily:"manrope"}]}>Далі</Text>
         <Icon name="chevron-forward" size={28} color="#fff" />
       </TouchableOpacity>
     </View>

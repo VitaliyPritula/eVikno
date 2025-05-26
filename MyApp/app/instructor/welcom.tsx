@@ -1,31 +1,167 @@
 import React, { useState } from "react";
-import { View, Text, Image, TextInput } from "react-native";
+import {
+  ScrollView,
+  View,
+  Text,
+  Image,
+  TextInput,
+  StyleSheet,
+  Linking,
+  TouchableOpacity,
+} from "react-native";
+import { router, Link } from "expo-router";
 import tw from "twrnc";
 import check from "../../assets/images/check.png";
+import checkring from "../../assets/images/check_ring.png";
+import bellpin from "../../assets/images/Bell_pin.png";
+import users from "../../assets/images/users.png";
+import Logo from "../../assets/images/Logo.png";
 
 export default function StudentScreen() {
   const [search, setSearch] = useState("");
+
+  const handleRegister = () => {
+    router.push("/register"); // ⬅️ Переходить на сторінку реєстрації
+  };
+
   return (
-    <View style={tw`pt-12 max-w-[320px] mx-auto`}>
-      <Text
-        style={[tw`text-white text-[17px] leading-[25px] !font-manrope pt-8 mb-3`]}>
-        Профіль активовано — тепер тебе можуть знайти учні!
-      </Text>
-      <View style={tw`flex-row items-start mb-4 w-full relative`}>
-        <Image
-          source={check}
-          style={tw`w-5 h-[18px] mt-[2px] absolute`}
-          resizeMode="contain"
-        />
-        <Text
-          style={tw`text-white text-[16px] leading-[20px] font-manrope text-center tracking-[-0.32px] mb-8 `}>
-          Увімкни доступність, налаштуй графікі вже сьогодні зможеш
-          отриматиперший запит від учня.
-        </Text>
+    <View style={tw`flex-1`}>
+      {/* Фіксований хедер */}
+      <View style={tw`w-full h-14 bg-black justify-center items-center`}>
+        <Text style={tw`text-white text-base font-bold`}></Text>
       </View>
-      <View>
-        <Text style={tw`text-white !font-manrope text-[18px]`}>Що далі</Text>
-      </View>
+
+      {/* Пролистуваний вміст */}
+      <ScrollView
+        contentContainerStyle={tw`pb-10 px-[15px] items-center`}
+        showsVerticalScrollIndicator={false}>
+        <View style={tw`max-w-[320px] mx-auto pt-6`}>
+          <Text
+            style={[
+              tw`text-white text-[17px] leading-[25px] mb-3 font-bold`,
+              { fontFamily: "manrope" },
+            ]}>
+            Профіль активовано — тепер тебе можуть знайти учні!
+          </Text>
+
+          <View style={tw`flex-row items-start mb-4 w-full relative`}>
+            <Image
+              source={check}
+              style={tw`w-5 h-[18px] top-2 absolute`}
+              resizeMode="contain"
+            />
+            <Text
+              style={[
+                tw`text-white text-[15px] leading-[20px] text-center tracking-[-0.32px] mb-8`,
+                { fontFamily: "manrope" },
+              ]}>
+              Увімкни доступність, налаштуй графік — і вже сьогодні зможеш
+              отримати перший запит від учня.
+            </Text>
+          </View>
+          <Text style={tw`text-white mb-5 text-[18px] font-bold`}>Що далі</Text>
+          <View style={tw``}>
+            <View
+              style={tw`border-2 rounded-xl border-[#C7C7C7] bg-[grey] w-[245px] flex items-center justify-center p-3 mb-3`}>
+              <Image
+                source={checkring}
+                style={tw`w-[32px] h-[32px] mb-2`}
+                resizeMode="contain"
+              />
+              <Text
+                style={tw`text-white text-[16px] leading-[22px] text-center w-[188px] tracking-[-0.32px]`}>
+                Увімкни статус "Доступний"
+              </Text>
+            </View>
+            <View
+              style={tw`border-2 rounded-xl border-[#C7C7C7] bg-[grey] w-[245px] flex items-center justify-center p-[13px] transform translate-x-20 mb-3`}>
+              <Image
+                source={bellpin}
+                style={tw`w-[32px] h-[32px] mb-2`}
+                resizeMode="contain"
+              />
+              <Text
+                style={tw`text-white text-center  text-[16px] tracking-[-0.32px]`}>
+                Підтримай учнів, що чекають на іспит біля СЦ
+              </Text>
+            </View>
+            <View
+              style={tw`border-2 rounded-xl border-[#C7C7C7] bg-[grey] w-[265px] flex items-center justify-center py-3 mb-3`}>
+              <Image
+                source={users}
+                style={tw`w-[32px] h-[32px] mb-2`}
+                resizeMode="contain"
+              />
+              <Text
+                style={tw`text-white text-[16px] leading-[22px] text-center  tracking-[-0.36px]`}>
+                Підтверджуй, контактуй, допомагай
+              </Text>
+            </View>
+            <View style={tw`pt-[30px]`}>
+              <Text
+                style={[
+                  tw`text-white text-center text-[13px] tracking-[-0.36px]`,
+                  { fontFamily: "manrope" },
+                ]}>
+                Учні хочуть повторити маршрут перед іспитом і заспокоїтись.
+              </Text>
+            </View>
+            <View style={tw`pt-[12px]`}>
+              <Text
+                style={[
+                  tw`text-white text-center text-[18px] mb-4 font-semibold`,
+                  { fontFamily: "manrope" },
+                ]}>
+                Твоя підтримка - дуже важлива!
+              </Text>
+              <Image
+                source={Logo}
+                style={tw`w-[50px] h-[50px] mb-2 mx-auto mb-8`}
+                resizeMode="contain"
+              />
+              <Text
+                style={[
+                  tw`text-white text-[16px] leading-[22px] mb-3 font-bold`,
+                  { fontFamily: "manrope" },
+                ]}>
+                Без комісій.{"\n"}Щомісячна підписка 1590 грн
+              </Text>
+              <Text
+                style={[
+                  tw`text-[17px] text-[#F89C3A] font-bold tracking-[-0.30px] mb-[14px]`,
+                  { fontFamily: "manrope" },
+                ]}>
+                Перші 7 днів — безкоштовно.
+              </Text>
+              <TouchableOpacity
+                onPress={handleRegister}
+                style={tw`bg-[#8BD73D] py-[14px] px-6 rounded-[23px]`}>
+                <Text
+                  style={[
+                    tw`text-btn text-center text-[18px]  font-bold`,
+                    { fontFamily: "ptsansnaBold" },
+                    ,
+                  ]}>
+                  Зареєструватись
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => router.push("/instructor/pdf-viewer")}>
+                <Text style={tw`text-white underline text-center mt-8`}>
+                  Політика конфіденційності
+                </Text>
+              </TouchableOpacity>
+
+              <Link href="https://drive.google.com/file/d/1GSzjIUT5vcMcWctB0BxG4UqCE3z3yqqf/view?usp=drive_link" asChild>
+                <Text
+                  style={tw`text-white text-[16px] underline text-center mt-3`}>
+                  Правила користування платформою
+                </Text>
+              </Link>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
     </View>
   );
 }

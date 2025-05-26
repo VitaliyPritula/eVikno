@@ -12,7 +12,7 @@ export default function RootLayout() {
     "ptsansnarrow": require("../assets/fonts/PT_Sans-Narrow-Regular.ttf"),
     "ptsansnaBold": require("../assets/fonts/PT_Sans-Narrow-Bold.ttf"),
     "marcellus": require("../assets/fonts/Marcellus-Regular.ttf"),
-    "manrope": require("../assets/fonts/Manrope-VariableFont_wght.ttf"),
+    "manrope": require("../assets/fonts/manrope-semibold.otf"),
   });
 
   if (!loaded) return null;
