@@ -9,7 +9,7 @@ import {
   Linking,
   TouchableOpacity,
 } from "react-native";
-import { router, Link } from "expo-router";
+import { router, Link, useRouter } from "expo-router";
 import tw from "twrnc";
 import check from "../../assets/images/check.png";
 import checkring from "../../assets/images/check_ring.png";
@@ -19,7 +19,7 @@ import Logo from "../../assets/images/Logo.png";
 
 export default function StudentScreen() {
   const [search, setSearch] = useState("");
-
+  const router = useRouter();
   const handleRegister = () => {
     router.push("/register"); // ⬅️ Переходить на сторінку реєстрації
   };
@@ -145,19 +145,22 @@ export default function StudentScreen() {
                   Зареєструватись
                 </Text>
               </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => router.push("/instructor/pdf-viewer")}>
+              <TouchableOpacity
+                onPress={() =>
+                  router.push("/instructor/pdf-viewer?file=privacy")
+                }>
                 <Text style={tw`text-white underline text-center mt-8`}>
                   Політика конфіденційності
                 </Text>
               </TouchableOpacity>
-
-              <Link href="https://drive.google.com/file/d/1GSzjIUT5vcMcWctB0BxG4UqCE3z3yqqf/view?usp=drive_link" asChild>
-                <Text
-                  style={tw`text-white text-[16px] underline text-center mt-3`}>
+              <TouchableOpacity
+                onPress={() =>
+                  router.push("/instructor/pdf-viewer?file=terms")
+                }>
+                <Text style={tw`text-white underline text-center mt-3`}>
                   Правила користування платформою
                 </Text>
-              </Link>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
