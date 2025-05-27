@@ -64,6 +64,9 @@ export default function RegisterScreen() {
 
     // Продовжити логіку (навігація або сабміт)
   };
+   const handleSubmitlOG = () => {
+    router.push("/instructor/login"); // ⬅️ Переходить на сторінку реєстрації
+  };
 
   return (
     <View style={tw`flex-1`}>
@@ -313,6 +316,17 @@ export default function RegisterScreen() {
                 { fontFamily: "ptsansnaBold" },
               ]}>
               Зареєструватись
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={handleSubmitlOG}
+            style={tw`bg-[#8BD73D] w-full py-3 rounded-xl mb-4`}>
+            <Text
+              style={[
+                tw`text-center text-black text-lg font-bold`,
+                { fontFamily: "ptsansnaBold" },
+              ]}>
+              Увійти
             </Text>
           </Pressable>
 
