@@ -21,7 +21,7 @@ export default function StudentScreen() {
   const [search, setSearch] = useState("");
   const router = useRouter();
   const handleRegister = () => {
-    router.push("/instructor/register"); // ⬅️ Переходить на сторінку реєстрації
+    router.push("/instructor/login"); // ⬅️ Переходить на сторінку реєстрації
   };
 
   return (
