@@ -11,7 +11,6 @@ module.exports = {
       black: "#000",
       white: "#FDFDFD",
       btn: "#101010",
-      text: "#C7C7C7",
       "btn-next": "#4F525D",
       grey: "#646464",
       gren: "#8BD73D",

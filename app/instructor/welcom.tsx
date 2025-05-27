@@ -140,7 +140,6 @@ export default function StudentScreen() {
                   style={[
                     tw`text-btn text-center text-[18px]  font-bold`,
                     { fontFamily: "ptsansnaBold" },
-                    ,
                   ]}>
                   Зареєструватись
                 </Text>
