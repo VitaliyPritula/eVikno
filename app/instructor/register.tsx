@@ -2,10 +2,12 @@ import { router } from "expo-router";
 import React, { useState } from "react";
 import { ScrollView, Text, TextInput, Pressable, View } from "react-native";
 import { style } from "twrnc";
-import { onAuthStateChanged } from "firebase/auth";
-//import { FIREBASE_AUTH } from "../../firebaseConfig";
+// import { onAuthStateChanged } from "firebase/auth";
+import { useAuthStore } from "@/store/authStore";
 
 export default function RegisterScreen() {
+  const user = useAuthStore((state) => state.user);
+  console.log("user in Reg", user);
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
@@ -19,6 +21,7 @@ export default function RegisterScreen() {
     city: "",
     phone: "",
   });
+
   // const auth = FIREBASE_AUTH;
   // onAuthStateChanged(auth, (user) => {
   //   if (user) {
