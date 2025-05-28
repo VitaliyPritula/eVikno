@@ -31,6 +31,7 @@ export default function LoginScreen() {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
       console.log("Успішний логін:", response.user);
+      router.push("/instructor/register"); // треба буде змінити на головну сторінку шнструктора
     } catch (error) {
       setErrors(newErrors);
       console.error("Error:", error);
@@ -44,8 +45,8 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={tw`flex-1 bg-black`}>
-      <View style={tw`w-full h-14 bg-black justify-center items-center`}>
+    <View className="flex-1 bg-black">
+      <View className="w-full h-14 bg-black justify-center items-center">
         <Text style={tw`text-white text-base font-bold`}>Увійти</Text>
       </View>
 
@@ -79,7 +80,7 @@ export default function LoginScreen() {
               )}
             />
             {errors.email ? (
-              <Text style={tw`text-red-500 text-sm mt-1`}>{errors.email}</Text>
+              <Text className="text-red-500 text-sm mt-11">{errors.email}</Text>
             ) : (
               <Text style={tw`text-[#D7D7D7] text-sm mt-1`}>
                 Введіть ваш email або логін

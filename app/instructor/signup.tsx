@@ -35,7 +35,7 @@ export default function LoginScreen() {
         password
       );
       console.log("Успішна реэстрація:", response.user);
-      //router.push("/"); // після успішного логіну
+      router.push("/instructor/register"); // після успішного логіну
     } catch (error) {
       console.error("Error:", error);
     }
