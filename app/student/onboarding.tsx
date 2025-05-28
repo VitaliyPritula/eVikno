@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { ProgressBar } from "react-native-paper"; // або свій кастомний
 import { style } from "twrnc";
+import { ProgressBar } from "react-native-paper"; // або свій кастомний
 
 const steps = [
   {
@@ -35,11 +35,10 @@ export default function StudentOnboarding() {
       router.replace("/student/welcom"); // Переходимо до головного екрану учня
     }
   };
-
   const { title, subtitle } = steps[step];
 
   return (
-    <View className="flex-1 bg-black px-4 pt-12 justify-center relative">
+    <View style={style("flex-1 bg-black px-4 pt-12 justify-center relative")}>
       <StatusBar style="light" />
 
       {/* Прогрес */}
@@ -53,7 +52,7 @@ export default function StudentOnboarding() {
       <View style={style("flex-1 justify-center items-center")}>
         <View style={style("border-2 border-white  rounded-xl px-[10px] py-[16px]")}>
           <Text
-            style={[style("text-white text-[20px] leading-[25px] px-[10px] font-bold text-center mb-8"), { fontFamily: "ptsansnaBold" },]}>
+            style={[style("text-white text-[19px] leading-[25px] px-[10px] font-bold text-center mb-8"), { fontFamily: "ptsansnaBold" },]}>
             {title}
           </Text>
           {subtitle && (
