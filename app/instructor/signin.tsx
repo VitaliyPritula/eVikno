@@ -63,8 +63,7 @@ export default function LoginScreen() {
 
       <ScrollView
         contentContainerStyle={style("pb-15 px-4 pt-6")}
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         <View style={style("max-w-[320px] w-full mx-auto")}>
           <Text
             style={[
@@ -72,8 +71,7 @@ export default function LoginScreen() {
                 "text-white text-[18px] text-center leading-[22px] mb-6 font-bold"
               ),
               { fontFamily: "manrope" },
-            ]}
-          >
+            ]}>
             Вхід у профіль інструктора
           </Text>
 
@@ -98,7 +96,9 @@ export default function LoginScreen() {
               </Text>
             )}
             {errors.email ? (
-              <Text className="text-red-500 text-sm mt-11">{errors.email}</Text>
+              <Text style={style("text-red-500 text-sm mt-1")}>
+                {errors.email}
+              </Text>
             ) : (
               <Text style={style("text-[#D7D7D7] text-sm mt-1")}>
                 Введіть ваш email або логін
@@ -133,14 +133,12 @@ export default function LoginScreen() {
 
           <Pressable
             onPress={handleLogin}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}
-          >
+            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}>
             <Text
               style={[
                 style("text-center text-black text-lg font-bold"),
                 { fontFamily: "ptsansnaBold" },
-              ]}
-            >
+              ]}>
               Увійти
             </Text>
           </Pressable>
@@ -150,8 +148,7 @@ export default function LoginScreen() {
             Немає акаунту?{" "}
             <Text
               onPress={() => router.push("/instructor/signup")}
-              style={style("text-[#8BD73D]")}
-            >
+              style={style("text-[#8BD73D]")}>
               Зареєструватися
             </Text>
           </Text>
