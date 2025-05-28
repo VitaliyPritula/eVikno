@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { ProgressBar } from "react-native-paper"; // або свій кастомний
-import tw from "twrnc";
+import { style } from "twrnc";
 
 const steps = [
   {
@@ -39,25 +39,25 @@ export default function StudentOnboarding() {
   const { title, subtitle } = steps[step];
 
   return (
-    <View style={tw`flex-1 bg-black px-4 pt-12 justify-center relative`}>
+    <View className="flex-1 bg-black px-4 pt-12 justify-center relative">
       <StatusBar style="light" />
 
       {/* Прогрес */}
       <ProgressBar
         progress={(step + 1) / steps.length}
         color="#893DD7"
-        style={tw`h-1 my-1`}
+        style={style("h-1 my-1")}
       />
 
       {/* Контент */}
-      <View style={tw`flex-1 justify-center items-center`}>
-        <View style={tw`border-2 border-white  rounded-xl px-[10px] py-[16px] `}>
+      <View style={style("flex-1 justify-center items-center")}>
+        <View style={style("border-2 border-white  rounded-xl px-[10px] py-[16px]")}>
           <Text
-            style={[tw`text-white text-[20px] leading-[25px] px-[10px] font-bold text-center mb-8`, { fontFamily: "ptsansnaBold" },]}>
+            style={[style("text-white text-[20px] leading-[25px] px-[10px] font-bold text-center mb-8"), { fontFamily: "ptsansnaBold" },]}>
             {title}
           </Text>
           {subtitle && (
-            <Text style={[tw`text-white text-m text-center px-[10px]`, {fontFamily:"manrope"},]}>
+            <Text style={[style("text-white text-m text-center px-[10px]"), {fontFamily:"manrope"},]}>
               {subtitle}
             </Text>
           )}
@@ -65,9 +65,9 @@ export default function StudentOnboarding() {
       </View>
       {/* Кнопка "Далі" */}
       <TouchableOpacity
-        style={tw`bg-[#4F525D] py-3 px-5 rounded-full mb-10 flex-row items-center justify-center ml-auto`}
+        style={style("bg-[#4F525D] py-3 px-5 rounded-full mb-10 flex-row items-center justify-center ml-auto")}
         onPress={handleNext}>
-        <Text style={[tw`text-white font-bold text-bas`, {fontFamily:"manrope"},]}>Далі</Text>
+        <Text style={[style("text-white font-bold text-bas"), {fontFamily:"manrope"},]}>Далі</Text>
         <Icon name="chevron-forward" size={28} color="#fff" />
       </TouchableOpacity>
     </View>
