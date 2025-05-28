@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, TextInput, Pressable, ScrollView } from "react-native";
-import tw, { style } from "twrnc";
+import { style } from "twrnc";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -47,17 +47,17 @@ export default function LoginScreen() {
   return (
     <View className="flex-1 bg-black">
       <View className="w-full h-14 bg-black justify-center items-center">
-        <Text style={tw`text-white text-base font-bold`}>Увійти</Text>
+        <Text style={style("text-white text-base font-bold")}>Увійти</Text>
       </View>
 
       <ScrollView
-        contentContainerStyle={tw`pb-15 px-4 pt-6`}
+        contentContainerStyle={style("pb-15 px-4 pt-6")}
         showsVerticalScrollIndicator={false}
       >
-        <View style={tw`max-w-[320px] w-full mx-auto`}>
+        <View style={style("max-w-[320px] w-full mx-auto")}>
           <Text
             style={[
-              tw`text-white text-[18px] text-center leading-[22px] mb-6 font-bold`,
+              style("text-white text-[18px] text-center leading-[22px] mb-6 font-bold"),
               { fontFamily: "manrope" },
             ]}
           >
@@ -65,8 +65,8 @@ export default function LoginScreen() {
           </Text>
 
           {/* Email */}
-          <View style={tw`mb-4`}>
-            <Text style={tw`text-[#C7C7C7] mb-1`}>Email або логін</Text>
+          <View style={style("mb-4")}>
+            <Text style={style("text-[#C7C7C7] mb-1")}>Email або логін</Text>
             <TextInput
               value={email}
               onChangeText={setEmail}
@@ -82,15 +82,15 @@ export default function LoginScreen() {
             {errors.email ? (
               <Text className="text-red-500 text-sm mt-11">{errors.email}</Text>
             ) : (
-              <Text style={tw`text-[#D7D7D7] text-sm mt-1`}>
+              <Text style={style("text-[#D7D7D7] text-sm mt-1")}>
                 Введіть ваш email або логін
               </Text>
             )}
           </View>
 
           {/* Password */}
-          <View style={tw`mb-6`}>
-            <Text style={tw`text-[#C7C7C7] mb-1`}>Пароль</Text>
+          <View style={style("mb-6")}>
+            <Text style={style("text-[#C7C7C7] mb-1")}>Пароль</Text>
             <TextInput
               value={password}
               onChangeText={setPassword}
@@ -103,11 +103,11 @@ export default function LoginScreen() {
               )}
             />
             {errors.password ? (
-              <Text style={tw`text-red-500 text-sm mt-1`}>
+              <Text style={style("text-red-500 text-sm mt-1")}>
                 {errors.password}
               </Text>
             ) : (
-              <Text style={tw`text-[#D7D7D7] text-sm mt-1`}>
+              <Text style={style("text-[#D7D7D7] text-sm mt-1")}>
                 Мінімум 6 символів
               </Text>
             )}
@@ -115,11 +115,11 @@ export default function LoginScreen() {
 
           <Pressable
             onPress={handleLogin}
-            style={tw`bg-[#8BD73D] w-full py-3 rounded-xl`}
+            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}
           >
             <Text
               style={[
-                tw`text-center text-black text-lg font-bold`,
+                style("text-center text-black text-lg font-bold"),
                 { fontFamily: "ptsansnaBold" },
               ]}
             >
@@ -127,12 +127,12 @@ export default function LoginScreen() {
             </Text>
           </Pressable>
         </View>
-        <View style={tw`mt-6 items-center`}>
-          <Text style={tw`text-[#D7D7D7] text-sm`}>
+        <View style={style("mt-6 items-center")}>
+          <Text style={style("text-[#D7D7D7] text-sm")}>
             Немає акаунту?{" "}
             <Text
               onPress={() => router.push("/instructor/signup")}
-              style={tw`text-[#8BD73D]`}
+              style={style("text-[#8BD73D]")}
             >
               Зареєструватися
             </Text>
