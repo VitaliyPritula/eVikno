@@ -4,10 +4,13 @@ import { View, Text, TextInput, Pressable, ScrollView } from "react-native";
 import { style } from "twrnc";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { SIGNUP_ERROR_MESSAGES } from "@/lib/firebaseErrors";
+import { FirebaseError } from "firebase/app";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errSignup, setErrSignup] = useState("");
   const auth = FIREBASE_AUTH;
   // поки не треба
   // const [rememberMe, setRememberMe] = useState(false);
@@ -37,7 +40,16 @@ export default function LoginScreen() {
       console.log("Успішна реэстрація:", response.user);
       router.push("/instructor/register"); // після успішного логіну
     } catch (error) {
-      console.error("Error:", error);
+      if (error instanceof FirebaseError) {
+        const errorMsg =
+          SIGNUP_ERROR_MESSAGES[error.code] ||
+          "Сталася помилка. Спробуйте пізніше";
+        setErrSignup(errorMsg);
+        console.log("error", error);
+      } else {
+        console.error("Невідома помилка:", error);
+        setErrSignup("Сталася помилка");
+      }
     }
 
     // const hasError = Object.values(newErrors).some((e) => e !== "");
@@ -50,7 +62,8 @@ export default function LoginScreen() {
     <View style={style("flex-1 bg-black")}>
       <ScrollView
         contentContainerStyle={style("pb-15 px-4 pt-6")}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         <View style={style("max-w-[320px] w-full mx-auto")}>
           <Text
             style={[
@@ -58,13 +71,14 @@ export default function LoginScreen() {
                 "text-white text-[18px] text-center leading-[22px] mb-6 font-bold"
               ),
               { fontFamily: "manrope" },
-            ]}>
+            ]}
+          >
             Зареєструватись як інструктор
           </Text>
 
           {/* Email */}
           <View style={style("mb-4")}>
-            <Text style={style("text-[#C7C7C7] mb-1")}>Email або логін</Text>
+            <Text style={style("text-[#C7C7C7] mb-1")}>Email</Text>
             <TextInput
               value={email}
               onChangeText={setEmail}
@@ -77,11 +91,14 @@ export default function LoginScreen() {
                 errors.email ? "border-red-500" : "border-gray-500"
               )}
             />
-            {errors.email ? (
-              <Text style={style("text-red-500 text-sm mt-1")}>{errors.email}</Text>
-            ) : (
-              <Text style={style("text-[#D7D7D7] text-sm mt-1")}>
-                Введіть ваш email або логін
+            {errSignup && (
+              <Text style={style("text-red-500 text-sm mt-1")}>
+                {errSignup}
+              </Text>
+            )}
+            {errors.email && (
+              <Text style={style("text-red-500 text-sm mt-1")}>
+                {errors.email}
               </Text>
             )}
           </View>
@@ -113,12 +130,15 @@ export default function LoginScreen() {
 
           <Pressable
             onPress={handleLogin}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}>
+            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}
+            // className="bg-[#8BD73D] w-full py-3 rounded-xl"
+          >
             <Text
               style={[
                 style("text-center text-black text-lg font-bold"),
                 { fontFamily: "ptsansnaBold" },
-              ]}>
+              ]}
+            >
               Зареєструватись
             </Text>
           </Pressable>
@@ -128,7 +148,8 @@ export default function LoginScreen() {
             Вже э аккаунт?{" "}
             <Text
               onPress={() => router.push("/instructor/signin")}
-              style={style("text-[#8BD73D]")}>
+              style={style("text-[#8BD73D]  font-bold")}
+            >
               Увійти
             </Text>
           </Text>

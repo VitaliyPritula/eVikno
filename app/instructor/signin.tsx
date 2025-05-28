@@ -4,10 +4,13 @@ import { View, Text, TextInput, Pressable, ScrollView } from "react-native";
 import { style } from "twrnc";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+import { SIGNIN_ERROR_MESSAGES } from "@/lib/firebaseErrors";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errSignin, setErrSignin] = useState("");
   const auth = FIREBASE_AUTH;
   // поки не треба
   // const [rememberMe, setRememberMe] = useState(false);
@@ -33,8 +36,16 @@ export default function LoginScreen() {
       console.log("Успішний логін:", response.user);
       router.push("/instructor/register"); // треба буде змінити на головну сторінку шнструктора
     } catch (error) {
-      setErrors(newErrors);
-      console.error("Error:", error);
+      if (error instanceof FirebaseError) {
+        const errorMsg =
+          SIGNIN_ERROR_MESSAGES[error.code] ||
+          "Сталася помилка. Спробуйте пізніше";
+        setErrSignin(errorMsg);
+        console.log("error", error);
+      } else {
+        console.error("Невідома помилка:", error);
+        setErrSignin("Сталася помилка");
+      }
     }
 
     // const hasError = Object.values(newErrors).some((e) => e !== "");
@@ -45,9 +56,9 @@ export default function LoginScreen() {
   };
 
   return (
-    <View className="flex-1 bg-black">
+    <View style={style("flex-1 bg-black")}>
       <View className="w-full h-14 bg-black justify-center items-center">
-        <Text style={style("text-white text-base font-bold")}>Увійти</Text>
+        <Text className="text-white text-base font-bold">Увійти</Text>
       </View>
 
       <ScrollView
@@ -57,7 +68,9 @@ export default function LoginScreen() {
         <View style={style("max-w-[320px] w-full mx-auto")}>
           <Text
             style={[
-              style("text-white text-[18px] text-center leading-[22px] mb-6 font-bold"),
+              style(
+                "text-white text-[18px] text-center leading-[22px] mb-6 font-bold"
+              ),
               { fontFamily: "manrope" },
             ]}
           >
@@ -65,8 +78,8 @@ export default function LoginScreen() {
           </Text>
 
           {/* Email */}
-          <View style={style("mb-4")}>
-            <Text style={style("text-[#C7C7C7] mb-1")}>Email або логін</Text>
+          <View className="mb-4">
+            <Text style={style("text-[#C7C7C7] mb-1")}>Email</Text>
             <TextInput
               value={email}
               onChangeText={setEmail}
@@ -79,6 +92,11 @@ export default function LoginScreen() {
                 errors.email ? "border-red-500" : "border-gray-500"
               )}
             />
+            {errSignin && (
+              <Text style={style("text-red-500 text-sm mt-1")}>
+                {errSignin}
+              </Text>
+            )}
             {errors.email ? (
               <Text className="text-red-500 text-sm mt-11">{errors.email}</Text>
             ) : (
