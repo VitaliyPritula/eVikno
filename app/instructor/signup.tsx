@@ -63,6 +63,7 @@ export default function LoginScreen() {
           </Text>
 
           {/* Email */}
+          {/* <View style={tw`mb-4`}> */}
           <View style={tw`mb-4`}>
             <Text style={tw`text-[#C7C7C7] mb-1`}>Email або логін</Text>
             <TextInput
