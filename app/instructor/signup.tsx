@@ -1,9 +1,9 @@
-import { SIGNUP_ERROR_MESSAGES } from "@/constants/firebaseErrors";
+import React, { useState } from "react";
 import { router } from "expo-router";
+import { SIGNUP_ERROR_MESSAGES } from "@/constants/firebaseErrors";
+import { useAuthStore } from "@/store/authStore";
 import { FirebaseError } from "firebase/app";
 
-import React, { useState } from "react";
-import { useAuthStore } from "@/store/authStore";
 import {
   Image,
   Pressable,
@@ -60,11 +60,6 @@ export default function LoginScreen() {
         setErrSignup("Сталася помилка");
       }
     }
-
-    // const hasError = Object.values(newErrors).some((e) => e !== "");
-    // if (hasError) return;
-
-    // console.log("Логін:", { email, password, rememberMe });
   };
 
   return (
@@ -83,7 +78,7 @@ export default function LoginScreen() {
             ]}
           >
             Реєстрація
-          </Text>{" "}
+          </Text>
           <Text
             style={[
               style(
