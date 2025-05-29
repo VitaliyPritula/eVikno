@@ -1,19 +1,17 @@
+import { SIGNIN_ERROR_MESSAGES } from "@/constants/firebaseErrors";
 import { router } from "expo-router";
-import React, { useState } from "react";
-import { View, Text, TextInput, Pressable, ScrollView } from "react-native";
-import { style } from "twrnc";
-import { FIREBASE_AUTH } from "../../firebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
-import { SIGNIN_ERROR_MESSAGES } from "@/lib/firebaseErrors";
+import React, { useState } from "react";
+import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { style } from "twrnc";
+import { useAuthStore } from "@/store/authStore";
 
 export default function LoginScreen() {
+  const signIn = useAuthStore((state) => state.signIn);
+  //const { signIn, signUp, signOut, user, loading } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errSignin, setErrSignin] = useState("");
-  const auth = FIREBASE_AUTH;
-  // поки не треба
-  // const [rememberMe, setRememberMe] = useState(false);
 
   const [errors, setErrors] = useState({
     email: "",
@@ -31,9 +29,10 @@ export default function LoginScreen() {
 
     const hasError = Object.values(newErrors).some((e) => e !== "");
     if (hasError) return;
+
     try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log("Успішний логін:", response.user);
+      await signIn(email, password);
+      console.log("Успішний логін:");
       router.push("/instructor/register"); // треба буде змінити на головну сторінку шнструктора
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -41,18 +40,12 @@ export default function LoginScreen() {
           SIGNIN_ERROR_MESSAGES[error.code] ||
           "Сталася помилка. Спробуйте пізніше";
         setErrSignin(errorMsg);
-        console.log("error", error);
+        console.error("SignIn Error:", error);
       } else {
         console.error("Невідома помилка:", error);
         setErrSignin("Сталася помилка");
       }
     }
-
-    // const hasError = Object.values(newErrors).some((e) => e !== "");
-    // if (hasError) return;
-
-    // console.log("Логін:", { email, password, rememberMe });
-    // після успішного логіну
   };
 
   return (
@@ -63,7 +56,8 @@ export default function LoginScreen() {
 
       <ScrollView
         contentContainerStyle={style("pb-15 px-4 pt-6")}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         <View style={style("max-w-[320px] w-full mx-auto")}>
           <Text
             style={[
@@ -71,7 +65,8 @@ export default function LoginScreen() {
                 "text-white text-[18px] text-center leading-[22px] mb-6 font-bold"
               ),
               { fontFamily: "manrope" },
-            ]}>
+            ]}
+          >
             Вхід у профіль інструктора
           </Text>
 
@@ -133,12 +128,14 @@ export default function LoginScreen() {
 
           <Pressable
             onPress={handleLogin}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}>
+            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}
+          >
             <Text
               style={[
                 style("text-center text-black text-lg font-bold"),
                 { fontFamily: "ptsansnaBold" },
-              ]}>
+              ]}
+            >
               Увійти
             </Text>
           </Pressable>
@@ -148,7 +145,8 @@ export default function LoginScreen() {
             Немає акаунту?{" "}
             <Text
               onPress={() => router.push("/instructor/signup")}
-              style={style("text-[#8BD73D]")}>
+              style={style("text-[#8BD73D]")}
+            >
               Зареєструватися
             </Text>
           </Text>

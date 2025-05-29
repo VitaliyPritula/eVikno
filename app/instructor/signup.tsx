@@ -1,21 +1,20 @@
-import { router } from "expo-router";
 import React, { useState } from "react";
+import { router } from "expo-router";
+import { SIGNUP_ERROR_MESSAGES } from "@/constants/firebaseErrors";
+import { useAuthStore } from "@/store/authStore";
+import { FirebaseError } from "firebase/app";
+
 import {
-  View,
-  Text,
-  TextInput,
   Image,
   Pressable,
   ScrollView,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 import { style } from "twrnc";
-import { FIREBASE_AUTH } from "../../firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { SIGNUP_ERROR_MESSAGES } from "@/lib/firebaseErrors";
-import { FirebaseError } from "firebase/app";
-import google from "../../assets/images/google.png";
 import emailImg from "../../assets/images/email.png";
-import password from "../../assets/images/password.png";
+import google from "../../assets/images/google.png";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -23,7 +22,8 @@ export default function LoginScreen() {
   const [errSignup, setErrSignup] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const auth = FIREBASE_AUTH;
+  const signUp = useAuthStore((state) => state.signUp);
+  //const { signIn, signUp, signOut, user, loading } = useAuthStore();
   // поки не треба
   // const [rememberMe, setRememberMe] = useState(false);
 
@@ -32,7 +32,7 @@ export default function LoginScreen() {
     password: "",
   });
 
-  const handleLogin = async () => {
+  const handleSignup = async () => {
     const newErrors = {
       email: email.includes("@") ? "" : "Введіть коректний email",
       password:
@@ -43,13 +43,10 @@ export default function LoginScreen() {
 
     const hasError = Object.values(newErrors).some((e) => e !== "");
     if (hasError) return;
+
     try {
-      const response = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log("Успішна реэстрація:", response.user);
+      await signUp(email, password);
+      console.log("Успішна реэстрація:");
       router.push("/instructor/register"); // після успішного логіну
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -57,24 +54,20 @@ export default function LoginScreen() {
           SIGNUP_ERROR_MESSAGES[error.code] ||
           "Сталася помилка. Спробуйте пізніше";
         setErrSignup(errorMsg);
-        console.log("error", error);
+        console.error("SignUp Error:", error);
       } else {
         console.error("Невідома помилка:", error);
         setErrSignup("Сталася помилка");
       }
     }
-
-    // const hasError = Object.values(newErrors).some((e) => e !== "");
-    // if (hasError) return;
-
-    // console.log("Логін:", { email, password, rememberMe });
   };
 
   return (
     <View style={style("flex-1 bg-black")}>
       <ScrollView
         contentContainerStyle={style("py-15 px-4")}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         <View style={style("max-w-[320px] w-full mx-auto")}>
           <Text
             style={[
@@ -82,16 +75,18 @@ export default function LoginScreen() {
                 "text-white text-[18px] text-center leading-[22px] mb-3 font-bold"
               ),
               { fontFamily: "manrope" },
-            ]}>
+            ]}
+          >
             Реєстрація
-          </Text>{" "}
+          </Text>
           <Text
             style={[
               style(
                 "text-[#C7C7C7] text-[16px] text-center leading-[22px] tracking-[-0.32px] mb-6 font-bold"
               ),
               { fontFamily: "manrope" },
-            ]}>
+            ]}
+          >
             Введіть свою електронну адресу та Пароль
           </Text>
           {/* Email */}
@@ -100,7 +95,8 @@ export default function LoginScreen() {
               style={style(
                 `flex-row items-center border-2 rounded-[12px] p-[10px]  text-white bg-[#646464]`,
                 errors.email ? "border-red-500" : "border-[#BDBDBD]"
-              )}>
+              )}
+            >
               <Image
                 source={emailImg}
                 style={style("w-[24px] h-[24px]")}
@@ -173,13 +169,15 @@ export default function LoginScreen() {
             )}
           </View>
           <Pressable
-            onPress={handleLogin}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}>
+            onPress={handleSignup}
+            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}
+          >
             <Text
               style={[
                 style("text-center text-black text-lg font-bold"),
                 { fontFamily: "ptsansnaBold" },
-              ]}>
+              ]}
+            >
               Зареєструватись
             </Text>
           </Pressable>
@@ -191,7 +189,8 @@ export default function LoginScreen() {
                 "text-center text-[#C7C7C7] text-[16px] mb-5 font-bold tracking-[-0.32px]"
               ),
               { fontFamily: "ptsansnaBold" },
-            ]}>
+            ]}
+          >
             Зареєструватись за допомогою{" "}
           </Text>
           <Image
@@ -207,7 +206,8 @@ export default function LoginScreen() {
               style={[
                 style("text-[#F89C3A] text-[19px] font-bold"),
                 { fontFamily: "manrope" },
-              ]}>
+              ]}
+            >
               Увійти
             </Text>
           </Text>
