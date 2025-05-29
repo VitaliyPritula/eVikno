@@ -1,16 +1,27 @@
+import { SIGNIN_ERROR_MESSAGES } from "@/lib/firebaseErrors";
 import { router } from "expo-router";
+import { FirebaseError } from "firebase/app";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import { View, Text, TextInput, Pressable, ScrollView } from "react-native";
+import {
+  Pressable,
+  Image,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { style } from "twrnc";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
-import { SIGNIN_ERROR_MESSAGES } from "@/lib/firebaseErrors";
+import Octicons from "@expo/vector-icons/Octicons";
+import user from "../../assets/images/user.png";
+import passwordImg from "../../assets/images/password.png";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errSignin, setErrSignin] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const auth = FIREBASE_AUTH;
   // поки не треба
   // const [rememberMe, setRememberMe] = useState(false);
@@ -56,84 +67,86 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={style("flex-1 bg-black")}>
+    <View style={style("flex-1 bg-black pt-[40px]")}>
       <View className="w-full h-14 bg-black justify-center items-center">
-        <Text className="text-white text-base font-bold">Увійти</Text>
+        {/* <Text className="text-white text-base font-bold">Увійти</Text> */}
       </View>
 
       <ScrollView
-        contentContainerStyle={style("pb-15 px-4 pt-6")}
+        contentContainerStyle={style("pb-15 px-4 pt-[32px]")}
         showsVerticalScrollIndicator={false}>
         <View style={style("max-w-[320px] w-full mx-auto")}>
           <Text
             style={[
               style(
-                "text-white text-[18px] text-center leading-[22px] mb-6 font-bold"
+                "text-white text-[18px] text-center leading-[22px] mb-[12px] font-bold"
               ),
               { fontFamily: "manrope" },
             ]}>
-            Вхід у профіль інструктора
+            Увійти
           </Text>
-
+          <Text
+            style={[
+              style(
+                "text-[#C7C7C7] tracking-[-0.32px] text-[14px] text-center leading-[22px] mb-6 font-bold"
+              ),
+              { fontFamily: "manrope" },
+            ]}>
+            Введіть електронну адресу та пароль
+          </Text>
           {/* Email */}
-          <View className="mb-4">
-            <Text style={style("text-[#C7C7C7] mb-1")}>Email</Text>
-            <TextInput
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              placeholder="example@mail.com"
-              placeholderTextColor="#646464"
+          <View style={style("mb-4")}>
+            <View
               style={style(
-                `border-2 rounded-[23px] px-4 py-3 text-white bg-[#646464]`,
-                errors.email ? "border-red-500" : "border-gray-500"
-              )}
-            />
-            {errSignin && (
-              <Text style={style("text-red-500 text-sm mt-1")}>
-                {errSignin}
-              </Text>
-            )}
-            {errors.email ? (
-              <Text style={style("text-red-500 text-sm mt-1")}>
-                {errors.email}
-              </Text>
-            ) : (
-              <Text style={style("text-[#D7D7D7] text-sm mt-1")}>
-                Введіть ваш email або логін
-              </Text>
-            )}
+                `flex-row items-center border-2 rounded-[12px] px-[10px] bg-[#646464]`,
+                errors.email ? "border-red-500" : "border-[#BDBDBD]"
+              )}>
+              <Image source={user} style={style("w-[24px] h-[24px] mr-2")} />
+              <TextInput
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                placeholder="Електронна адреса"
+                placeholderTextColor="#fff"
+                style={style(
+                  `w-[82%] px-1 py-3 text-white bg-[#646464]`,
+                  errors.email ? "border-red-500" : "border-gray-500"
+                )}
+              />
+            </View>
           </View>
-
           {/* Password */}
           <View style={style("mb-6")}>
-            <Text style={style("text-[#C7C7C7] mb-1")}>Пароль</Text>
-            <TextInput
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              placeholder="password"
-              placeholderTextColor="#646464"
+            <View
               style={style(
-                `border-2 rounded-[23px] px-4 py-3 text-white bg-[#646464]`,
-                errors.password ? "border-red-500" : "border-gray-500"
-              )}
-            />
-            {errors.password ? (
-              <Text style={style("text-red-500 text-sm mt-1")}>
-                {errors.password}
-              </Text>
-            ) : (
-              <Text style={style("text-[#D7D7D7] text-sm mt-1")}>
-                Мінімум 6 символів
-              </Text>
-            )}
+                `flex-row items-center border-2 rounded-[12px] px-[10px] bg-[#646464]`,
+                errors.email ? "border-red-500" : "border-[#BDBDBD]"
+              )}>
+              <Image source={passwordImg} style={style("w-[24px] h-[24px] mr-2")} />
+              <TextInput
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                placeholder="Пароль"
+                placeholderTextColor="#fff"
+                style={style(
+                  ` w-[82%] px-1 py-3 text-white bg-[#646464]`,
+                  errors.password ? "border-red-500" : "border-gray-500"
+                )}
+              />
+              <Pressable onPress={() => setShowPassword((prev) => !prev)}>
+                <Octicons
+                  name={showPassword ? "eye-closed" : "eye"}
+                  size={24}
+                  color="#fff"
+                />
+              </Pressable>
+            </View>
           </View>
-
           <Pressable
             onPress={handleLogin}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}>
+            style={style("bg-[#8BD73D] w-full py-3 rounded-[23px")}>
             <Text
               style={[
                 style("text-center text-black text-lg font-bold"),
