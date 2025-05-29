@@ -1,7 +1,8 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { ScrollView, Text, TextInput, Pressable, View } from "react-native";
+import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { style } from "twrnc";
+//import { FIREBASE_AUTH } from "../../firebaseConfig";
 // import { onAuthStateChanged } from "firebase/auth";
 import { useAuthStore } from "@/store/authStore";
 
@@ -87,8 +88,7 @@ export default function RegisterScreen() {
 
       <ScrollView
         contentContainerStyle={style("pb-15 px-[15px]")}
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         <View style={style("max-w-[320px] w-full mx-auto pt-6")}>
           <Text
             style={[
@@ -96,8 +96,7 @@ export default function RegisterScreen() {
                 "text-white text-[18px] text-center leading-[22px] mb-3 font-bold"
               ),
               { fontFamily: "manrope" },
-            ]}
-          >
+            ]}>
             Створіть профіль інструктора
           </Text>
 
@@ -107,8 +106,7 @@ export default function RegisterScreen() {
                 "text-[#C7C7C7] text-[16px] leading-[22px] font-regular tracking-[-0.32px] mb-8"
               ),
               { fontFamily: "manrope" },
-            ]}
-          >
+            ]}>
             Щоб почати приймати учнів, заповни коротку форму. {"\n"} Це займе до
             5 хвилин.
           </Text>
@@ -121,8 +119,7 @@ export default function RegisterScreen() {
                   "text-[#FDFDFD] text-left text-[16px] tracking-[-0.32px] mb-4 font-regular"
                 ),
                 { fontFamily: "manrope" },
-              ]}
-            >
+              ]}>
               1.Персональні дані
             </Text>
             <Text style={style("text-[#C7C7C7] text-left text-[16px] mb-1")}>
@@ -182,8 +179,7 @@ export default function RegisterScreen() {
                 "text-[#C7C7C7] text-left text-[16px] tracking-[-0.32px] mb-4 font-regular"
               ),
               { fontFamily: "manrope" },
-            ]}
-          >
+            ]}>
             2.Контакти
           </Text>
           <View style={style("w-full mb-6")}>
@@ -204,16 +200,14 @@ export default function RegisterScreen() {
               <Text
                 style={style(
                   "text-red-500 text-[12px] pl-1 mt-1 tracking-[-0.70px]"
-                )}
-              >
+                )}>
                 {errors.phone}
               </Text>
             ) : (
               <Text
                 style={style(
                   "text-[#D7D7D7] text-[12px] tracking-[-0.70px] pl-1 mt-1"
-                )}
-              >
+                )}>
                 Вкажи номер у форматі +38 000 000 00 00
               </Text>
             )}
@@ -227,8 +221,7 @@ export default function RegisterScreen() {
                   "text-[#C7C7C7] text-left text-[16px] tracking-[-0.32px] mb-4 font-regular"
                 ),
                 { fontFamily: "manrope" },
-              ]}
-            >
+              ]}>
               3.Досвід
             </Text>
             <Text style={style("text-[#C7C7C7] text-left text-[16px] mb-1")}>
@@ -270,8 +263,7 @@ export default function RegisterScreen() {
                   "text-[#C7C7C7] text-left text-[16px] tracking-[-0.32px] mb-4 font-regular"
                 ),
                 { fontFamily: "manrope" },
-              ]}
-            >
+              ]}>
               4.Автомобіль
             </Text>
             <Text style={style("text-[#C7C7C7] text-left text-[16px] mb-1")}>
@@ -291,8 +283,7 @@ export default function RegisterScreen() {
             </Text>
 
             <Text
-              style={style("text-[#C7C7C7] text-left text-[16px] pt-3 mb-3")}
-            >
+              style={style("text-[#C7C7C7] text-left text-[16px] pt-3 mb-3")}>
               Державний знак <Text style={style("text-red-500")}>*</Text>
             </Text>
             <TextInput
@@ -307,20 +298,17 @@ export default function RegisterScreen() {
 
             {/* Трансмісія */}
             <Text
-              style={style("text-[#C7C7C7] text-left text-[16px] pt-3 mb-3")}
-            >
+              style={style("text-[#C7C7C7] text-left text-[16px] pt-3 mb-3")}>
               Тип трансмісії <Text style={style("text-red-500")}>*</Text>
             </Text>
             <Pressable
               onPress={() => setTransmission("mechanic")}
-              style={style("flex-row items-center mb-4")}
-            >
+              style={style("flex-row items-center mb-4")}>
               <View
                 style={style(
                   "w-5 h-5 rounded-full border border-white mr-2 items-center justify-center",
                   transmission === "mechanic" && "bg-white"
-                )}
-              >
+                )}>
                 {transmission === "mechanic" && (
                   <View style={style("w-2 h-2 rounded-full bg-black")} />
                 )}
@@ -329,22 +317,19 @@ export default function RegisterScreen() {
                 style={[
                   style("text-white text-[16px]"),
                   { fontFamily: "manrope" },
-                ]}
-              >
+                ]}>
                 Механіка
               </Text>
             </Pressable>
 
             <Pressable
               onPress={() => setTransmission("auto")}
-              style={style("flex-row items-center")}
-            >
+              style={style("flex-row items-center")}>
               <View
                 style={style(
                   "w-5 h-5 rounded-full border border-white mr-2 items-center justify-center",
                   transmission === "auto" && "bg-white"
-                )}
-              >
+                )}>
                 {transmission === "auto" && (
                   <View style={style("w-2 h-2 rounded-full bg-black")} />
                 )}
@@ -353,8 +338,7 @@ export default function RegisterScreen() {
                 style={[
                   style("text-white text-[16px]"),
                   { fontFamily: "manrope" },
-                ]}
-              >
+                ]}>
                 Автомат
               </Text>
             </Pressable>
@@ -362,27 +346,23 @@ export default function RegisterScreen() {
 
           <Pressable
             onPress={handleRegister}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-xl mb-4")}
-          >
+            style={style("bg-[#8BD73D] w-full py-3 rounded-[23px mb-4")}>
             <Text
               style={[
                 style("text-center text-black text-lg font-bold"),
                 { fontFamily: "ptsansnaBold" },
-              ]}
-            >
+              ]}>
               Зареєструватись
             </Text>
           </Pressable>
           <Pressable
             onPress={handleSubmitlOG}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-xl mb-4")}
-          >
+            style={style("bg-[#8BD73D] w-full py-3 rounded-[23px mb-4")}>
             <Text
               style={[
                 style("text-center text-black text-lg font-bold"),
                 { fontFamily: "ptsansnaBold" },
-              ]}
-            >
+              ]}>
               Увійти
             </Text>
           </Pressable>
@@ -391,15 +371,13 @@ export default function RegisterScreen() {
           <View>
             <Pressable
               onPress={() => setAgreeConsent(!agreeConsent)}
-              style={style("flex-row items-center mb-4")}
-            >
+              style={style("flex-row items-center mb-4")}>
               <View
                 style={style(
                   "w-5 h-5 rounded-full border mr-2 items-center justify-center",
                   agreeConsent ? "border-white bg-white" : "border-white",
                   showError && !agreeConsent && "border-red-500"
-                )}
-              >
+                )}>
                 {agreeConsent && (
                   <Text style={style("text-black text-xs")}>✓</Text>
                 )}
@@ -409,23 +387,20 @@ export default function RegisterScreen() {
                 style={[
                   style("text-white text-[16px] tracking-[-0.32px]"),
                   { fontFamily: "manrope" },
-                ]}
-              >
+                ]}>
                 Я погоджуюсь з умовами користування платформою
               </Text>
             </Pressable>
 
             <Pressable
               onPress={() => setAgreePrivacy(!agreePrivacy)}
-              style={style("flex-row items-center")}
-            >
+              style={style("flex-row items-center")}>
               <View
                 style={style(
                   "w-5 h-5 rounded-full border mr-2 items-center justify-center",
                   agreePrivacy ? "border-white bg-white" : "border-white",
                   showError && !agreePrivacy && "border-red-500"
-                )}
-              >
+                )}>
                 {agreePrivacy && (
                   <Text style={style("text-black text-xs")}>✓</Text>
                 )}
@@ -435,8 +410,7 @@ export default function RegisterScreen() {
                 style={[
                   style("text-white text-[16px] tracking-[-0.32px]"),
                   { fontFamily: "manrope" },
-                ]}
-              >
+                ]}>
                 Даю згоду на обробку персональних даних
               </Text>
             </Pressable>
