@@ -123,11 +123,14 @@ export default function LoginScreen() {
                 `flex-row items-center border-2 rounded-[12px] px-[10px] bg-[#646464]`,
                 errors.email ? "border-red-500" : "border-[#BDBDBD]"
               )}>
-              <Image source={passwordImg} style={style("w-[24px] h-[24px] mr-2")} />
+              <Image
+                source={passwordImg}
+                style={style("w-[24px] h-[24px] mr-2")}
+              />
               <TextInput
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry
+                secureTextEntry={!showPassword}
                 placeholder="Пароль"
                 placeholderTextColor="#fff"
                 style={style(
