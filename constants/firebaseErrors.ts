@@ -15,6 +15,6 @@ export const SIGNIN_ERROR_MESSAGES: Record<string, string> = {
   "auth/too-many-requests": "Забагато спроб. Спробуйте пізніше",
   "auth/network-request-failed": "Проблема з інтернет-з’єднанням",
   "auth/internal-error": "Внутрішня помилка. Спробуйте ще раз",
-  "auth/invalid-credential": "Невірні пароль або email",
+  "auth/invalid-credential": "Невірний пароль або email",
 };
 export type FirebaseErrorCode = keyof typeof SIGNUP_ERROR_MESSAGES;
