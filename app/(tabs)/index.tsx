@@ -13,9 +13,12 @@ const Main: React.FC = () => {
       <View style={style("flex-1 justify-center items-center")}>
         <Text
           style={[
-            style("text-white text-center text-[17px] leading-[32px] font-bold"),
+            style(
+              "text-white text-center text-[17px] leading-[32px] font-bold"
+            ),
             { fontFamily: "ptsansnaBold" },
-          ]}>
+          ]}
+        >
           Платформа, що з&apos;єднує інструктора і учня просто перед практичним
           іспитом в СЦ
         </Text>
@@ -24,32 +27,39 @@ const Main: React.FC = () => {
       <View style={style("px-4 gap-3")}>
         <TouchableOpacity
           onPress={() => router.push("/student/onboarding")}
-          style={style("bg-[#44E9E8] hover:bg-[#A3FF44] py-3 rounded-[23px]")}>
+          style={style("bg-[#44E9E8] hover:bg-[#A3FF44] py-3 rounded-[23px]")}
+        >
           <Text
             style={[
-              style("text-btn text-center text-lg font-bold"),
+              style(" text-center text-lg font-bold"),
               { fontFamily: "ptsansnaBold" },
-            ]}>
+            ]}
+          >
             Я учень
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => router.push("/instructor/onboarding")}
-          style={style("bg-[#8BD73D] py-3 rounded-[23px]")}>
+          style={style("bg-[#8BD73D] py-3 rounded-[23px]")}
+        >
           <Text
             style={[
-              style("text-btn text-lg text-center font-bold"),
+              style(" text-lg text-center font-bold"),
               { fontFamily: "ptsansnaBold" },
-            ]}>
+            ]}
+          >
             Я інструктор
           </Text>
         </TouchableOpacity>
       </View>
       <Text
         style={[
-          style("text-center text-[#C7C7C7] text-[16px] font-bold pt-[32px] mb-[15px]"),
+          style(
+            "text-center text-[#C7C7C7] text-[16px] font-bold pt-[32px] mb-[15px]"
+          ),
           { fontFamily: "marcellus" },
-        ]}>
+        ]}
+      >
         Маршрут замість очікування
       </Text>
     </SafeAreaView>

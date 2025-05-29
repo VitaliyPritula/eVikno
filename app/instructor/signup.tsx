@@ -26,7 +26,6 @@ export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const auth = FIREBASE_AUTH;
   const signUp = useAuthStore((state) => state.signUp);
   //const { signIn, signUp, signOut, user, loading } = useAuthStore();
   // поки не треба
@@ -53,13 +52,6 @@ export default function LoginScreen() {
     if (hasError) return;
 
     try {
-      const response = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log("Успішна реєстрація:", response.user);
-      router.push("/instructor/register");
       await signUp(email, password);
       console.log("Успішна реэстрація:");
       router.push("/instructor/register"); // після успішного логіну
@@ -67,7 +59,7 @@ export default function LoginScreen() {
       if (error instanceof FirebaseError) {
         const errorMsg =
           SIGNUP_ERROR_MESSAGES[error.code] ||
-          "Сталася помилка. Спробуйте пізніше.";
+          "Сталася помилка. Спробуйте пізніше";
         setErrSignup(errorMsg);
         console.error("SignUp Error:", error);
       } else {
@@ -82,7 +74,8 @@ export default function LoginScreen() {
       <View
         style={style(
           "w-full h-14 bg-[#000] z-10 absolute top-0 justify-center items-center"
-        )}>
+        )}
+      >
         <Text style={style("text-white text-base font-bold")}></Text>
       </View>
 
@@ -103,8 +96,6 @@ export default function LoginScreen() {
             style={[
               style("text-[#C7C7C7] text-[16px] text-center mb-6 font-bold"),
               { fontFamily: "manrope" },
-            ]}>
-            Введіть електронну пошту та пароль
             ]}
           >
             Введіть свою електронну адресу та Пароль
@@ -135,7 +126,11 @@ export default function LoginScreen() {
                 )}
               />
             </View>
-
+            {errSignup && (
+              <Text style={style("text-red-500 text-sm mt-1")}>
+                {errSignup}
+              </Text>
+            )}
             {errors.email ? (
               <Text style={style("text-red-500 text-sm mt-1")}>
                 {errors.email}
@@ -153,7 +148,8 @@ export default function LoginScreen() {
               style={style(
                 `flex-row items-center border-2 rounded-[12px] px-[10px] bg-[#646464]`,
                 errors.password ? "border-red-500" : "border-[#BDBDBD]"
-              )}>
+              )}
+            >
               <Image
                 source={passwordImg}
                 style={style("w-[24px] h-[24px] mr-2")}
@@ -164,7 +160,7 @@ export default function LoginScreen() {
                 secureTextEntry={!showPassword}
                 placeholder="Пароль"
                 placeholderTextColor="#fff"
-               style={style(
+                style={style(
                   `w-[82%] px-4 pl-1 py-4 text-white bg-[#646464]`,
                   errors.password ? "border-red-500" : "border-gray-500"
                 )}
@@ -194,7 +190,8 @@ export default function LoginScreen() {
               style={style(
                 `flex-row items-center border-2 rounded-[12px] px-[10px] bg-[#646464]`,
                 errors.confirmPassword ? "border-red-500" : "border-[#BDBDBD]"
-              )}>
+              )}
+            >
               <Image
                 source={passwordImg}
                 style={style("w-[24px] h-[24px] mr-[5px]")}
@@ -212,7 +209,8 @@ export default function LoginScreen() {
                 )}
               />
               <Pressable
-                onPress={() => setShowConfirmPassword((prev) => !prev)}>
+                onPress={() => setShowConfirmPassword((prev) => !prev)}
+              >
                 <Octicons
                   name={showConfirmPassword ? "eye-closed" : "eye"}
                   size={24}
@@ -253,8 +251,8 @@ export default function LoginScreen() {
             style={[
               style("text-center text-[#C7C7C7] text-[16px] mb-5 font-bold"),
               { fontFamily: "ptsansnaBold" },
-            ]}>
-       
+            ]}
+          >
             Зареєструватись за допомогою{" "}
           </Text>
           <Image source={google} style={style("w-[44px] h-[44px] mb-6")} />

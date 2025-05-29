@@ -1,7 +1,7 @@
-import { SIGNIN_ERROR_MESSAGES } from "@/lib/firebaseErrors";
+import { SIGNIN_ERROR_MESSAGES } from "@/constants/firebaseErrors";
 import { router } from "expo-router";
 import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword } from "firebase/auth";
+
 import React, { useState } from "react";
 import {
   Pressable,
@@ -12,16 +12,10 @@ import {
   View,
 } from "react-native";
 import { style } from "twrnc";
-import { FIREBASE_AUTH } from "../../firebaseConfig";
+
 import Octicons from "@expo/vector-icons/Octicons";
 import user from "../../assets/images/user.png";
 import passwordImg from "../../assets/images/password.png";
-import { SIGNIN_ERROR_MESSAGES } from "@/constants/firebaseErrors";
-import { router } from "expo-router";
-import { FirebaseError } from "firebase/app";
-import React, { useState } from "react";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
-import { style } from "twrnc";
 import { useAuthStore } from "@/store/authStore";
 
 export default function LoginScreen() {
@@ -31,9 +25,6 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const [errSignin, setErrSignin] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const auth = FIREBASE_AUTH;
-  // поки не треба
-  // const [rememberMe, setRememberMe] = useState(false);
 
   const [errors, setErrors] = useState({
     email: "",
@@ -78,8 +69,6 @@ export default function LoginScreen() {
 
       <ScrollView
         contentContainerStyle={style("pb-15 px-4 pt-[32px]")}
-        showsVerticalScrollIndicator={false}>
-        contentContainerStyle={style("pb-15 px-4 pt-6")}
         showsVerticalScrollIndicator={false}
       >
         <View style={style("max-w-[320px] w-full mx-auto")}>
@@ -89,7 +78,8 @@ export default function LoginScreen() {
                 "text-white text-[18px] text-center leading-[22px] mb-[12px] font-bold"
               ),
               { fontFamily: "manrope" },
-            ]}>
+            ]}
+          >
             Увійти
           </Text>
           <Text
@@ -98,10 +88,11 @@ export default function LoginScreen() {
                 "text-[#C7C7C7] tracking-[-0.32px] text-[14px] text-center leading-[22px] mb-6 font-bold"
               ),
               { fontFamily: "manrope" },
-            ]}>
-            Введіть електронну адресу та пароль
             ]}
           >
+            {/* Введіть електронну адресу та пароль
+            ]}
+          > */}
             Вхід у профіль інструктора
           </Text>
           {/* Email */}
@@ -110,7 +101,8 @@ export default function LoginScreen() {
               style={style(
                 `flex-row items-center border-2 rounded-[12px] px-[10px] bg-[#646464]`,
                 errors.email ? "border-red-500" : "border-[#BDBDBD]"
-              )}>
+              )}
+            >
               <Image source={user} style={style("w-[24px] h-[24px] mr-2")} />
               <TextInput
                 value={email}
@@ -125,6 +117,11 @@ export default function LoginScreen() {
                 )}
               />
             </View>
+            {errSignin && (
+              <Text style={style("text-red-500 text-sm mt-1")}>
+                {errSignin}
+              </Text>
+            )}
           </View>
           {/* Password */}
           <View style={style("mb-6")}>
@@ -132,7 +129,8 @@ export default function LoginScreen() {
               style={style(
                 `flex-row items-center border-2 rounded-[12px] px-[10px] bg-[#646464]`,
                 errors.email ? "border-red-500" : "border-[#BDBDBD]"
-              )}>
+              )}
+            >
               <Image
                 source={passwordImg}
                 style={style("w-[24px] h-[24px] mr-2")}
@@ -159,8 +157,8 @@ export default function LoginScreen() {
           </View>
           <Pressable
             onPress={handleLogin}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-[23px")}>
-
+            style={style("bg-[#8BD73D] w-full py-3 rounded-[23px")}
+          >
             <Text
               style={[
                 style("text-center text-black text-lg font-bold"),
