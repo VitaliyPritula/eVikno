@@ -7,18 +7,15 @@ module.exports = {
   ],
   presets: [require("nativewind/preset")],
   theme: {
-    colors: {
-      black: "#000",
-      white: "#FDFDFD",
-      btn: "#101010",
-      "btn-next": "#4F525D",
-      grey: "#646464",
-      gren: "#8BD73D",
-      "gren-hover": "#A3FF44",
-      berus: "#44E9E8",
-      "berus-hover": "#A3FFFE",
-      purpl: "#8f8ded",
-      purple: "#893DD7",
+    container: {
+      center: true,
+      padding: { DEFAULT: "16px" },
+    },
+    fontFamily: {
+      ptsansnarrow: ["ptsansnarrow"],
+      ptsansnaBold: ["ptsansnaBold"],
+      marcellus: ["marcellus"],
+      manrope: ["manrope"],
     },
     fontWeight: {
       //font-medium
@@ -37,7 +34,21 @@ module.exports = {
       md: "20px",
       l: "24px",
     },
-    extend: {},
+    extend: {
+      colors: {
+        black: "#000",
+        white: "#FDFDFD",
+        btn: "#101010",
+        "btn-next": "#4F525D",
+        grey: "#646464",
+        green: "#8BD73D",
+        "green-hover": "#A3FF44",
+        berus: "#44E9E8",
+        "berus-hover": "#A3FFFE",
+        purpl: "#8f8ded",
+        purple: "#893DD7",
+      },
+    },
   },
   plugins: [],
 };
