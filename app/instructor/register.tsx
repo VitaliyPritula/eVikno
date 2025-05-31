@@ -388,8 +388,8 @@ export default function RegisterScreen() {
           {isLoading && (
             <View className="absolute w-[105%] h-[50%] top-[60%] left-0 items-center justify-center bg-black z-10">
               <Image
-                source={require("../../assets/images/Logo.png")}
-                className="w-20 h-20 mb-4"
+                source={require("../../assets/images/Logo_2.png")}
+                className=" mb-4"
               />
               <Text className="text-white text-m">
                 Реєстрація пройшла успішно
