@@ -1,6 +1,13 @@
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  Image,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { style } from "twrnc";
 //import { FIREBASE_AUTH } from "../../firebaseConfig";
 // import { onAuthStateChanged } from "firebase/auth";
@@ -76,18 +83,29 @@ export default function RegisterScreen() {
     // Продовжити логіку (навігація або сабміт)
   };
   const handleSubmitlOG = () => {
-    router.push("/instructor/login"); // ⬅️ Переходить на сторінку реєстрації
+    router.push("/instructor/signin"); // ⬅️ Переходить на сторінку реєстрації
+  };
+
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handlePress = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      router.push("/instructor/main");
+    }, 1500); // Затримка в 1.5 секунди
   };
 
   return (
-    <View style={style("flex-1")}>
+    <View style={style("flex-1 ")}>
       {/* Хедер */}
       <View style={style("w-full h-14 bg-black justify-center items-center")}>
         <Text style={style("text-white text-base font-bold")}></Text>
       </View>
 
       <ScrollView
-        contentContainerStyle={style("pb-15 px-[15px]")}
+        contentContainerStyle={style("pb-15 px-[15px] relative")}
         showsVerticalScrollIndicator={false}>
         <View style={style("max-w-[320px] w-full mx-auto pt-6")}>
           <Text
@@ -126,7 +144,7 @@ export default function RegisterScreen() {
               Ім’я та Прізвище <Text style={style("text-red-500")}>*</Text>
             </Text>
             <TextInput
-              // placeholderTextColor="#646464"
+              // placeholdertextcolor="#646464"
               value={name}
               onChangeText={setName}
               style={[
@@ -153,7 +171,7 @@ export default function RegisterScreen() {
               Місто <Text style={style("text-red-500")}>*</Text>
             </Text>
             <TextInput
-              placeholderTextColor="#ccc"
+              placeholderTextColor="#fff"
               value={city}
               onChangeText={setCity}
               style={style(
@@ -346,26 +364,38 @@ export default function RegisterScreen() {
 
           <Pressable
             onPress={handleRegister}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-[23px mb-4")}>
+            className="bg-green w-full py-3 rounded-[23px] mb-4">
             <Text
               style={[
                 style("text-center text-black text-lg font-bold"),
                 { fontFamily: "ptsansnaBold" },
               ]}>
-              Зареєструватись
+              Зберегти дані
             </Text>
           </Pressable>
-          <Pressable
-            onPress={handleSubmitlOG}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-[23px mb-4")}>
-            <Text
-              style={[
-                style("text-center text-black text-lg font-bold"),
-                { fontFamily: "ptsansnaBold" },
-              ]}>
-              Увійти
-            </Text>
-          </Pressable>
+
+          <View className="w-full items-center justify-center ">
+            <Pressable
+              className="border-2 border-purple w-full py-3 rounded-[23px] mb-4"
+              onPress={handlePress}
+              disabled={isLoading}>
+              <Text className="text-center text-purple text-lg font-bold font-ptsansnaBold">
+                Заповнити пізніше
+              </Text>
+            </Pressable>
+          </View>
+          {/* Прелоад — окрема абсолютна обгортка поверх усього */}
+          {isLoading && (
+            <View className="absolute w-[105%] h-[50%] top-[60%] left-0 items-center justify-center bg-black z-10">
+              <Image
+                source={require("../../assets/images/Logo.png")}
+                className="w-20 h-20 mb-4"
+              />
+              <Text className="text-white text-m">
+                Реєстрація пройшла успішно
+              </Text>
+            </View>
+          )}
 
           {/* Чекбокси */}
           <View>

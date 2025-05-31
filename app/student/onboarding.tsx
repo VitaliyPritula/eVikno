@@ -45,7 +45,7 @@ export default function StudentOnboarding() {
       <ProgressBar
         progress={(step + 1) / steps.length}
         color="#893DD7"
-        style={style("h-1 my-1")}
+        className="py-1"
       />
 
       {/* Контент */}
