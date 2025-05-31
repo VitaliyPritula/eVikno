@@ -54,7 +54,7 @@ export default function LoginScreen() {
     try {
       await signUp(email, password);
       console.log("Успішна реэстрація:");
-      router.push("/instructor/register"); // після успішного логіну
+      router.push("/instructor/user-agreement"); // після успішного логіну
     } catch (error) {
       if (error instanceof FirebaseError) {
         const errorMsg =
