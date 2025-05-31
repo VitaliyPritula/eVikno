@@ -74,30 +74,26 @@ export default function LoginScreen() {
       <View
         style={style(
           "w-full h-14 bg-[#000] z-10 absolute top-0 justify-center items-center"
-        )}
-      >
+        )}>
         <Text style={style("text-white text-base font-bold")}></Text>
       </View>
 
       <ScrollView
         contentContainerStyle={style("py-15 px-4")}
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         <View style={style("max-w-[320px] w-full mx-auto")}>
           <Text
             style={[
               style("text-white text-[18px] text-center mb-3 font-bold"),
               { fontFamily: "manrope" },
-            ]}
-          >
+            ]}>
             Реєстрація
           </Text>
           <Text
             style={[
               style("text-[#C7C7C7] text-[16px] text-center mb-6 font-bold"),
               { fontFamily: "manrope" },
-            ]}
-          >
+            ]}>
             Введіть свою електронну адресу та Пароль
           </Text>
 
@@ -107,8 +103,7 @@ export default function LoginScreen() {
               style={style(
                 `flex-row items-center border-2 rounded-[12px] p-[10px] bg-[#646464]`,
                 errors.email ? "border-red-500" : "border-[#BDBDBD]"
-              )}
-            >
+              )}>
               <Image
                 source={emailImg}
                 style={style("w-[24px] h-[24px] mr-2")}
@@ -148,8 +143,7 @@ export default function LoginScreen() {
               style={style(
                 `flex-row items-center border-2 rounded-[12px] px-[10px] bg-[#646464]`,
                 errors.password ? "border-red-500" : "border-[#BDBDBD]"
-              )}
-            >
+              )}>
               <Image
                 source={passwordImg}
                 style={style("w-[24px] h-[24px] mr-2")}
@@ -190,8 +184,7 @@ export default function LoginScreen() {
               style={style(
                 `flex-row items-center border-2 rounded-[12px] px-[10px] bg-[#646464]`,
                 errors.confirmPassword ? "border-red-500" : "border-[#BDBDBD]"
-              )}
-            >
+              )}>
               <Image
                 source={passwordImg}
                 style={style("w-[24px] h-[24px] mr-[5px]")}
@@ -209,8 +202,7 @@ export default function LoginScreen() {
                 )}
               />
               <Pressable
-                onPress={() => setShowConfirmPassword((prev) => !prev)}
-              >
+                onPress={() => setShowConfirmPassword((prev) => !prev)}>
                 <Octicons
                   name={showConfirmPassword ? "eye-closed" : "eye"}
                   size={24}
@@ -232,18 +224,22 @@ export default function LoginScreen() {
           {/* Register Button */}
           <Pressable
             onPress={handleSignup}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}
-          >
+            style={style("bg-[#8BD73D] w-full py-3 rounded-xl")}>
             <Text
               style={[
                 style("text-center text-black text-lg font-bold"),
                 { fontFamily: "ptsansnaBold" },
-              ]}
-            >
+              ]}>
               Зареєструватись
             </Text>
           </Pressable>
         </View>
+
+        <Text
+          className="text-[#F89C3A] text-[18px] font-bold font-manrope "
+          onPress={() => router.push("/instructor/register")}>
+          Увійти
+        </Text>
 
         {/* Social & Navigation */}
         <View style={style("mt-6 items-center")}>
@@ -251,9 +247,8 @@ export default function LoginScreen() {
             style={[
               style("text-center text-[#C7C7C7] text-[16px] mb-5 font-bold"),
               { fontFamily: "ptsansnaBold" },
-            ]}
-          >
-            Зареєструватись за допомогою{" "}
+            ]}>
+            Зареєструватись за допомогою
           </Text>
           <Image source={google} style={style("w-[44px] h-[44px] mb-6")} />
           <Text style={style("text-[#D7D7D7] text-[16px]")}>
@@ -261,10 +256,9 @@ export default function LoginScreen() {
             <Text
               onPress={() => router.push("/instructor/signin")}
               style={[
-                style("text-[#F89C3A] text-[19px] font-bold"),
+                style("text-[#F89C3A] text-[18px] font-bold"),
                 { fontFamily: "manrope" },
-              ]}
-            >
+              ]}>
               Увійти
             </Text>
           </Text>
