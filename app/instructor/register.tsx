@@ -8,6 +8,7 @@ import { useAuthStore } from "@/store/authStore";
 
 export default function RegisterScreen() {
   const user = useAuthStore((state) => state.user);
+  const updateProfile = useAuthStore((state) => state.updateProfile);
   console.log("user in Reg", user);
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
@@ -15,8 +16,10 @@ export default function RegisterScreen() {
   const [experience, setExperience] = useState("");
   const [certificate, setCertificate] = useState("");
   const [carModel, setCarModel] = useState("");
-  const [carPlate, setCarPlate] = useState("");
-
+  const [carNumber, setCarNumber] = useState("");
+  const [transmission, setTransmission] = useState<"mechanic" | "automatic">(
+    "mechanic"
+  );
   const [errors, setErrors] = useState({
     name: "",
     city: "",
@@ -29,7 +32,7 @@ export default function RegisterScreen() {
   //     console.log("current", user.uid);
   //   }
   // });
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const newErrors = {
       name: name ? "" : "Введіть ім’я",
       city: city ? "" : "Вкажіть місто",
@@ -41,43 +44,32 @@ export default function RegisterScreen() {
 
     const hasError = Object.values(newErrors).some((e) => e !== "");
     if (hasError) return;
-
-    console.log("Зареєстровано:", {
+    const data = {
       name,
       city,
       phone,
       experience,
       certificate,
       carModel,
-      carPlate,
+      carNumber,
       transmission,
-    });
+      isFree: false,
+    };
 
-    router.push("/");
+    //router.push("/");
+    try {
+      await updateProfile(data);
+    } catch (error) {
+      console.log("Error in handle", error);
+    }
   };
-
-  const [transmission, setTransmission] = useState<"mechanic" | "auto" | null>(
-    null
-  );
-
-  const [agreeConsent, setAgreeConsent] = useState(false);
-  const [agreePrivacy, setAgreePrivacy] = useState(false);
-
-  const [agreeConsent1, setAgreeConsent1] = useState(true);
-  const [agreePrivacy1, setAgreePrivacy1] = useState(true);
-  const [showError, setShowError] = useState(false);
 
   const handleSubmit = () => {
-    if (!agreeConsent || !agreePrivacy) {
-      setShowError(true);
-      return;
-    }
-
     // Продовжити логіку (навігація або сабміт)
   };
-  const handleSubmitlOG = () => {
-    // router.push("/instructor/login"); // ⬅️ Переходить на сторінку реєстрації
-  };
+  // const handleSubmitlOG = () => {
+  //   // router.push("/instructor/login"); // ⬅️ Переходить на сторінку реєстрації
+  // };
 
   return (
     <View style={style("flex-1")}>
@@ -298,8 +290,8 @@ export default function RegisterScreen() {
             </Text>
             <TextInput
               placeholderTextColor="#ccc"
-              value={carPlate}
-              onChangeText={setCarPlate}
+              value={carNumber}
+              onChangeText={setCarNumber}
               style={style(
                 "border-[2px] border-[#BDBDBD] bg-[#646464] rounded-[23px] px-4 py-3 text-white",
                 errors.name ? "border-red-500" : "border-gray-500"
@@ -337,16 +329,16 @@ export default function RegisterScreen() {
             </Pressable>
 
             <Pressable
-              onPress={() => setTransmission("auto")}
+              onPress={() => setTransmission("automatic")}
               style={style("flex-row items-center")}
             >
               <View
                 style={style(
                   "w-5 h-5 rounded-full border border-white mr-2 items-center justify-center",
-                  transmission === "auto" && "bg-white"
+                  transmission === "automatic" && "bg-white"
                 )}
               >
-                {transmission === "auto" && (
+                {transmission === "automatic" && (
                   <View style={style("w-2 h-2 rounded-full bg-black")} />
                 )}
               </View>
@@ -374,22 +366,9 @@ export default function RegisterScreen() {
               Зареєструватись
             </Text>
           </Pressable>
-          <Pressable
-            onPress={handleSubmitlOG}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-[23px mb-4")}
-          >
-            <Text
-              style={[
-                style("text-center text-black text-lg font-bold"),
-                { fontFamily: "ptsansnaBold" },
-              ]}
-            >
-              Увійти
-            </Text>
-          </Pressable>
 
           {/* Чекбокси */}
-          <View>
+          {/* <View>
             <Pressable
               onPress={() => setAgreeConsent(!agreeConsent)}
               style={style("flex-row items-center mb-4")}
@@ -441,7 +420,7 @@ export default function RegisterScreen() {
                 Даю згоду на обробку персональних даних
               </Text>
             </Pressable>
-          </View>
+          </View> */}
         </View>
       </ScrollView>
     </View>

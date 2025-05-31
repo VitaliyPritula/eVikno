@@ -21,7 +21,7 @@ export type InstructorProfile = {
   name: string;
   city: string;
   phone: string;
-  experience: number; // роки досвіду
+  experience: string; // роки досвіду
   certificate: string; // посилання на сертифікат
   carModel: string; // модель автомобіля
   carNumber: string; // номер автомобіля
@@ -33,6 +33,12 @@ export type InstructorProfile = {
   // timestamp;
   // другие поля
 };
+
+type InstructorProfileInput = Omit<
+  InstructorProfile,
+  "uidInspector" | "dateUpdate"
+>;
+
 type AuthState = {
   user: FirebaseUser | null;
   profile: InstructorProfile | null;
@@ -42,7 +48,7 @@ type AuthState = {
   signOut: () => Promise<void>; // = logout
   deleteAccount: () => Promise<void>; // 🆕 delete everything
   fetchProfile: (uid: string) => Promise<void>;
-  updateProfile: (data: InstructorProfile) => Promise<void>;
+  updateProfile: (data: InstructorProfileInput) => Promise<void>;
 };
 
 // let unsubscribe: (() => void) | null = null;
@@ -114,10 +120,10 @@ export const useAuthStore = create<AuthState>((set, get) => {
       }
     },
 
-    updateProfile: async (data) => {
+    updateProfile: async (data: InstructorProfileInput) => {
       const user = get().user;
       if (!user) throw new Error("Пользователь не авторизован");
-
+      console.log("user", user.uid);
       // const updatedProfile = {
       //   ...data,
       //   dateUpdate: serverTimestamp(),
@@ -127,10 +133,27 @@ export const useAuthStore = create<AuthState>((set, get) => {
         uidInspector: user.uid,
         dateUpdate: serverTimestamp() as unknown as Timestamp, //
       };
+      console.log("Prof Data", profileData);
       const docRef = doc(FIRESTORE_DB, "inspectors", user.uid);
       await setDoc(docRef, profileData, { merge: true });
-      await setDoc(docRef, profileData);
+      // await setDoc(docRef, profileData);
       set({ profile: profileData });
+    },
+
+    toggleIsFree: async (isFree: boolean) => {
+      const user = get().user;
+      if (!user) throw new Error("Пользователь не авторизован");
+
+      const docRef = doc(FIRESTORE_DB, "inspectors", user.uid);
+      await setDoc(
+        docRef,
+        { isFree, dateUpdate: serverTimestamp() },
+        { merge: true }
+      );
+
+      set((state) => ({
+        profile: state.profile ? { ...state.profile, isFree } : state.profile,
+      }));
     },
   };
 });
