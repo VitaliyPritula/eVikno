@@ -27,7 +27,7 @@ module.exports = {
     },
     fontSize: {
       //text-m
-      xs: "12px",
+      xs: "10px",
       s: "14px",
       m: "16px",
       sm: "18px",
@@ -44,6 +44,7 @@ module.exports = {
         btn: "#101010",
         "btn-next": "#4F525D",
         grey: "#646464",
+        profile:"#893DD7",
         green: "#8BD73D",
         "green-hover": "#A3FF44",
         berus: "#44E9E8",
