@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import {
   ScrollView,
   Text,
   View,
-  Image,
   TouchableOpacity,
   Modal,
   Pressable,
   ActivityIndicator,
 } from "react-native";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 //import { Picker } from "@react-native-picker/picker"; //??? Нам це потрібно?
 import { useAuthStore } from "@/store/authStore";
 import { FirebaseError } from "firebase/app";
@@ -70,26 +71,23 @@ export default function Main() {
   }
   return (
     <View className="flex-1 container">
-      <ScrollView
-        className="pb-15 px-[15px] relative"
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView className="pb-15  pt-4 " showsVerticalScrollIndicator={false}>
         <View className="mx-auto mb-4">
           <View className="flex-row justify-end mb-7">
-            <View className="items-center">
-              <Image
-                source={require("../../assets/images/profile.png")}
-                className=""
-              />
+            <Pressable
+              className="items-center"
+              onPress={() => router.push("/instructor/profile")}
+            >
+              <FontAwesome name="user-circle-o" size={24} color="#893dd7" />
               <Text className="text-profile text-xs">Профіль</Text>
-            </View>
+            </Pressable>
           </View>
-          {/* <View className="mb-7">
+          <View className="mb-7">
             <Text className="text-white text-[18px] font-manrope text-center leading-[22px]">
               👋Привіт{profile?.name ? `, ${profile.name}` : ""}. Готовий до
               уроку?
             </Text>
-          </View> */}
+          </View>
           <View className="mb-8">
             <Text className="text-white font-manrope text-[16px] tracking-[-0.32px]">
               ⏱ Вкажи, коли ти на зв&apos;язку - і тебе побачать учні поруч
