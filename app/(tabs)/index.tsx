@@ -44,15 +44,4 @@ const Main: React.FC = () => {
   );
 };
 
-// export default Main;
-// export default function IndexScreen() {
-//   const { user, loading } = useAuthStore();
-
-//   if (loading) return <Text>Загрузка...</Text>;
-
-//   if (user) {
-//     return <HomeScreen />;
-//   } else {
-//     return <AuthScreen />;
-//   }
-// }
+export default Main;

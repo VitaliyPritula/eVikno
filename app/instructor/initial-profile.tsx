@@ -62,14 +62,18 @@ export default function InitialProfile() {
 
   return (
     <View className="flex-1 container">
-      <ScrollView contentContainerClassName="pb-20 ">
+      {/* contentContainerClassName="pb-20 " */}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingVertical: 32 }}
+      >
         <View className=" w-full mx-auto pt-8">
           <Text className="text-white text-sm text-center font-semibold mb-3">
             Створіть профіль інструктора
           </Text>
 
           <Text className="text-grey-text text-m mb-8">
-            Щоб почати приймати учнів, заповни коротку форму. {"\n"} Це займе до
+            Щоб почати приймати учнів, заповни коротку форму. {"\n"}Це займе до
             5 хвилин.
           </Text>
 

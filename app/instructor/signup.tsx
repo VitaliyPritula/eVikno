@@ -57,10 +57,11 @@ export default function SignUpScreen() {
   };
 
   return (
-    <View className="flex-1 bg-black ">
+    <View className="flex-1 bg-black container ">
       <ScrollView
-        contentContainerStyle={{ padding: 16 }}
+        // contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 32 }}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingVertical: 32 }}
       >
         <View className=" w-full mx-auto">
           <Text className="text-white text-[18px] text-center mb-3 font-bold font-manrope">
