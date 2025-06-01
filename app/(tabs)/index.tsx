@@ -3,10 +3,12 @@ import { Text, TouchableOpacity, View } from "react-native";
 // import { style } from "twrnc";
 import { Stack, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuthStore } from "@/store/authStore";
 
 const Main: React.FC = () => {
   const router = useRouter();
-
+  const user = useAuthStore((state) => state.user);
+  console.log("user in index", user);
   return (
     <SafeAreaView className=" container flex-1 bg-black  mx-auto">
       <Stack.Screen options={{ headerShown: false }} />
@@ -20,14 +22,16 @@ const Main: React.FC = () => {
       <View className="px-4 gap-3">
         <TouchableOpacity
           onPress={() => router.push("/student/onboarding")}
-          className="bg-berus hover:bg-green-hover py-3 rounded-[23px]">
+          className="bg-berus hover:bg-green-hover py-3 rounded-[23px]"
+        >
           <Text className=" text-center text-lg font-bold  font-ptsansnaBold">
             Я учень
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => router.push("/instructor/onboarding")}
-          className="bg-green py-3 rounded-[23px]">
+          className="bg-green py-3 rounded-[23px]"
+        >
           <Text className="text-lg text-center font-bold font-ptsansnaBold">
             Я інструктор
           </Text>
@@ -40,4 +44,15 @@ const Main: React.FC = () => {
   );
 };
 
-export default Main;
+// export default Main;
+// export default function IndexScreen() {
+//   const { user, loading } = useAuthStore();
+
+//   if (loading) return <Text>Загрузка...</Text>;
+
+//   if (user) {
+//     return <HomeScreen />;
+//   } else {
+//     return <AuthScreen />;
+//   }
+// }

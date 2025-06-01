@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { SIGNUP_ERROR_MESSAGES } from "@/constants/firebaseErrors";
 import { useAuthStore } from "@/store/authStore";
 import { FirebaseError } from "firebase/app";
+import InputFieldSign from "@/components/forms/InputFieldSign";
 
 import {
   Image,

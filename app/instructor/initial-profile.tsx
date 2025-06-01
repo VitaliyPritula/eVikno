@@ -4,7 +4,7 @@ import { ScrollView, Text, View, Pressable } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputField from "@/components/forms/InputField";
+import InputField from "@/components/forms/InputFieldProfile";
 import { useAuthStore } from "@/store/authStore";
 
 const schema = z.object({

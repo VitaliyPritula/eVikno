@@ -9,7 +9,7 @@ import {
   Modal,
   Pressable,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker"; //??? Нам це потрібно?
+//import { Picker } from "@react-native-picker/picker"; //??? Нам це потрібно?
 import { useAuthStore } from "@/store/authStore";
 import { FirebaseError } from "firebase/app";
 
