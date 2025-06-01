@@ -27,6 +27,7 @@ export type InstructorProfile = {
   carNumber: string; // номер автомобіля
   transmission: "mechanic" | "automatic"; // тип трансмісії
   isFree: boolean; // чи вільний інструктор
+  serviceCenter: string; // послуги, які надає інструктор
   uidInspector: string; // унікальний ідентифікатор користувача
   dateUpdate: Timestamp; // дата останнього оновлення профілю
   //role: "instructor" | "student";// роль користувача
@@ -49,6 +50,7 @@ type AuthState = {
   deleteAccount: () => Promise<void>; // 🆕 delete everything
   fetchProfile: (uid: string) => Promise<void>;
   updateProfile: (data: InstructorProfileInput) => Promise<void>;
+  toggleIsFree: (isFree: boolean, serviceCenter: string) => Promise<void>;
 };
 
 // let unsubscribe: (() => void) | null = null;
@@ -140,14 +142,14 @@ export const useAuthStore = create<AuthState>((set, get) => {
       set({ profile: profileData });
     },
 
-    toggleIsFree: async (isFree: boolean) => {
+    toggleIsFree: async (isFree: boolean, serviceCenter: string) => {
       const user = get().user;
       if (!user) throw new Error("Пользователь не авторизован");
 
       const docRef = doc(FIRESTORE_DB, "inspectors", user.uid);
       await setDoc(
         docRef,
-        { isFree, dateUpdate: serverTimestamp() },
+        { isFree, serviceCenter, dateUpdate: serverTimestamp() },
         { merge: true }
       );
 

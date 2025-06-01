@@ -1,4 +1,5 @@
 import React from "react";
+import { router } from "expo-router";
 import { ScrollView, Text, View, Pressable } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
@@ -12,7 +13,7 @@ const schema = z.object({
   phone: z
     .string()
     .min(10, "Вкажи номер в форматі +38 000 000 00 00")
-    .regex(/^\+?3?8?(0\d{9})$/, "Формат номера некоректний"),
+    .regex(/^\+38\d{10}$/, "Формат номера некоректний"),
   experience: z.string().min(1, "Вкажіть досвід роботи"),
   certificate: z
     .string()
@@ -52,7 +53,8 @@ export default function InitialProfile() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await updateProfile({ ...data, isFree: false });
+      await updateProfile({ ...data, isFree: false, serviceCenter: "" });
+      router.push("/instructor/main");
     } catch (error) {
       console.log("Error submitting form", error);
     }
@@ -225,7 +227,7 @@ export default function InitialProfile() {
             </Text>
           </Pressable>
           <Pressable
-            onPress={handleSubmit(onSubmit)}
+            onPress={() => router.push("/instructor/main")}
             className="mt-8 h-12 bg-black border-2  rounded-full border-secondary items-center justify-center"
           >
             <Text className="text-secondary font-semibold  text-m">

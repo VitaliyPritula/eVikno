@@ -6,7 +6,6 @@ export default function UserAgreement() {
   const [agreeConsent, setAgreeConsent] = useState(false);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
   const [showError, setShowError] = useState(false);
-  console.log("showError:", showError, "agreeConsent:", agreeConsent);
 
   const canContinue = agreeConsent && agreePrivacy;
 
