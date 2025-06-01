@@ -114,7 +114,6 @@ export default function StudentScreen() {
                   Правила користування платформою
                 </Text>
               </TouchableOpacity>
-              <Text></Text>
             </View>
           </View>
         </View>

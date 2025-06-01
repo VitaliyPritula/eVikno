@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import {
   ScrollView,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 //import { Picker } from "@react-native-picker/picker"; //??? Нам це потрібно?
 import { useAuthStore } from "@/store/authStore";
@@ -16,15 +17,23 @@ import { FirebaseError } from "firebase/app";
 export default function Main() {
   const toggleIsFree = useAuthStore((state) => state.toggleIsFree);
   const profile = useAuthStore((state) => state.profile);
+  const loading = useAuthStore((state) => state.loading);
   console.log("profile", profile?.isFree);
   console.log("proile", profile);
 
-  const [isEnabled, setIsEnabled] = useState(profile?.isFree || false);
-  const [selectedService, setSelectedService] = useState(
-    profile?.serviceCenter || "Оберіть місто"
-  );
+  const [isEnabled, setIsEnabled] = useState(false); // початковий стан вимкнений
+  const [selectedService, setSelectedService] = useState("Оберіть місто");
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [showError, setShowError] = useState("");
+
+  useEffect(() => {
+    if (profile?.isFree !== undefined) {
+      setIsEnabled(profile.isFree);
+    }
+    if (profile?.serviceCenter) {
+      setSelectedService(profile.serviceCenter);
+    }
+  }, [profile]);
 
   const handleToggle = () => {
     try {
@@ -33,6 +42,10 @@ export default function Main() {
         const serviceCenter = isEnabled === false ? "" : selectedService;
 
         toggleIsFree(isEnabled, serviceCenter);
+        // це треба красивно зробити !!!!!!!
+        alert(
+          `Статус успішно змінено на ${isEnabled ? "Вільний" : "Зайнятий"}`
+        );
       }
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -47,9 +60,16 @@ export default function Main() {
     }
   };
 
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-black">
+        <ActivityIndicator size="large" color="#4ade80" />
+        <Text className="text-white mt-4">Завантаження профілю...</Text>
+      </View>
+    );
+  }
   return (
     <View className="flex-1 container">
-      <View className="w-full h-14 bg-black justify-center items-center"></View>
       <ScrollView
         className="pb-15 px-[15px] relative"
         showsVerticalScrollIndicator={false}
@@ -64,12 +84,12 @@ export default function Main() {
               <Text className="text-profile text-xs">Профіль</Text>
             </View>
           </View>
-          <View className="mb-7">
+          {/* <View className="mb-7">
             <Text className="text-white text-[18px] font-manrope text-center leading-[22px]">
-              👋Привіт {profile && `,  ${profile.name}`}.&nbsp;&nbsp;Готовий до
+              👋Привіт{profile?.name ? `, ${profile.name}` : ""}. Готовий до
               уроку?
             </Text>
-          </View>
+          </View> */}
           <View className="mb-8">
             <Text className="text-white font-manrope text-[16px] tracking-[-0.32px]">
               ⏱ Вкажи, коли ти на зв&apos;язку - і тебе побачать учні поруч
@@ -98,7 +118,6 @@ export default function Main() {
                   width: 50,
                   height: 30,
                   borderRadius: 15,
-                  // backgroundColor: isEnabled ? "#4ade80" : "#ccc",
                   backgroundColor: profile
                     ? isEnabled
                       ? "#4ade80"
