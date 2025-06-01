@@ -25,7 +25,6 @@ export default function UserAgreement() {
         обробкою персональних даних.
       </Text>
       <View className="mb-12">
-        {" "}
         <Pressable
           onPress={() => setAgreeConsent(!agreeConsent)}
           className="flex-row items-center mb-4"

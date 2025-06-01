@@ -17,11 +17,14 @@ export default function Main() {
   const toggleIsFree = useAuthStore((state) => state.toggleIsFree);
   const profile = useAuthStore((state) => state.profile);
   console.log("profile", profile?.isFree);
+  console.log("proile", profile);
+
   const [isEnabled, setIsEnabled] = useState(profile?.isFree || false);
-  const [selectedService, setSelectedService] = useState("Сарни");
+  const [selectedService, setSelectedService] = useState(
+    profile?.serviceCenter || "Оберіть місто"
+  );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [showError, setShowError] = useState("");
-  //const [hideSelectedService, setHideSelectedService] = useState(false); //Ganna
 
   const handleToggle = () => {
     try {
@@ -124,45 +127,45 @@ export default function Main() {
                 : 'Увімкнути статус "Вільний"'}
             </Text>
           </View>
-          {/* Ganna  я змінила !isEnabled  на profile?.isFree*/}
-          {!profile?.isFree && (
-            <View className="mt-4 w-full ">
-              <Text className="text-white text-[18px] mb-5 font-manrope font-semibold">
-                Сервісний Центр
-              </Text>
-              <TouchableOpacity
-                onPress={() => setModalVisible(true)}
-                className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
-              >
-                <Text className="text-white text-base">
-                  {selectedService || "Оберіть місто"}
-                </Text>
-                <Ionicons name="chevron-down" size={20} color="#fff" />
-              </TouchableOpacity>
+          {/* Ganna  я змінила */}
 
-              <Modal transparent visible={modalVisible} animationType="slide">
-                <Pressable
-                  className="flex-1 bg-black/30 justify-center px-5"
-                  onPress={() => setModalVisible(false)}
-                >
-                  <View className="bg-white rounded-xl p-5">
-                    {["Сарни", "Київ", "Львів"].map((city) => (
-                      <TouchableOpacity
-                        key={city}
-                        onPress={() => {
-                          setSelectedService(city);
-                          setModalVisible(false);
-                        }}
-                        className="py-2"
-                      >
-                        <Text className="text-base text-black">{city}</Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                </Pressable>
-              </Modal>
-            </View>
-          )}
+          <View className="mt-4 w-full ">
+            <Text className="text-white text-[18px] mb-5 font-manrope font-semibold">
+              Сервісний Центр
+            </Text>
+            <TouchableOpacity
+              onPress={() => setModalVisible(true)}
+              className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
+            >
+              <Text className="text-white text-base">
+                {selectedService || "Оберіть місто"}
+              </Text>
+              <Ionicons name="chevron-down" size={20} color="#fff" />
+            </TouchableOpacity>
+
+            <Modal transparent visible={modalVisible} animationType="slide">
+              <Pressable
+                className="flex-1 bg-black/30 justify-center px-5"
+                onPress={() => setModalVisible(false)}
+              >
+                <View className="bg-white rounded-xl p-5">
+                  {["Сарни", "Київ", "Львів"].map((city) => (
+                    <TouchableOpacity
+                      key={city}
+                      onPress={() => {
+                        setSelectedService(city);
+                        setModalVisible(false);
+                      }}
+                      className="py-2"
+                    >
+                      <Text className="text-base text-black">{city}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </Pressable>
+            </Modal>
+          </View>
+
           <TouchableOpacity
             onPress={handleToggle}
             className="mt-3 w-[full] bg-green py-[14px] px-6 rounded-[23px]"

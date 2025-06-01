@@ -68,7 +68,7 @@ export default function SignUpScreen() {
             Реєстрація
           </Text>
           <Text className="text-[#C7C7C7] text-[16px] text-center mb-6 font-bold font-manrope">
-            Введіть свою електронну адресу та пароль
+            Введіть електрону адресу та пароль
           </Text>
 
           {/* Email */}
@@ -131,14 +131,14 @@ export default function SignUpScreen() {
             onPress={handleSubmit(onSubmit)}
             className="bg-[#8BD73D] w-full py-3 rounded-xl"
           >
-            <Text className="text-center text-black text-lg font-bold font-ptsansnaBold">
+            <Text className="text-center text-black text-lg font-bold font-manrope">
               Зареєструватись
             </Text>
           </Pressable>
 
           {/* Divider & Google */}
           <View className="mt-6 items-center">
-            <Text className="text-center text-[#C7C7C7] text-[16px] mb-5 font-bold font-ptsansnaBold">
+            <Text className="text-center text-[#C7C7C7] text-[16px] mb-5 font-bold font-manrope">
               Зареєструватись за допомогою
             </Text>
             <Image source={google} style={{ width: 44, height: 44 }} />
@@ -146,7 +146,7 @@ export default function SignUpScreen() {
               Вже є акаунт?{" "}
               <Text
                 onPress={() => router.push("/instructor/signin")}
-                className="text-[#F89C3A] text-[18px] font-bold font-manrope"
+                className="text-warning text-sm font-bold font-manrope"
               >
                 Увійти
               </Text>
