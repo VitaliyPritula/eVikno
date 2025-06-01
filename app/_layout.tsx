@@ -22,8 +22,8 @@ export default function RootLayout() {
   if (!loaded) return null;
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <StatusBar style="light" backgroundColor="black" />
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DarkTheme}>
+      <StatusBar style="dark" backgroundColor="black" />
       <Stack screenOptions={{ headerShown: false }} />
     </ThemeProvider>
   );

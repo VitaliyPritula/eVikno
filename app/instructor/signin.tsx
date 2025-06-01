@@ -46,7 +46,7 @@ export default function LoginScreen() {
     try {
       await signIn(email, password);
       console.log("Успішний логін:");
-      router.push("/instructor/register"); // треба буде змінити на головну сторінку шнструктора
+      router.push("/instructor/initial-profile"); // треба буде змінити на головну сторінку шнструктора
     } catch (error) {
       if (error instanceof FirebaseError) {
         const errorMsg =

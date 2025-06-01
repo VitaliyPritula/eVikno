@@ -51,6 +51,8 @@ module.exports = {
         "berus-hover": "#A3FFFE",
         purpl: "#8f8ded",
         purple: "#893DD7",
+        "grey-text": "#c7c7c7",
+        secondary: "#893dd7",
       },
     },
   },
