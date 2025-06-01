@@ -63,7 +63,8 @@ export default function Main() {
           </View>
           <View className="mb-7">
             <Text className="text-white text-[18px] font-manrope text-center leading-[22px]">
-              👋Привіт, {profile && profile.name}.&nbsp;&nbsp;Готовий до уроку?
+              👋Привіт {profile && `,  ${profile.name}`}.&nbsp;&nbsp;Готовий до
+              уроку?
             </Text>
           </View>
           <View className="mb-8">
