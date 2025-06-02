@@ -127,10 +127,9 @@ export default function SignUpScreen() {
             )}
           />
 
-          {errSignup && (
-            <Text className="text-red-500 text-sm mb-4">{errSignup}</Text>
+          {typeof errSignup === "string" && errSignup.length > 0 && (
+            <Text className="text-red-500 text-s mb-4">{errSignup}</Text>
           )}
-
           {/* Submit */}
           <Pressable
             onPress={handleSubmit(onSubmit)}
@@ -148,7 +147,7 @@ export default function SignUpScreen() {
             </Text>
             <Image source={google} style={{ width: 44, height: 44 }} />
             <Text className="text-[#D7D7D7] text-[16px] mt-6">
-              Вже є акаунт?{" "}
+              Вже є акаунт?
               <Text
                 onPress={() => router.push("/instructor/signin")}
                 className="text-warning text-sm font-bold font-manrope"
