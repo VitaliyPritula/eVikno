@@ -6,50 +6,57 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputField from "@/components/forms/InputFieldProfile";
 import { useAuthStore } from "@/store/authStore";
+import { profileSchema } from "../../shemas/profileSchema"; // Assuming you have a schema for profile validation
 
-const schema = z.object({
-  name: z.string().min(5, "Введіть ім’я"),
-  city: z.string().min(1, "Вкажіть місто"),
-  phone: z
-    .string()
-    .min(10, "Вкажи номер в форматі +38 000 000 00 00")
-    .regex(/^\+38\d{10}$/, "Формат номера некоректний"),
-  experience: z.string().min(1, "Вкажіть досвід роботи"),
-  certificate: z
-    .string()
-    .min(8, "Вкажіть номер атестата")
-    .regex(
-      /^[A-Z]{2}\d{6}$/,
-      "Формат атестата: дві великі латинські літери та 6 цифр (наприклад, AA123456)"
-    ),
-  carModel: z.string().min(3, "Вкажіть модель авто"),
-  carNumber: z.string().min(3, "Вкажіть номер авто"),
-  transmission: z.enum(["mechanic", "automatic"], {
-    required_error: "Оберіть тип трансмісії",
-  }),
-});
-type FormData = z.infer<typeof schema>;
+type FormData = z.infer<typeof profileSchema>;
 
-export default function InitialProfile() {
+const Profile = () => {
+  const instructorProfile = useAuthStore((state) => state.profile);
   const updateProfile = useAuthStore((state) => state.updateProfile);
+  const signOut = useAuthStore((state) => state.signOut);
+
+  const deleteAccount = useAuthStore((state) => state.deleteAccount);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: "",
-      city: "",
-      phone: "",
-      experience: "",
-      certificate: "",
-      carModel: "",
-      carNumber: "",
-      transmission: "mechanic",
+      name: instructorProfile ? instructorProfile?.name : "",
+      city: instructorProfile ? instructorProfile?.city : "",
+      phone: instructorProfile ? instructorProfile?.phone : "",
+      experience: instructorProfile ? instructorProfile?.experience : "",
+      certificate: instructorProfile ? instructorProfile?.certificate : "",
+      carModel: instructorProfile ? instructorProfile?.carModel : "",
+      carNumber: instructorProfile ? instructorProfile?.carNumber : "",
+      transmission: instructorProfile
+        ? instructorProfile?.transmission
+        : "mechanic", // Default value for transmission
     },
   });
+
+  const handleLogout = async () => {
+    try {
+      signOut();
+      //change it to do nice
+      alert("You have been logged out successfully.");
+      router.push("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+  const handleDeleteAccount = async () => {
+    try {
+      deleteAccount();
+      //change it to do nice
+      alert("You have been deleted successfully.");
+      router.push("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -59,22 +66,39 @@ export default function InitialProfile() {
       console.log("Error submitting form", error);
     }
   };
-
   return (
-    <View className="flex-1 container">
-      {/* contentContainerClassName="pb-20 " */}
+    <View className="flex-1 bg-black container py-8">
+      <View className="flex-row items-center justify-between ">
+        <Pressable
+          //onPress={() => router.push("/instructor/main")}
+          onPress={() => router.back()}
+          className="bg-warning h-8 w-40 mb-8 rounded-xl flex justify-center items-center "
+        >
+          <Text className="text-center text-black text-lg font-semibold font-manrope">
+            --BACK
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={handleLogout}
+          className="bg-warning h-8 w-40 mb-8 rounded-xl flex justify-center items-center "
+        >
+          <Text className="text-center text-black text-lg font-semibold font-manrope">
+            LOGOUT
+          </Text>
+        </Pressable>
+      </View>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingVertical: 32 }}
+        // contentContainerStyle={{ paddingVertical: 32 }}
       >
         <View className=" w-full mx-auto pt-8">
           <Text className="text-white text-sm text-center font-semibold mb-3">
-            Створіть профіль інструктора
+            Ваш профіль інструктора
           </Text>
 
           <Text className="text-grey-text text-m mb-8">
-            Щоб почати приймати учнів, заповни коротку форму. {"\n"}Це займе до
-            5 хвилин.
+            Якщо бажаєте, ви можете змінити дані профілю.
           </Text>
 
           {/* Поля */}
@@ -88,6 +112,7 @@ export default function InitialProfile() {
                 onChangeText={onChange}
                 error={errors.name?.message}
                 placeholder="Іван Пінчук"
+                changable
               />
             )}
           />
@@ -102,6 +127,7 @@ export default function InitialProfile() {
                 onChangeText={onChange}
                 error={errors.city?.message}
                 placeholder="Київ"
+                changable
               />
             )}
           />
@@ -117,6 +143,7 @@ export default function InitialProfile() {
                 keyboardType="phone-pad"
                 error={errors.phone?.message}
                 placeholder="+38 000 000 00 00"
+                changable
               />
             )}
           />
@@ -131,6 +158,7 @@ export default function InitialProfile() {
                 onChangeText={onChange}
                 placeholder="4 роки"
                 error={errors.experience?.message}
+                changable
               />
             )}
           />
@@ -145,6 +173,7 @@ export default function InitialProfile() {
                 onChangeText={onChange}
                 placeholder="AB123456"
                 error={errors.certificate?.message}
+                changable
               />
             )}
           />
@@ -159,6 +188,7 @@ export default function InitialProfile() {
                 onChangeText={onChange}
                 placeholder="Skoda Octavia"
                 error={errors.carModel?.message}
+                changable
               />
             )}
           />
@@ -173,6 +203,7 @@ export default function InitialProfile() {
                 onChangeText={onChange}
                 placeholder="AA1234BB"
                 error={errors.carNumber?.message}
+                changable
               />
             )}
           />
@@ -186,7 +217,7 @@ export default function InitialProfile() {
                 <Text className="text-[#C7C7C7] text-[16px] mb-2">
                   Тип трансмісії
                 </Text>
-                <View className="flex-row gap-4">
+                <View className="flex-row gap-4 justify-start">
                   <Pressable
                     onPress={() => onChange("mechanic")}
                     className={`px-4 py-2 rounded-full border ${
@@ -230,16 +261,19 @@ export default function InitialProfile() {
               Зберегти данні
             </Text>
           </Pressable>
-          <Pressable
-            onPress={() => router.push("/instructor/main")}
-            className="mt-8 h-12 bg-black border-2  rounded-full border-secondary items-center justify-center"
-          >
-            <Text className="text-secondary font-semibold  text-m">
-              Заповнити пізніше
-            </Text>
-          </Pressable>
         </View>
+
+        <Pressable
+          onPress={handleDeleteAccount}
+          className="bg-warning w-full py-3 mt-16 mb-8 rounded-xl"
+        >
+          <Text className="text-center text-black text-lg font-semibold font-manrope">
+            DELETE ACCOUNT
+          </Text>
+        </Pressable>
       </ScrollView>
     </View>
   );
-}
+};
+
+export default Profile;

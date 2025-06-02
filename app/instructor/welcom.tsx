@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import bellpin from "../../assets/images/Bell_pin.png";
 import check from "../../assets/images/check.png";
@@ -8,7 +8,7 @@ import Logo from "../../assets/images/Logo.png";
 import users from "../../assets/images/users.png";
 
 export default function StudentScreen() {
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   const router = useRouter();
   const handleRegister = () => {
     //router.push("/instructor/register"); // ⬅️ Переходить на сторінку реєстрації
@@ -80,7 +80,7 @@ export default function StudentScreen() {
               </Text>
               <Image
                 source={Logo}
-                className="w-[50px] h-[50px] mb-2 mx-auto mb-8"
+                className="w-[50px] h-[50px] mx-auto mb-8"
                 resizeMode="contain"
               />
               <Text className="text-white text-[16px] leading-[22px] mb-3 font-bold font-manrope">
@@ -91,7 +91,8 @@ export default function StudentScreen() {
               </Text>
               <TouchableOpacity
                 className="bg-green py-[14px] px-6 rounded-[23px]"
-                onPress={handleRegister}>
+                onPress={handleRegister}
+              >
                 <Text className="text-btn text-center text-[18px]  font-bold  font-ptsansnaBold">
                   Зареєструватись
                 </Text>
@@ -99,21 +100,20 @@ export default function StudentScreen() {
               <TouchableOpacity
                 onPress={() =>
                   router.push("/instructor/pdf-viewer?file=privacy")
-                }>
+                }
+              >
                 <Text className="text-white text-[16px] tracking-[-0.32px] underline mt-8">
                   Політика конфіденційності
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 className="mb-10"
-                onPress={() =>
-                  router.push("/instructor/pdf-viewer?file=terms")
-                }>
+                onPress={() => router.push("/instructor/pdf-viewer?file=terms")}
+              >
                 <Text className="text-white text-[16px] tracking-[-0.32px] underline mt-3 !w-full">
                   Правила користування платформою
                 </Text>
               </TouchableOpacity>
-              <Text></Text>
             </View>
           </View>
         </View>

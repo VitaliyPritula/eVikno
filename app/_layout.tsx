@@ -4,9 +4,9 @@ import { StatusBar } from "expo-status-bar";
 import {
   ThemeProvider,
   DarkTheme,
-  DefaultTheme,
+  // DefaultTheme,
 } from "@react-navigation/native";
-import { useColorScheme } from "react-native";
+import { useColorScheme, View } from "react-native";
 import "../global.css";
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -24,7 +24,10 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DarkTheme}>
       <StatusBar style="dark" backgroundColor="black" />
-      <Stack screenOptions={{ headerShown: false }} />
+      {/* <Stack screenOptions={{ headerShown: false }} /> */}
+      <View className="flex-1 bg-black font-manrope">
+        <Stack screenOptions={{ headerShown: false }} />
+      </View>
     </ThemeProvider>
   );
 }

@@ -1,184 +1,136 @@
-import { SIGNIN_ERROR_MESSAGES } from "@/constants/firebaseErrors";
+import React, { useState } from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
 import { router } from "expo-router";
 import { FirebaseError } from "firebase/app";
-
-import React, { useState } from "react";
-import {
-  Pressable,
-  Image,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import { style } from "twrnc";
-
-import Octicons from "@expo/vector-icons/Octicons";
-import user from "../../assets/images/user.png";
-import passwordImg from "../../assets/images/password.png";
 import { useAuthStore } from "@/store/authStore";
+import { SIGNIN_ERROR_MESSAGES } from "@/constants/firebaseErrors";
+import { View, Text, Pressable, ScrollView, Image } from "react-native";
+
+import InputField from "@/components/forms/InputFieldSign";
+import google from "../../assets/images/google.png";
+
+const schema = z.object({
+  email: z.string().email("Введіть коректний email"),
+  password: z.string().min(8, "Пароль повинен бути не менше 8 символів"),
+});
+
+type LoginFormData = z.infer<typeof schema>;
 
 export default function LoginScreen() {
   const signIn = useAuthStore((state) => state.signIn);
-  //const { signIn, signUp, signOut, user, loading } = useAuthStore();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errSignin, setErrSignin] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [firebaseError, setFirebaseError] = useState("");
 
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
-  const handleLogin = async () => {
-    const newErrors = {
-      email: email.includes("@") ? "" : "Введіть коректний email",
-      password:
-        password.length >= 6 ? "" : "Пароль повинен бути не менше 6 символів",
-    };
-
-    setErrors(newErrors);
-
-    const hasError = Object.values(newErrors).some((e) => e !== "");
-    if (hasError) return;
-
+  const onSubmit = async (data: LoginFormData) => {
+    setFirebaseError("");
     try {
-      await signIn(email, password);
-      console.log("Успішний логін:");
-      router.push("/instructor/initial-profile"); // треба буде змінити на головну сторінку шнструктора
+      await signIn(data.email, data.password);
+      router.push("/instructor/main");
     } catch (error) {
       if (error instanceof FirebaseError) {
-        const errorMsg =
+        const message =
           SIGNIN_ERROR_MESSAGES[error.code] ||
           "Сталася помилка. Спробуйте пізніше";
-        setErrSignin(errorMsg);
-        console.error("SignIn Error:", error);
+        setFirebaseError(message);
       } else {
-        console.error("Невідома помилка:", error);
-        setErrSignin("Сталася помилка");
+        setFirebaseError("Сталася помилка");
+        console.error(error);
       }
     }
   };
 
   return (
-    <View style={style("flex-1 bg-black pt-[40px]")}>
-      <View className="w-full h-14 bg-black justify-center items-center">
-        {/* <Text className="text-white text-base font-bold">Увійти</Text> */}
-      </View>
-
+    <View className="flex-1 bg-black container">
       <ScrollView
-        contentContainerStyle={style("pb-15 px-4 pt-[32px]")}
+        contentContainerStyle={{ paddingVertical: 32 }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={style("max-w-[320px] w-full mx-auto")}>
-          <Text
-            style={[
-              style(
-                "text-white text-[18px] text-center leading-[22px] mb-[12px] font-bold"
-              ),
-              { fontFamily: "manrope" },
-            ]}
-          >
+        <View className="w-full mx-auto ">
+          <Text className="text-white font-manrope text-sm text-center font-semibold mb-3">
             Увійти
           </Text>
-          <Text
-            style={[
-              style(
-                "text-[#C7C7C7] tracking-[-0.32px] text-[14px] text-center leading-[22px] mb-6 font-bold"
-              ),
-              { fontFamily: "manrope" },
-            ]}
-          >
-            {/* Введіть електронну адресу та пароль
-            ]}
-          > */}
-            Вхід у профіль інструктора
+          <Text className="text-textcolor text-m text-center  font-semibold mb-5">
+            Введіть електрону адресу та пароль
           </Text>
+
           {/* Email */}
-          <View style={style("mb-4")}>
-            <View
-              style={style(
-                `flex-row items-center border-2 rounded-[12px] px-[10px] bg-[#646464]`,
-                errors.email ? "border-red-500" : "border-[#BDBDBD]"
-              )}
-            >
-              <Image source={user} style={style("w-[24px] h-[24px] mr-2")} />
-              <TextInput
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, value } }) => (
+              <InputField
+                value={value}
+                onChangeText={onChange}
                 placeholder="Електронна адреса"
-                placeholderTextColor="#fff"
-                style={style(
-                  `w-[82%] px-1 py-3 text-white bg-[#646464]`,
-                  errors.email ? "border-red-500" : "border-gray-500"
-                )}
+                icon="mail"
+                error={errors.email?.message}
+                // keyboardType="email-address"
               />
-            </View>
-            {errSignin && (
-              <Text style={style("text-red-500 text-sm mt-1")}>
-                {errSignin}
-              </Text>
             )}
-          </View>
+          />
+
           {/* Password */}
-          <View style={style("mb-6")}>
-            <View
-              style={style(
-                `flex-row items-center border-2 rounded-[12px] px-[10px] bg-[#646464]`,
-                errors.email ? "border-red-500" : "border-[#BDBDBD]"
-              )}
-            >
-              <Image
-                source={passwordImg}
-                style={style("w-[24px] h-[24px] mr-2")}
-              />
-              <TextInput
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onChange, value } }) => (
+              <InputField
+                value={value}
+                onChangeText={onChange}
                 placeholder="Пароль"
-                placeholderTextColor="#fff"
-                style={style(
-                  ` w-[82%] px-1 py-3 text-white bg-[#646464]`,
-                  errors.password ? "border-red-500" : "border-gray-500"
-                )}
+                secureTextEntry={!showPassword}
+                icon="lock"
+                toggleVisibility={() => setShowPassword((prev) => !prev)}
+                showPasswordToggle
+                error={errors.password?.message}
               />
-              <Pressable onPress={() => setShowPassword((prev) => !prev)}>
-                <Octicons
-                  name={showPassword ? "eye-closed" : "eye"}
-                  size={24}
-                  color="#fff"
-                />
-              </Pressable>
-            </View>
-          </View>
+            )}
+          />
+
+          {firebaseError !== "" && (
+            <Text className="text-red-500 text-sm mt-1">{firebaseError}</Text>
+          )}
+
+          {/* Submit */}
           <Pressable
-            onPress={handleLogin}
-            style={style("bg-[#8BD73D] w-full py-3 rounded-[23px")}
+            onPress={handleSubmit(onSubmit)}
+            className="bg-green w-full py-3 mt-16 mb-8 rounded-xl"
           >
-            <Text
-              style={[
-                style("text-center text-black text-lg font-bold"),
-                { fontFamily: "ptsansnaBold" },
-              ]}
-            >
+            <Text className="text-center text-black text-lg font-semibold font-manrope">
               Увійти
             </Text>
           </Pressable>
-        </View>
-        <View style={style("mt-6 items-center")}>
-          <Text style={style("text-[#D7D7D7] text-sm")}>
-            Немає акаунту?{" "}
-            <Text
-              onPress={() => router.push("/instructor/signup")}
-              style={style("text-[#8BD73D]")}
-            >
-              Зареєструватися
+
+          {/* Divider & Google */}
+          <View className="mt-6 items-center">
+            <Text className="text-center text-grey-text text-m mb-5 font-regular font-manrope">
+              Увійти за допомогою
             </Text>
-          </Text>
+            <Image source={google} style={{ width: 44, height: 44 }} />
+            <Text className="text-textakount text-m mt-8 font-manrope">
+              Немає акаунту?{" "}
+              <Text
+                onPress={() => router.push("/instructor/signup")}
+                className="text-warning text-m font-bold font-manrope"
+              >
+                Зареєструватися
+              </Text>
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </View>

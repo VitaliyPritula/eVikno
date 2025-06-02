@@ -14,9 +14,13 @@ export default function PDFViewer() {
         let asset;
 
         if (file === "privacy") {
-          asset = Asset.fromModule(require("../../assets/docs/Політика конфіденційності.pdf"));
+          asset = Asset.fromModule(
+            require("../../assets/docs/Політика конфіденційності.pdf")
+          );
         } else if (file === "terms") {
-          asset = Asset.fromModule(require("../../assets/docs/Правила користування сайтом.pdf"));
+          asset = Asset.fromModule(
+            require("../../assets/docs/Правила користування сайтом.pdf")
+          );
         } else {
           Alert.alert("Помилка", "Невідомий файл PDF");
           router.back();
