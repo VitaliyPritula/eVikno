@@ -105,15 +105,15 @@ export const useAuthStore = create<AuthState>((set, get) => {
       const { user } = get();
       if (!user) return;
       const uid = user.uid;
-      // Delete Firestore profile
-      await deleteDoc(doc(FIRESTORE_DB, "inspectors", uid));
+      // Delete Firestore profile  inspectors
+      await deleteDoc(doc(FIRESTORE_DB, "instructors", uid));
       // Delete Firebase Authentication user
       await deleteUser(user);
       set({ user: null, profile: null });
     },
 
     fetchProfile: async (uid) => {
-      const docRef = doc(FIRESTORE_DB, "inspectors", uid);
+      const docRef = doc(FIRESTORE_DB, "instructors", uid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         set({ profile: docSnap.data() as InstructorProfile });
@@ -136,7 +136,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
         dateUpdate: serverTimestamp() as unknown as Timestamp, //
       };
       console.log("Prof Data", profileData);
-      const docRef = doc(FIRESTORE_DB, "inspectors", user.uid);
+      const docRef = doc(FIRESTORE_DB, "instructors", user.uid);
       await setDoc(docRef, profileData, { merge: true });
       // await setDoc(docRef, profileData);
       set({ profile: profileData });
@@ -146,7 +146,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
       const user = get().user;
       if (!user) throw new Error("Пользователь не авторизован");
 
-      const docRef = doc(FIRESTORE_DB, "inspectors", user.uid);
+      const docRef = doc(FIRESTORE_DB, "instructors", user.uid);
       await setDoc(
         docRef,
         { isFree, serviceCenter, dateUpdate: serverTimestamp() },
