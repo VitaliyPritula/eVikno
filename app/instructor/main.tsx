@@ -19,33 +19,28 @@ import { ServiceCenter } from "../../types/serviceCenterType";
 import { useServiceCentersStore } from "../../store/useServiceCentersStore";
 
 export default function Main() {
+  //instructor
   const toggleIsFree = useAuthStore((state) => state.toggleIsFree);
   const profile = useAuthStore((state) => state.profile);
   const loading = useAuthStore((state) => state.loading);
   const [isEnabled, setIsEnabled] = useState(false); // початковий стан вимкнений
+  // cities and centers
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedService, setSelectedService] = useState<ServiceCenter | null>(
     null
   );
+  const allCenters = useServiceCentersStore((state) => state.centers);
+  // filter centers by selected city
+  const centers = selectedCity
+    ? allCenters.filter((center) => center.city === selectedCity)
+    : [];
+  // modal
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [modalVisible2, setModalVisible2] = useState<boolean>(false);
   const [showError, setShowError] = useState("");
   //--------
   const cities = useServiceCentersStore((state) => state.cities);
-  const allCenters = useServiceCentersStore((state) => state.centers);
-  const centers = selectedCity //?????????
-    ? allCenters.filter((center) => center.city === selectedCity)
-    : [];
-  console.log("allCenters", allCenters);
-  // const getCentersByCity = useServiceCentersStore(
-  //   (state) => state.getCentersByCity
-  // );
-  // const [centers, setCenters] = useState<ServiceCenter[]>([]);
 
-  console.log("selectedCity", selectedCity);
-  console.log("centers", centers);
-  console.log("profile", profile);
-  console.log("selectedService?.id", selectedService?.id);
   //--------
 
   useEffect(() => {
@@ -53,44 +48,29 @@ export default function Main() {
       setIsEnabled(profile.isFree);
     }
     if (profile?.serviceCenterId) {
+      // Filter all centers by the service center ID from the profile
       const matched = allCenters.find((c) => c.id === profile.serviceCenterId);
-      console.log("profId", profile.serviceCenterId);
+
       if (matched) {
-        console.log("matched", matched);
+        //From instructors profile
+        // Set the selected service center and city based on the matched center
         setSelectedService(matched);
         setSelectedCity(matched.city);
       }
     }
   }, [profile, allCenters]);
 
+  // Format service center for display
+  //either return the center's id and address or a default message
   const formatServiceCenter = (center?: ServiceCenter | null): string => {
-    //777777777
     return center
       ? `${center.id} — ${center.address}`
       : "Оберіть сервісний центр";
   };
 
-  // useEffect(() => {
-  //   if (selectedCity) {
-  //     const fetchedCenters = getCentersByCity(selectedCity);
-  //     setCenters(fetchedCenters);
-  //   } else {
-  //     setCenters([]);
-  //   }
-
-  //   if (profile?.serviceCenterId && cities.length > 0) {
-  //     const allCenters = cities.flatMap((city) => getCentersByCity(city));
-  //     const matched = allCenters.find((c) => c.id === profile.serviceCenterId);
-  //     if (matched) {
-  //       setSelectedService(matched);
-  //     }
-  //   }
-  // }, [selectedCity]);
-
   const handleToggle = () => {
     try {
       if (profile && selectedService) {
-        //  setHideSelectedService(isEnabled);
         const serviceCenterId = isEnabled ? selectedService?.id ?? "" : "";
 
         toggleIsFree(isEnabled, serviceCenterId);
@@ -219,6 +199,7 @@ export default function Main() {
                       onPress={() => {
                         setSelectedCity(city);
                         setModalVisible(false);
+                        setSelectedService(null); // Reset selected service when city changes");
                       }}
                       className="py-2"
                     >
