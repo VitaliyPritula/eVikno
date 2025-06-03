@@ -171,7 +171,7 @@ const Profile = () => {
                 label="Атестат інструктора"
                 value={value}
                 onChangeText={onChange}
-                placeholder="AB123456"
+                placeholder="FB123456"
                 error={errors.certificate?.message}
                 changable
               />
