@@ -1,22 +1,18 @@
 import React, { useState } from "react";
+import { View, Text, Pressable, ScrollView, Image } from "react-native";
+import { router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { router } from "expo-router";
 import { FirebaseError } from "firebase/app";
-import { useAuthStore } from "@/store/authStore";
 import { SIGNIN_ERROR_MESSAGES } from "@/constants/firebaseErrors";
-import { View, Text, Pressable, ScrollView, Image } from "react-native";
-
 import InputField from "@/components/forms/InputFieldSign";
+import { signInSchema } from "@/shemas/signSchema";
+import { useAuthStore } from "@/store/authStore";
 import google from "../../assets/images/google.png";
 
-const schema = z.object({
-  email: z.string().email("Введіть коректний email"),
-  password: z.string().min(8, "Пароль повинен бути не менше 8 символів"),
-});
-
-type LoginFormData = z.infer<typeof schema>;
+type LoginFormData = z.infer<typeof signInSchema>;
 
 export default function LoginScreen() {
   const signIn = useAuthStore((state) => state.signIn);
@@ -28,7 +24,7 @@ export default function LoginScreen() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -54,7 +50,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <View className="flex-1 bg-black container">
+    <SafeAreaView className="flex-1 bg-black container">
       <ScrollView
         contentContainerStyle={{ paddingVertical: 32 }}
         showsVerticalScrollIndicator={false}
@@ -133,6 +129,6 @@ export default function LoginScreen() {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

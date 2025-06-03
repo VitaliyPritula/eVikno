@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 // import { style } from "twrnc";
 import { Stack, useRouter } from "expo-router";
 // import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,7 +17,7 @@ const Main: React.FC = () => {
     fetchCenters(); // once all service centers are fetched, they will be available in the store
   }, [fetchCenters]);
   return (
-    <View className=" container flex-1 bg-black  mx-auto">
+    <SafeAreaView className=" container flex-1 bg-black  mx-auto">
       <Stack.Screen options={{ headerShown: false }} />
       <View className="flex-1 justify-center items-center">
         <Text className="text-white text-center text-[17px] leading-[32px] font-bold font-ptsansnaBold">
@@ -46,7 +47,7 @@ const Main: React.FC = () => {
       <Text className="text-textcolor  font-marcellus text-center  text-[16px] font-bold pt-[32px] mb-[15px]">
         Маршрут замість очікування
       </Text>
-    </View>
+    </SafeAreaView>
   );
 };
 

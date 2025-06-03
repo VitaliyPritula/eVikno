@@ -1,7 +1,7 @@
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
   ThemeProvider,
   DarkTheme,
@@ -27,9 +27,9 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DarkTheme}>
       <StatusBar style="dark" backgroundColor="black" />
       {/* <Stack screenOptions={{ headerShown: false }} /> */}
-      <SafeAreaView className="flex-1 bg-black font-manrope">
+      <SafeAreaProvider className="flex-1 bg-black font-manrope">
         <Stack screenOptions={{ headerShown: false }} />
-      </SafeAreaView>
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }

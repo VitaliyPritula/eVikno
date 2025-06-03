@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import {
   ScrollView,
@@ -11,12 +10,14 @@ import {
   ActivityIndicator,
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 //import { Picker } from "@react-native-picker/picker"; //??? Нам це потрібно?
-import { useAuthStore } from "@/store/authStore";
 import { FirebaseError } from "firebase/app";
 import { ServiceCenter } from "../../types/serviceCenterType";
-//--------------
 import { useServiceCentersStore } from "../../store/useServiceCentersStore";
+import { useAuthStore } from "@/store/authStore";
+//--------------
 
 export default function Main() {
   //instructor
@@ -100,7 +101,7 @@ export default function Main() {
     );
   }
   return (
-    <View className="flex-1 container">
+    <SafeAreaView className="flex-1 container">
       <ScrollView className="pb-15  pt-4 " showsVerticalScrollIndicator={false}>
         <View className="mx-auto mb-4">
           <View className="flex-row justify-end mb-7">
@@ -273,6 +274,6 @@ export default function Main() {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
