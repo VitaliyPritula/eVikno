@@ -18,21 +18,6 @@ import {
 } from "firebase/firestore";
 import { InstructorProfile } from "../types/instructorType";
 
-// export type InstructorProfile = {
-//   name: string;
-//   city: string;
-//   phone: string;
-//   experience: string; // роки досвіду
-//   certificate: string; // посилання на сертифікат
-//   carModel: string; // модель автомобіля
-//   carNumber: string; // номер автомобіля
-//   transmission: "mechanic" | "automatic"; // тип трансмісії
-//   isFree: boolean; // чи вільний інструктор
-//   serviceCenter: string; // послуги, які надає інструктор
-//   uidInspector: string; // унікальний ідентифікатор користувача
-//   dateUpdate: Timestamp; // дата останнього оновлення профілю
-// };
-
 type InstructorProfileInput = Omit<
   InstructorProfile,
   "uidInspector" | "dateUpdate"
@@ -48,7 +33,7 @@ type AuthState = {
   deleteAccount: () => Promise<void>; // 🆕 delete everything
   fetchProfile: (uid: string) => Promise<void>;
   updateProfile: (data: InstructorProfileInput) => Promise<void>;
-  toggleIsFree: (isFree: boolean, serviceCenter: string) => Promise<void>;
+  toggleIsFree: (isFree: boolean, serviceCenterId: string) => Promise<void>;
 };
 
 // let unsubscribe: (() => void) | null = null;
@@ -133,26 +118,36 @@ export const useAuthStore = create<AuthState>((set, get) => {
         uidInspector: user.uid,
         dateUpdate: serverTimestamp() as unknown as Timestamp, //
       };
-      console.log("Prof Data", profileData);
+
       const docRef = doc(FIRESTORE_DB, "instructors", user.uid);
       await setDoc(docRef, profileData, { merge: true });
       // await setDoc(docRef, profileData);
       set({ profile: profileData });
     },
 
-    toggleIsFree: async (isFree: boolean, serviceCenter: string) => {
+    toggleIsFree: async (isFree: boolean, serviceCenterId: string) => {
       const user = get().user;
       if (!user) throw new Error("Пользователь не авторизован");
 
       const docRef = doc(FIRESTORE_DB, "instructors", user.uid);
       await setDoc(
         docRef,
-        { isFree, serviceCenter, dateUpdate: serverTimestamp() },
+        { isFree, serviceCenterId, dateUpdate: serverTimestamp() },
         { merge: true }
       );
 
+      // set((state) => ({
+      //   profile: state.profile ? { ...state.profile, isFree } : state.profile,
+      // }));
       set((state) => ({
-        profile: state.profile ? { ...state.profile, isFree } : state.profile,
+        profile: state.profile
+          ? {
+              ...state.profile,
+              isFree,
+              serviceCenterId,
+              //dateUpdate: new Date(), // опціонально, або залиш як є
+            }
+          : state.profile,
       }));
     },
   };

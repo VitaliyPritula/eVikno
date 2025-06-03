@@ -24,67 +24,88 @@ export default function Main() {
   const loading = useAuthStore((state) => state.loading);
   const [isEnabled, setIsEnabled] = useState(false); // початковий стан вимкнений
   const [selectedCity, setSelectedCity] = useState("");
-  const [selectedServiceId, setSelectedServiceId] = useState("");
-  const [selectedService, setSelectedService] = useState("");
+  const [selectedService, setSelectedService] = useState<ServiceCenter | null>(
+    null
+  );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [modalVisible2, setModalVisible2] = useState<boolean>(false);
   const [showError, setShowError] = useState("");
   //--------
   const cities = useServiceCentersStore((state) => state.cities);
-  //const centers = useServiceCentersStore((state) => state.centers);
+  const allCenters = useServiceCentersStore((state) => state.centers);
+  const centers = selectedCity //?????????
+    ? allCenters.filter((center) => center.city === selectedCity)
+    : [];
+  console.log("allCenters", allCenters);
   // const getCentersByCity = useServiceCentersStore(
   //   (state) => state.getCentersByCity
   // );
-  const getCentersByCity = useServiceCentersStore(
-    (state) => state.getCentersByCity
-  );
-  const [centers, setCenters] = useState<ServiceCenter[]>([]);
-  console.log("Cities", cities);
+  // const [centers, setCenters] = useState<ServiceCenter[]>([]);
 
   console.log("selectedCity", selectedCity);
   console.log("centers", centers);
+  console.log("profile", profile);
+  console.log("selectedService?.id", selectedService?.id);
   //--------
 
   useEffect(() => {
     if (profile?.isFree !== undefined) {
       setIsEnabled(profile.isFree);
     }
-    if (profile?.serviceCenter) {
-      setSelectedService(profile.serviceCenter);
+    if (profile?.serviceCenterId) {
+      const matched = allCenters.find((c) => c.id === profile.serviceCenterId);
+      console.log("profId", profile.serviceCenterId);
+      if (matched) {
+        console.log("matched", matched);
+        setSelectedService(matched);
+        setSelectedCity(matched.city);
+      }
     }
-  }, [profile]);
+  }, [profile, allCenters]);
 
-  useEffect(() => {
-    if (selectedCity) {
-      const fetchedCenters = getCentersByCity(selectedCity);
-      setCenters(fetchedCenters);
-    } else {
-      setCenters([]);
-    }
-  }, [selectedCity]);
+  const formatServiceCenter = (center?: ServiceCenter | null): string => {
+    //777777777
+    return center
+      ? `${center.id} — ${center.address}`
+      : "Оберіть сервісний центр";
+  };
+
+  // useEffect(() => {
+  //   if (selectedCity) {
+  //     const fetchedCenters = getCentersByCity(selectedCity);
+  //     setCenters(fetchedCenters);
+  //   } else {
+  //     setCenters([]);
+  //   }
+
+  //   if (profile?.serviceCenterId && cities.length > 0) {
+  //     const allCenters = cities.flatMap((city) => getCentersByCity(city));
+  //     const matched = allCenters.find((c) => c.id === profile.serviceCenterId);
+  //     if (matched) {
+  //       setSelectedService(matched);
+  //     }
+  //   }
+  // }, [selectedCity]);
 
   const handleToggle = () => {
     try {
-      if (profile) {
+      if (profile && selectedService) {
         //  setHideSelectedService(isEnabled);
-        const serviceCenter = isEnabled === false ? "" : selectedService;
+        const serviceCenterId = isEnabled ? selectedService?.id ?? "" : "";
 
-        toggleIsFree(isEnabled, serviceCenter);
+        toggleIsFree(isEnabled, serviceCenterId);
         // це треба красивно зробити !!!!!!!
         alert(
           `Статус успішно змінено на ${isEnabled ? "Вільний" : "Зайнятий"}`
         );
       }
     } catch (error) {
-      if (error instanceof FirebaseError) {
-        const errorMsg = "Помилка при зміні статусу: ";
-
-        setShowError(errorMsg);
-        console.error("Toggle Error:", error);
-      } else {
-        console.error("Невідома помилка in Toggle:", error);
-        setShowError("Сталася помилка");
-      }
+      const errorMsg =
+        error instanceof FirebaseError
+          ? "Помилка при зміні статусу: " + error.message
+          : "Сталася невідома помилка";
+      setShowError(errorMsg);
+      console.log("Error toggling status:", error);
     }
   };
 
@@ -171,7 +192,6 @@ export default function Main() {
                 : 'Увімкнути статус "Вільний"'}
             </Text>
           </View>
-          {/* Ganna  я змінила */}
 
           <View className="mt-4 w-full ">
             <Text className="text-white text-[18px] mb-5 font-manrope font-semibold">
@@ -209,13 +229,13 @@ export default function Main() {
               </Pressable>
             </Modal>
 
-            {/* Cervice center*/}
+            {/* Service center*/}
             <TouchableOpacity
               onPress={() => setModalVisible2(true)}
               className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
             >
               <Text className="text-white text-base">
-                {selectedService || "Оберіть цсервісний центр"}
+                {formatServiceCenter(selectedService)}
               </Text>
               <Ionicons name="chevron-down" size={20} color="#fff" />
             </TouchableOpacity>
@@ -229,13 +249,13 @@ export default function Main() {
                     <TouchableOpacity
                       key={center.id}
                       onPress={() => {
-                        setSelectedService(center.address);
+                        setSelectedService(center);
                         setModalVisible2(false);
                       }}
                       className="py-2"
                     >
                       <Text className="text-base text-black">
-                        {center.address}
+                        {center.id} — {center.address}
                       </Text>
                     </TouchableOpacity>
                   ))}

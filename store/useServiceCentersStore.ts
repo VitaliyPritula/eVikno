@@ -28,9 +28,10 @@ export const useServiceCentersStore = create<ServiceCentersState>(
       const snapshot = await getDocs(
         collection(FIRESTORE_DB, "service_centers")
       );
-      const centers: ServiceCenter[] = snapshot.docs.map(
-        (doc) => doc.data() as ServiceCenter
-      );
+      const centers: ServiceCenter[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<ServiceCenter, "id">),
+      }));
 
       const uniqueCities = Array.from(
         new Set(centers.map((c) => c.city))
