@@ -105,6 +105,7 @@ export default function SignUpScreen() {
                 toggleVisibility={() => setShowPassword((prev) => !prev)}
                 showPasswordToggle
                 error={errors.password?.message}
+                keyboardType="email-address"
               />
             )}
           />

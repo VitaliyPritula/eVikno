@@ -78,7 +78,7 @@ export default function LoginScreen() {
                 placeholder="Електронна адреса"
                 icon="mail"
                 error={errors.email?.message}
-                // keyboardType="email-address"
+                keyboardType="email-address"
               />
             )}
           />
