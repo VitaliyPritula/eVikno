@@ -98,7 +98,7 @@ export default function Main() {
               Заповніть профіль, щоб увімкнути статус
             </Text>
           )}
-          {showError && (
+          {typeof showError === "string" && showError.length > 0 && (
             <Text className="text-red-500 text-s mb-4">{showError}</Text>
           )}
           <View className="flex-row gap-2 items-center mb-8">
