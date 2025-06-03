@@ -35,8 +35,10 @@ export default function Main() {
     ? allCenters.filter((center) => center.city === selectedCity)
     : [];
   // modal
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalVisible2, setModalVisible2] = useState<boolean>(false);
+  const [activeModal, setActiveModal] = useState<"city" | "center" | null>(
+    null
+  );
+
   const [showError, setShowError] = useState("");
   //--------
   const cities = useServiceCentersStore((state) => state.cities);
@@ -179,7 +181,7 @@ export default function Main() {
             </Text>
             {/* City */}
             <TouchableOpacity
-              onPress={() => setModalVisible(true)}
+              onPress={() => setActiveModal("city")}
               className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
             >
               <Text className="text-white text-base">
@@ -187,10 +189,14 @@ export default function Main() {
               </Text>
               <Ionicons name="chevron-down" size={20} color="#fff" />
             </TouchableOpacity>
-            <Modal transparent visible={modalVisible} animationType="slide">
+            <Modal
+              transparent
+              visible={activeModal === "city"}
+              animationType="slide"
+            >
               <Pressable
                 className="flex-1 bg-black/30 justify-center px-5"
-                onPress={() => setModalVisible(false)}
+                onPress={() => setActiveModal(null)}
               >
                 <View className="bg-white rounded-xl p-5">
                   {cities.map((city) => (
@@ -198,7 +204,7 @@ export default function Main() {
                       key={city}
                       onPress={() => {
                         setSelectedCity(city);
-                        setModalVisible(false);
+                        setActiveModal(null);
                         setSelectedService(null); // Reset selected service when city changes");
                       }}
                       className="py-2"
@@ -212,7 +218,7 @@ export default function Main() {
 
             {/* Service center*/}
             <TouchableOpacity
-              onPress={() => setModalVisible2(true)}
+              onPress={() => setActiveModal("center")}
               className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
             >
               <Text className="text-white text-base">
@@ -220,10 +226,14 @@ export default function Main() {
               </Text>
               <Ionicons name="chevron-down" size={20} color="#fff" />
             </TouchableOpacity>
-            <Modal transparent visible={modalVisible2} animationType="slide">
+            <Modal
+              transparent
+              visible={activeModal === "center"}
+              animationType="slide"
+            >
               <Pressable
                 className="flex-1 bg-black/30 justify-center px-5"
-                onPress={() => setModalVisible2(false)}
+                onPress={() => setActiveModal(null)}
               >
                 <View className="bg-white rounded-xl p-5">
                   {centers.map((center) => (
@@ -231,7 +241,7 @@ export default function Main() {
                       key={center.id}
                       onPress={() => {
                         setSelectedService(center);
-                        setModalVisible2(false);
+                        setActiveModal(null);
                       }}
                       className="py-2"
                     >
