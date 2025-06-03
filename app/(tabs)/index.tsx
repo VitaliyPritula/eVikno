@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 // import { style } from "twrnc";
 import { Stack, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthStore } from "@/store/authStore";
+import { useServiceCentersStore } from "../../store/useServiceCentersStore";
 
 const Main: React.FC = () => {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
+  const fetchCenters = useServiceCentersStore((state) => state.fetchCenters);
   console.log("user in index", user);
+
+  useEffect(() => {
+    fetchCenters(); // once
+  }, [fetchCenters]);
   return (
     <SafeAreaView className=" container flex-1 bg-black  mx-auto">
       <Stack.Screen options={{ headerShown: false }} />

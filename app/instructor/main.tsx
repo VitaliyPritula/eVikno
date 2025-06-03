@@ -14,18 +14,36 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 //import { Picker } from "@react-native-picker/picker"; //??? Нам це потрібно?
 import { useAuthStore } from "@/store/authStore";
 import { FirebaseError } from "firebase/app";
+import { ServiceCenter } from "../../types/serviceCenterType";
+//--------------
+import { useServiceCentersStore } from "../../store/useServiceCentersStore";
 
 export default function Main() {
   const toggleIsFree = useAuthStore((state) => state.toggleIsFree);
   const profile = useAuthStore((state) => state.profile);
   const loading = useAuthStore((state) => state.loading);
-  console.log("profile", profile?.isFree);
-  console.log("proile", profile);
-
   const [isEnabled, setIsEnabled] = useState(false); // початковий стан вимкнений
-  const [selectedService, setSelectedService] = useState("Оберіть місто");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedServiceId, setSelectedServiceId] = useState("");
+  const [selectedService, setSelectedService] = useState("");
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalVisible2, setModalVisible2] = useState<boolean>(false);
   const [showError, setShowError] = useState("");
+  //--------
+  const cities = useServiceCentersStore((state) => state.cities);
+  //const centers = useServiceCentersStore((state) => state.centers);
+  // const getCentersByCity = useServiceCentersStore(
+  //   (state) => state.getCentersByCity
+  // );
+  const getCentersByCity = useServiceCentersStore(
+    (state) => state.getCentersByCity
+  );
+  const [centers, setCenters] = useState<ServiceCenter[]>([]);
+  console.log("Cities", cities);
+
+  console.log("selectedCity", selectedCity);
+  console.log("centers", centers);
+  //--------
 
   useEffect(() => {
     if (profile?.isFree !== undefined) {
@@ -35,6 +53,15 @@ export default function Main() {
       setSelectedService(profile.serviceCenter);
     }
   }, [profile]);
+
+  useEffect(() => {
+    if (selectedCity) {
+      const fetchedCenters = getCentersByCity(selectedCity);
+      setCenters(fetchedCenters);
+    } else {
+      setCenters([]);
+    }
+  }, [selectedCity]);
 
   const handleToggle = () => {
     try {
@@ -150,32 +177,66 @@ export default function Main() {
             <Text className="text-white text-[18px] mb-5 font-manrope font-semibold">
               Сервісний Центр
             </Text>
+            {/* City */}
             <TouchableOpacity
               onPress={() => setModalVisible(true)}
               className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
             >
               <Text className="text-white text-base">
-                {selectedService || "Оберіть місто"}
+                {selectedCity || "Оберіть місто"}
               </Text>
               <Ionicons name="chevron-down" size={20} color="#fff" />
             </TouchableOpacity>
-
             <Modal transparent visible={modalVisible} animationType="slide">
               <Pressable
                 className="flex-1 bg-black/30 justify-center px-5"
                 onPress={() => setModalVisible(false)}
               >
                 <View className="bg-white rounded-xl p-5">
-                  {["Сарни", "Київ", "Львів"].map((city) => (
+                  {cities.map((city) => (
                     <TouchableOpacity
                       key={city}
                       onPress={() => {
-                        setSelectedService(city);
+                        setSelectedCity(city);
                         setModalVisible(false);
                       }}
                       className="py-2"
                     >
                       <Text className="text-base text-black">{city}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </Pressable>
+            </Modal>
+
+            {/* Cervice center*/}
+            <TouchableOpacity
+              onPress={() => setModalVisible2(true)}
+              className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
+            >
+              <Text className="text-white text-base">
+                {selectedService || "Оберіть цсервісний центр"}
+              </Text>
+              <Ionicons name="chevron-down" size={20} color="#fff" />
+            </TouchableOpacity>
+            <Modal transparent visible={modalVisible2} animationType="slide">
+              <Pressable
+                className="flex-1 bg-black/30 justify-center px-5"
+                onPress={() => setModalVisible2(false)}
+              >
+                <View className="bg-white rounded-xl p-5">
+                  {centers.map((center) => (
+                    <TouchableOpacity
+                      key={center.id}
+                      onPress={() => {
+                        setSelectedService(center.address);
+                        setModalVisible2(false);
+                      }}
+                      className="py-2"
+                    >
+                      <Text className="text-base text-black">
+                        {center.address}
+                      </Text>
                     </TouchableOpacity>
                   ))}
                 </View>

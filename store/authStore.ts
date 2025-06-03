@@ -16,24 +16,22 @@ import {
   serverTimestamp,
   Timestamp,
 } from "firebase/firestore";
+import { InstructorProfile } from "../types/instructorType";
 
-export type InstructorProfile = {
-  name: string;
-  city: string;
-  phone: string;
-  experience: string; // роки досвіду
-  certificate: string; // посилання на сертифікат
-  carModel: string; // модель автомобіля
-  carNumber: string; // номер автомобіля
-  transmission: "mechanic" | "automatic"; // тип трансмісії
-  isFree: boolean; // чи вільний інструктор
-  serviceCenter: string; // послуги, які надає інструктор
-  uidInspector: string; // унікальний ідентифікатор користувача
-  dateUpdate: Timestamp; // дата останнього оновлення профілю
-  //role: "instructor" | "student";// роль користувача
-  // timestamp;
-  // другие поля
-};
+// export type InstructorProfile = {
+//   name: string;
+//   city: string;
+//   phone: string;
+//   experience: string; // роки досвіду
+//   certificate: string; // посилання на сертифікат
+//   carModel: string; // модель автомобіля
+//   carNumber: string; // номер автомобіля
+//   transmission: "mechanic" | "automatic"; // тип трансмісії
+//   isFree: boolean; // чи вільний інструктор
+//   serviceCenter: string; // послуги, які надає інструктор
+//   uidInspector: string; // унікальний ідентифікатор користувача
+//   dateUpdate: Timestamp; // дата останнього оновлення профілю
+// };
 
 type InstructorProfileInput = Omit<
   InstructorProfile,
