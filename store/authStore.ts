@@ -136,16 +136,13 @@ export const useAuthStore = create<AuthState>((set, get) => {
         { merge: true }
       );
 
-      // set((state) => ({
-      //   profile: state.profile ? { ...state.profile, isFree } : state.profile,
-      // }));
       set((state) => ({
         profile: state.profile
           ? {
               ...state.profile,
               isFree,
               serviceCenterId,
-              //dateUpdate: new Date(), // опціонально, або залиш як є
+              dateUpdate: serverTimestamp() as unknown as Timestamp,
             }
           : state.profile,
       }));
