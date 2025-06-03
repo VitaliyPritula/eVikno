@@ -60,7 +60,7 @@ const Profile = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await updateProfile({ ...data, isFree: false, serviceCenter: "" });
+      await updateProfile({ ...data, isFree: false, serviceCenterId: "" });
       router.push("/instructor/main");
     } catch (error) {
       console.log("Error submitting form", error);

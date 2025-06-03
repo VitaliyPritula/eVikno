@@ -221,10 +221,18 @@ export default function Main() {
               onPress={() => setActiveModal("center")}
               className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
             >
-              <Text className="text-white text-base">
-                {formatServiceCenter(selectedService)}
-              </Text>
-              <Ionicons name="chevron-down" size={20} color="#fff" />
+              <View className="shrink">
+                <Text className="text-white text-base ">
+                  {formatServiceCenter(selectedService)}
+                </Text>
+              </View>
+
+              <Ionicons
+                name="chevron-down"
+                size={20}
+                color="#fff"
+                className=""
+              />
             </TouchableOpacity>
             <Modal
               transparent
