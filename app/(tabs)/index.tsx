@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 // import { style } from "twrnc";
 import { Stack, useRouter } from "expo-router";
@@ -13,7 +13,7 @@ const Main: React.FC = () => {
   console.log("user in index", user);
 
   useEffect(() => {
-    fetchCenters(); // once
+    fetchCenters(); // once all service centers are fetched, they will be available in the store
   }, [fetchCenters]);
   return (
     <SafeAreaView className=" container flex-1 bg-black  mx-auto">
@@ -28,7 +28,7 @@ const Main: React.FC = () => {
       <View className="px-4 gap-3">
         <TouchableOpacity
           onPress={() => router.push("/student/onboarding")}
-          className="bg-berus hover:bg-green-hover py-3 rounded-[23px]"
+          className="bg-berus  py-3 rounded-[23px]"
         >
           <Text className=" text-center text-lg font-bold  font-ptsansnaBold">
             Я учень

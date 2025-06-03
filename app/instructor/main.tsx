@@ -19,33 +19,30 @@ import { ServiceCenter } from "../../types/serviceCenterType";
 import { useServiceCentersStore } from "../../store/useServiceCentersStore";
 
 export default function Main() {
+  //instructor
   const toggleIsFree = useAuthStore((state) => state.toggleIsFree);
   const profile = useAuthStore((state) => state.profile);
   const loading = useAuthStore((state) => state.loading);
   const [isEnabled, setIsEnabled] = useState(false); // початковий стан вимкнений
+  // cities and centers
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedService, setSelectedService] = useState<ServiceCenter | null>(
     null
   );
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalVisible2, setModalVisible2] = useState<boolean>(false);
+  const allCenters = useServiceCentersStore((state) => state.centers);
+  // filter centers by selected city
+  const centers = selectedCity
+    ? allCenters.filter((center) => center.city === selectedCity)
+    : [];
+  // modal
+  const [activeModal, setActiveModal] = useState<"city" | "center" | null>(
+    null
+  );
+
   const [showError, setShowError] = useState("");
   //--------
   const cities = useServiceCentersStore((state) => state.cities);
-  const allCenters = useServiceCentersStore((state) => state.centers);
-  const centers = selectedCity //?????????
-    ? allCenters.filter((center) => center.city === selectedCity)
-    : [];
-  console.log("allCenters", allCenters);
-  // const getCentersByCity = useServiceCentersStore(
-  //   (state) => state.getCentersByCity
-  // );
-  // const [centers, setCenters] = useState<ServiceCenter[]>([]);
 
-  console.log("selectedCity", selectedCity);
-  console.log("centers", centers);
-  console.log("profile", profile);
-  console.log("selectedService?.id", selectedService?.id);
   //--------
 
   useEffect(() => {
@@ -53,44 +50,29 @@ export default function Main() {
       setIsEnabled(profile.isFree);
     }
     if (profile?.serviceCenterId) {
+      // Filter all centers by the service center ID from the profile
       const matched = allCenters.find((c) => c.id === profile.serviceCenterId);
-      console.log("profId", profile.serviceCenterId);
+
       if (matched) {
-        console.log("matched", matched);
+        //From instructors profile
+        // Set the selected service center and city based on the matched center
         setSelectedService(matched);
         setSelectedCity(matched.city);
       }
     }
   }, [profile, allCenters]);
 
+  // Format service center for display
+  //either return the center's id and address or a default message
   const formatServiceCenter = (center?: ServiceCenter | null): string => {
-    //777777777
     return center
       ? `${center.id} — ${center.address}`
       : "Оберіть сервісний центр";
   };
 
-  // useEffect(() => {
-  //   if (selectedCity) {
-  //     const fetchedCenters = getCentersByCity(selectedCity);
-  //     setCenters(fetchedCenters);
-  //   } else {
-  //     setCenters([]);
-  //   }
-
-  //   if (profile?.serviceCenterId && cities.length > 0) {
-  //     const allCenters = cities.flatMap((city) => getCentersByCity(city));
-  //     const matched = allCenters.find((c) => c.id === profile.serviceCenterId);
-  //     if (matched) {
-  //       setSelectedService(matched);
-  //     }
-  //   }
-  // }, [selectedCity]);
-
   const handleToggle = () => {
     try {
       if (profile && selectedService) {
-        //  setHideSelectedService(isEnabled);
         const serviceCenterId = isEnabled ? selectedService?.id ?? "" : "";
 
         toggleIsFree(isEnabled, serviceCenterId);
@@ -199,7 +181,7 @@ export default function Main() {
             </Text>
             {/* City */}
             <TouchableOpacity
-              onPress={() => setModalVisible(true)}
+              onPress={() => setActiveModal("city")}
               className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
             >
               <Text className="text-white text-base">
@@ -207,10 +189,14 @@ export default function Main() {
               </Text>
               <Ionicons name="chevron-down" size={20} color="#fff" />
             </TouchableOpacity>
-            <Modal transparent visible={modalVisible} animationType="slide">
+            <Modal
+              transparent
+              visible={activeModal === "city"}
+              animationType="slide"
+            >
               <Pressable
                 className="flex-1 bg-black/30 justify-center px-5"
-                onPress={() => setModalVisible(false)}
+                onPress={() => setActiveModal(null)}
               >
                 <View className="bg-white rounded-xl p-5">
                   {cities.map((city) => (
@@ -218,7 +204,8 @@ export default function Main() {
                       key={city}
                       onPress={() => {
                         setSelectedCity(city);
-                        setModalVisible(false);
+                        setActiveModal(null);
+                        setSelectedService(null); // Reset selected service when city changes");
                       }}
                       className="py-2"
                     >
@@ -231,18 +218,30 @@ export default function Main() {
 
             {/* Service center*/}
             <TouchableOpacity
-              onPress={() => setModalVisible2(true)}
+              onPress={() => setActiveModal("center")}
               className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
             >
-              <Text className="text-white text-base">
-                {formatServiceCenter(selectedService)}
-              </Text>
-              <Ionicons name="chevron-down" size={20} color="#fff" />
+              <View className="shrink">
+                <Text className="text-white text-base ">
+                  {formatServiceCenter(selectedService)}
+                </Text>
+              </View>
+
+              <Ionicons
+                name="chevron-down"
+                size={20}
+                color="#fff"
+                className=""
+              />
             </TouchableOpacity>
-            <Modal transparent visible={modalVisible2} animationType="slide">
+            <Modal
+              transparent
+              visible={activeModal === "center"}
+              animationType="slide"
+            >
               <Pressable
                 className="flex-1 bg-black/30 justify-center px-5"
-                onPress={() => setModalVisible2(false)}
+                onPress={() => setActiveModal(null)}
               >
                 <View className="bg-white rounded-xl p-5">
                   {centers.map((center) => (
@@ -250,7 +249,7 @@ export default function Main() {
                       key={center.id}
                       onPress={() => {
                         setSelectedService(center);
-                        setModalVisible2(false);
+                        setActiveModal(null);
                       }}
                       className="py-2"
                     >
