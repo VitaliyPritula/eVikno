@@ -14,50 +14,98 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 //import { Picker } from "@react-native-picker/picker"; //??? Нам це потрібно?
 import { useAuthStore } from "@/store/authStore";
 import { FirebaseError } from "firebase/app";
+import { ServiceCenter } from "../../types/serviceCenterType";
+//--------------
+import { useServiceCentersStore } from "../../store/useServiceCentersStore";
 
 export default function Main() {
   const toggleIsFree = useAuthStore((state) => state.toggleIsFree);
   const profile = useAuthStore((state) => state.profile);
   const loading = useAuthStore((state) => state.loading);
-  console.log("profile", profile?.isFree);
-  console.log("proile", profile);
-
   const [isEnabled, setIsEnabled] = useState(false); // початковий стан вимкнений
-  const [selectedService, setSelectedService] = useState("Оберіть місто");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedService, setSelectedService] = useState<ServiceCenter | null>(
+    null
+  );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalVisible2, setModalVisible2] = useState<boolean>(false);
   const [showError, setShowError] = useState("");
+  //--------
+  const cities = useServiceCentersStore((state) => state.cities);
+  const allCenters = useServiceCentersStore((state) => state.centers);
+  const centers = selectedCity //?????????
+    ? allCenters.filter((center) => center.city === selectedCity)
+    : [];
+  console.log("allCenters", allCenters);
+  // const getCentersByCity = useServiceCentersStore(
+  //   (state) => state.getCentersByCity
+  // );
+  // const [centers, setCenters] = useState<ServiceCenter[]>([]);
+
+  console.log("selectedCity", selectedCity);
+  console.log("centers", centers);
+  console.log("profile", profile);
+  console.log("selectedService?.id", selectedService?.id);
+  //--------
 
   useEffect(() => {
     if (profile?.isFree !== undefined) {
       setIsEnabled(profile.isFree);
     }
-    if (profile?.serviceCenter) {
-      setSelectedService(profile.serviceCenter);
+    if (profile?.serviceCenterId) {
+      const matched = allCenters.find((c) => c.id === profile.serviceCenterId);
+      console.log("profId", profile.serviceCenterId);
+      if (matched) {
+        console.log("matched", matched);
+        setSelectedService(matched);
+        setSelectedCity(matched.city);
+      }
     }
-  }, [profile]);
+  }, [profile, allCenters]);
+
+  const formatServiceCenter = (center?: ServiceCenter | null): string => {
+    //777777777
+    return center
+      ? `${center.id} — ${center.address}`
+      : "Оберіть сервісний центр";
+  };
+
+  // useEffect(() => {
+  //   if (selectedCity) {
+  //     const fetchedCenters = getCentersByCity(selectedCity);
+  //     setCenters(fetchedCenters);
+  //   } else {
+  //     setCenters([]);
+  //   }
+
+  //   if (profile?.serviceCenterId && cities.length > 0) {
+  //     const allCenters = cities.flatMap((city) => getCentersByCity(city));
+  //     const matched = allCenters.find((c) => c.id === profile.serviceCenterId);
+  //     if (matched) {
+  //       setSelectedService(matched);
+  //     }
+  //   }
+  // }, [selectedCity]);
 
   const handleToggle = () => {
     try {
-      if (profile) {
+      if (profile && selectedService) {
         //  setHideSelectedService(isEnabled);
-        const serviceCenter = isEnabled === false ? "" : selectedService;
+        const serviceCenterId = isEnabled ? selectedService?.id ?? "" : "";
 
-        toggleIsFree(isEnabled, serviceCenter);
+        toggleIsFree(isEnabled, serviceCenterId);
         // це треба красивно зробити !!!!!!!
         alert(
           `Статус успішно змінено на ${isEnabled ? "Вільний" : "Зайнятий"}`
         );
       }
     } catch (error) {
-      if (error instanceof FirebaseError) {
-        const errorMsg = "Помилка при зміні статусу: ";
-
-        setShowError(errorMsg);
-        console.error("Toggle Error:", error);
-      } else {
-        console.error("Невідома помилка in Toggle:", error);
-        setShowError("Сталася помилка");
-      }
+      const errorMsg =
+        error instanceof FirebaseError
+          ? "Помилка при зміні статусу: " + error.message
+          : "Сталася невідома помилка";
+      setShowError(errorMsg);
+      console.log("Error toggling status:", error);
     }
   };
 
@@ -144,38 +192,71 @@ export default function Main() {
                 : 'Увімкнути статус "Вільний"'}
             </Text>
           </View>
-          {/* Ganna  я змінила */}
 
           <View className="mt-4 w-full ">
             <Text className="text-white text-[18px] mb-5 font-manrope font-semibold">
               Сервісний Центр
             </Text>
+            {/* City */}
             <TouchableOpacity
               onPress={() => setModalVisible(true)}
               className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
             >
               <Text className="text-white text-base">
-                {selectedService || "Оберіть місто"}
+                {selectedCity || "Оберіть місто"}
               </Text>
               <Ionicons name="chevron-down" size={20} color="#fff" />
             </TouchableOpacity>
-
             <Modal transparent visible={modalVisible} animationType="slide">
               <Pressable
                 className="flex-1 bg-black/30 justify-center px-5"
                 onPress={() => setModalVisible(false)}
               >
                 <View className="bg-white rounded-xl p-5">
-                  {["Сарни", "Київ", "Львів"].map((city) => (
+                  {cities.map((city) => (
                     <TouchableOpacity
                       key={city}
                       onPress={() => {
-                        setSelectedService(city);
+                        setSelectedCity(city);
                         setModalVisible(false);
                       }}
                       className="py-2"
                     >
                       <Text className="text-base text-black">{city}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </Pressable>
+            </Modal>
+
+            {/* Service center*/}
+            <TouchableOpacity
+              onPress={() => setModalVisible2(true)}
+              className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
+            >
+              <Text className="text-white text-base">
+                {formatServiceCenter(selectedService)}
+              </Text>
+              <Ionicons name="chevron-down" size={20} color="#fff" />
+            </TouchableOpacity>
+            <Modal transparent visible={modalVisible2} animationType="slide">
+              <Pressable
+                className="flex-1 bg-black/30 justify-center px-5"
+                onPress={() => setModalVisible2(false)}
+              >
+                <View className="bg-white rounded-xl p-5">
+                  {centers.map((center) => (
+                    <TouchableOpacity
+                      key={center.id}
+                      onPress={() => {
+                        setSelectedService(center);
+                        setModalVisible2(false);
+                      }}
+                      className="py-2"
+                    >
+                      <Text className="text-base text-black">
+                        {center.id} — {center.address}
+                      </Text>
                     </TouchableOpacity>
                   ))}
                 </View>
