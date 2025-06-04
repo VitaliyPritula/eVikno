@@ -6,7 +6,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputField from "@/components/forms/InputFieldProfile";
 import { useAuthStore } from "@/store/authStore";
-import { profileSchema } from "../../shemas/profileSchema"; // Assuming you have a schema for profile validation
+import { profileSchema } from "@/shemas/profileSchema"; // Assuming you have a schema for profile validation
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type FormData = z.infer<typeof profileSchema>;
 
@@ -67,8 +68,8 @@ const Profile = () => {
     }
   };
   return (
-    <View className="flex-1 bg-black container py-8">
-      <View className="flex-row items-center justify-between ">
+    <SafeAreaView className="flex-1 bg-black container ">
+      <View className="flex-row items-center justify-between py-4">
         <Pressable
           //onPress={() => router.push("/instructor/main")}
           onPress={() => router.back()}
@@ -171,7 +172,7 @@ const Profile = () => {
                 label="Атестат інструктора"
                 value={value}
                 onChangeText={onChange}
-                placeholder="AB123456"
+                placeholder="FB123456"
                 error={errors.certificate?.message}
                 changable
               />
@@ -272,7 +273,7 @@ const Profile = () => {
           </Text>
         </Pressable>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

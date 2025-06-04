@@ -1,27 +1,18 @@
 import React, { useState } from "react";
+import { router } from "expo-router";
 import { View, Text, Pressable, ScrollView, Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { router } from "expo-router";
 import { useAuthStore } from "@/store/authStore";
 import { FirebaseError } from "firebase/app";
 import { SIGNUP_ERROR_MESSAGES } from "@/constants/firebaseErrors";
+import { signUpSchema } from "@/shemas/signSchema";
 import InputField from "@/components/forms/InputFieldSign";
 import google from "../../assets/images/google.png";
 
-const schema = z
-  .object({
-    email: z.string().email("Введіть коректний email"),
-    password: z.string().min(8, "Пароль має бути не менше 8 символів"),
-    confirmPassword: z.string().min(8, "Підтвердження пароля обов'язкове"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Паролі не збігаються",
-  });
-
-type FormData = z.infer<typeof schema>;
+type FormData = z.infer<typeof signUpSchema>;
 
 export default function SignUpScreen() {
   const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +26,7 @@ export default function SignUpScreen() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -62,7 +53,7 @@ export default function SignUpScreen() {
   };
 
   return (
-    <View className="flex-1 bg-black container ">
+    <SafeAreaView className="flex-1 bg-black container ">
       <ScrollView
         // contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 32 }}
         showsVerticalScrollIndicator={false}
@@ -87,6 +78,7 @@ export default function SignUpScreen() {
                 placeholder="Електронна адреса"
                 icon="mail"
                 error={errors.email?.message}
+                keyboardType="email-address"
               />
             )}
           />
@@ -158,6 +150,6 @@ export default function SignUpScreen() {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

@@ -11,6 +11,7 @@ interface InputFieldProps {
   secureTextEntry?: boolean;
   toggleVisibility?: () => void;
   showPasswordToggle?: boolean;
+  keyboardType?: "default" | "email-address" | "numeric" | "phone-pad";
 }
 
 export default function InputField({
@@ -22,6 +23,7 @@ export default function InputField({
   secureTextEntry = false,
   toggleVisibility,
   showPasswordToggle = false,
+  keyboardType = "default",
 }: InputFieldProps) {
   const renderIcon = () => {
     switch (icon) {
@@ -54,6 +56,7 @@ export default function InputField({
           placeholder={placeholder}
           placeholderTextColor="#d7d7d7"
           secureTextEntry={secureTextEntry}
+          keyboardType={keyboardType}
         />
 
         {/* Переключатель для пароля */}

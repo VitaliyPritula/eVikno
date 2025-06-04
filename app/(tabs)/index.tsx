@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 // import { style } from "twrnc";
 import { Stack, useRouter } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
+// import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthStore } from "@/store/authStore";
 import { useServiceCentersStore } from "../../store/useServiceCentersStore";
 

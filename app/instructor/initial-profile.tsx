@@ -1,34 +1,15 @@
 import React from "react";
 import { router } from "expo-router";
 import { ScrollView, Text, View, Pressable } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputField from "@/components/forms/InputFieldProfile";
+import { profileSchema } from "@/shemas/profileSchema";
 import { useAuthStore } from "@/store/authStore";
 
-const schema = z.object({
-  name: z.string().min(5, "Введіть ім’я"),
-  city: z.string().min(1, "Вкажіть місто"),
-  phone: z
-    .string()
-    .min(10, "Вкажи номер в форматі +38 000 000 00 00")
-    .regex(/^\+38\d{10}$/, "Формат номера некоректний"),
-  experience: z.string().min(1, "Вкажіть досвід роботи"),
-  certificate: z
-    .string()
-    .min(8, "Вкажіть номер атестата")
-    .regex(
-      /^[A-Z]{2}\d{6}$/,
-      "Формат атестата: дві великі латинські літери та 6 цифр (наприклад, AA123456)"
-    ),
-  carModel: z.string().min(3, "Вкажіть модель авто"),
-  carNumber: z.string().min(3, "Вкажіть номер авто"),
-  transmission: z.enum(["mechanic", "automatic"], {
-    required_error: "Оберіть тип трансмісії",
-  }),
-});
-type FormData = z.infer<typeof schema>;
+type FormData = z.infer<typeof profileSchema>;
 
 export default function InitialProfile() {
   const updateProfile = useAuthStore((state) => state.updateProfile);
@@ -38,7 +19,7 @@ export default function InitialProfile() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(profileSchema),
     defaultValues: {
       name: "",
       city: "",
@@ -53,7 +34,7 @@ export default function InitialProfile() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await updateProfile({ ...data, isFree: false, serviceCenter: "" });
+      await updateProfile({ ...data, isFree: false, serviceCenterId: "" });
       router.push("/instructor/main");
     } catch (error) {
       console.log("Error submitting form", error);
@@ -61,13 +42,13 @@ export default function InitialProfile() {
   };
 
   return (
-    <View className="flex-1 container">
+    <SafeAreaView className="flex-1 container">
       {/* contentContainerClassName="pb-20 " */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 32 }}
       >
-        <View className=" w-full mx-auto pt-8">
+        <View className=" w-full mx-auto pt-4">
           <Text className="text-white text-sm text-center font-semibold mb-3">
             Створіть профіль інструктора
           </Text>
@@ -240,6 +221,6 @@ export default function InitialProfile() {
           </Pressable>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
