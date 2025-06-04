@@ -27,6 +27,15 @@ const Main: React.FC = () => {
       </View>
 
       <View className="px-4 gap-3">
+        {/* мені потрібно це для тесту. потім приберу */}
+        {/* <TouchableOpacity
+          onPress={() => router.push("/instructor/test")}
+          className="bg-berus  py-3 rounded-[23px]"
+        >
+          <Text className=" text-center text-lg font-bold  font-ptsansnaBold">
+            Free Instructors
+          </Text>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => router.push("/student/onboarding")}
           className="bg-berus  py-3 rounded-[23px]"
