@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FIRESTORE_DB } from "../firebaseConfig";
-import { InstructorProfile } from "../types/instructorType";
+import { InstructorProfile } from "@/types/instructorType";
 
 type InstructorsState = {
   instructors: InstructorProfile[];
@@ -23,7 +23,7 @@ export const useInstructorsStore = create<InstructorsState>((set, get) => ({
     const q = query(
       collection(FIRESTORE_DB, "instructors"),
       where("isFree", "==", true),
-      where("serviceCenter", "==", serviceCenterId)
+      where("serviceCenterId", "==", serviceCenterId)
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {

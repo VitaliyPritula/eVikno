@@ -10,11 +10,11 @@ export type InstructorProfile = {
   transmission: "mechanic" | "automatic"; // тип трансмісії
   isFree: boolean; // чи вільний інструктор
   serviceCenterId: string; // послуги, які надає інструктор
-  uidInspector: string; // унікальний ідентифікатор користувача
+  uidInstructor: string; // унікальний ідентифікатор користувача
   dateUpdate: Timestamp; // дата останнього оновлення профілю
 };
 
 export type InstructorProfileInput = Omit<
   InstructorProfile,
-  "uidInspector" | "dateUpdate"
+  "uidInstructor" | "dateUpdate"
 >;

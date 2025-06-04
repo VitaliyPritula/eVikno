@@ -74,7 +74,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
       const { user } = get();
       if (!user) return;
       const uid = user.uid;
-      // Delete Firestore profile  inspectors
+      // Delete Firestore profile  instructors
       await deleteDoc(doc(FIRESTORE_DB, "instructors", uid));
       // Delete Firebase Authentication user
       await deleteUser(user);
@@ -101,7 +101,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
       // };
       const profileData: InstructorProfile = {
         ...data,
-        uidInspector: user.uid,
+        uidInstructor: user.uid,
         dateUpdate: serverTimestamp() as unknown as Timestamp, //
       };
 
