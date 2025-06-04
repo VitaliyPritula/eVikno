@@ -13,3 +13,8 @@ export type InstructorProfile = {
   uidInspector: string; // унікальний ідентифікатор користувача
   dateUpdate: Timestamp; // дата останнього оновлення профілю
 };
+
+export type InstructorProfileInput = Omit<
+  InstructorProfile,
+  "uidInspector" | "dateUpdate"
+>;

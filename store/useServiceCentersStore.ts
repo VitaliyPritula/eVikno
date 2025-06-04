@@ -1,21 +1,8 @@
 import { create } from "zustand";
 import { collection, getDocs } from "firebase/firestore";
-import { FIRESTORE_DB } from "../firebaseConfig";
-import { ServiceCenter } from "../types/serviceCenterType";
-
-// export type ServiceCenter = {
-//   id: string;
-//   city: string;
-//   address: string;
-// };
-
-type ServiceCentersState = {
-  centers: ServiceCenter[];
-  cities: string[];
-  loading: boolean;
-  fetchCenters: () => Promise<void>;
-  getCentersByCity: (city: string) => ServiceCenter[];
-};
+import { FIRESTORE_DB } from "@/firebaseConfig";
+import { ServiceCenter } from "@/types/serviceCenterType";
+import { ServiceCentersState } from "@/types/serviceCenterTypes";
 
 export const useServiceCentersStore = create<ServiceCentersState>(
   (set, get) => ({

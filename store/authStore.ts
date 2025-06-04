@@ -5,7 +5,7 @@ import {
   signOut as firebaseSignOut,
   onAuthStateChanged,
   deleteUser,
-  User as FirebaseUser,
+  // User as FirebaseUser,
 } from "firebase/auth";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../firebaseConfig";
 import {
@@ -16,25 +16,11 @@ import {
   serverTimestamp,
   Timestamp,
 } from "firebase/firestore";
-import { InstructorProfile } from "../types/instructorType";
-
-type InstructorProfileInput = Omit<
+import {
   InstructorProfile,
-  "uidInspector" | "dateUpdate"
->;
-
-type AuthState = {
-  user: FirebaseUser | null;
-  profile: InstructorProfile | null;
-  loading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>; // = logout
-  deleteAccount: () => Promise<void>; // 🆕 delete everything
-  fetchProfile: (uid: string) => Promise<void>;
-  updateProfile: (data: InstructorProfileInput) => Promise<void>;
-  toggleIsFree: (isFree: boolean, serviceCenterId: string) => Promise<void>;
-};
+  InstructorProfileInput,
+} from "@/types/instructorType";
+import { AuthState } from "@/types/authStateTypes";
 
 // let unsubscribe: (() => void) | null = null;
 
