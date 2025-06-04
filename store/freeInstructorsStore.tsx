@@ -61,38 +61,3 @@ export const useInstructorsStore = create<InstructorsState>((set, get) => ({
     }
   },
 }));
-
-//in component
-// import { useEffect } from "react";
-// import { useInstructorsStore } from "../stores/useInstructorsStore";
-
-// const FreeInstructorsList = ({
-//   selectedServiceCenterId,
-// }: {
-//   selectedServiceCenterId: string;
-// }) => {
-//   const { instructors, fetchFreeInstructors, clearSubscription } =
-//     useInstructorsStore();
-
-//   useEffect(() => {
-//     if (selectedServiceCenterId) {
-//       fetchFreeInstructors(selectedServiceCenterId);
-//     }
-
-//     return () => {
-//       clearSubscription();
-//     };
-//   }, [selectedServiceCenterId]);
-
-//   return (
-//     <FlatList
-//       data={instructors}
-//       keyExtractor={(item) => item.uidInspector}
-//       renderItem={({ item }) => (
-//         <Text>
-//           {item.name} — {item.carModel}
-//         </Text>
-//       )}
-//     />
-//   );
-// };
