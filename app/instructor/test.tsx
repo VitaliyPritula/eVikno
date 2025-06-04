@@ -6,9 +6,9 @@ import { useInstructorsStore } from "@/store/freeInstructorsStore";
 
 const Test = () => {
   const selectedCenterId = "8041"; // Example selected center 8041 4641
-  const { instructors, fetchFreeInstructors, clearSubscription } =
+  const { instructors, fetchFreeInstructors, clearSubscription, error } =
     useInstructorsStore();
-
+  console.log("err in Test", error);
   useEffect(() => {
     if (selectedCenterId) {
       fetchFreeInstructors(selectedCenterId);
@@ -25,6 +25,11 @@ const Test = () => {
         <Text className="text-white text-lg font-bold">
           Список Вільних Інструкторів
         </Text>
+        {error && (
+          <Text className="text-red-500 text-center mt-4">
+            Помилка з’єднання. Перевірте інтернет.
+          </Text>
+        )}
         {instructors.length > 0 ? (
           <FlatList
             data={instructors}
