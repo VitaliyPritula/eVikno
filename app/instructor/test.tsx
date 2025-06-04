@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useInstructorsStore } from "@/store/freeInstructorsStore";
 
 const Test = () => {
-  // зараз в базі є інструктори з 8041 4641
+  // зараз в базі є інструктори з 8041 та 4641
   const selectedCenterId = "8041"; // Example selected center 8041 4641
   const { instructors, fetchFreeInstructors, clearSubscription } =
     useInstructorsStore();
