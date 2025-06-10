@@ -28,11 +28,11 @@ export default function InputField({
   const renderIcon = () => {
     switch (icon) {
       case "mail":
-        return <MaterialIcons name="email" size={22} color="#273b4a" />;
+        return <MaterialIcons name="email" size={22} color="#D7D7D7" />;
       case "person":
-        return <MaterialIcons name="person" size={22} color="#273b4a" />;
+        return <MaterialIcons name="person" size={22} color="#D7D7D7" />;
       case "lock":
-        return <MaterialIcons name="lock" size={22} color="#273b4a" />;
+        return <MaterialIcons name="lock" size={22} color="#D7D7D7" />;
       default:
         return null;
     }
@@ -41,7 +41,7 @@ export default function InputField({
   return (
     <View className="mb-4">
       <View
-        className={`flex-row  h-11 items-center px-3 py-2 border-2 rounded-xl bg-grey font-manrope ${
+        className={`flex-row items-center px-3 py-2 border-2 rounded-xl bg-grey font-manrope ${
           error ? "border-red-500" : "border-stroke"
         }`}
       >

@@ -66,20 +66,22 @@ export default function Main() {
   // Format service center for display
   //either return the center's id and address or a default message
   const formatServiceCenter = (center?: ServiceCenter | null): string => {
-    return center
-      ? `${center.id} — ${center.address}`
-      : "Оберіть сервісний центр";
+    if (!center) return "Сервісний центр не обрано";
+    return `${center.id} – ${center.address}`;
   };
 
   const handleToggle = () => {
     try {
       if (profile && selectedService) {
-        const serviceCenterId = isEnabled ? selectedService?.id ?? "" : "";
+        // Передаємо новий статус, який буде після натискання кнопки
+        const newStatus = !isEnabled;
+        const serviceCenterId = newStatus ? selectedService.id : "";
 
-        toggleIsFree(isEnabled, serviceCenterId);
-        // це треба красивно зробити !!!!!!!
+        toggleIsFree(newStatus, serviceCenterId);
+        setIsEnabled(newStatus);
+
         alert(
-          `Статус успішно змінено на ${isEnabled ? "Вільний" : "Зайнятий"}`
+          `Статус успішно змінено на ${newStatus ? "Вільний" : "Зайнятий"}`
         );
       }
     } catch (error) {
@@ -103,12 +105,11 @@ export default function Main() {
   return (
     <SafeAreaView className="flex-1 container">
       <ScrollView className="pb-15  pt-4 " showsVerticalScrollIndicator={false}>
-        <View className="mx-auto mb-4">
+        <View className="mx-auto px-1 max-w-[320px] mb-4">
           <View className="flex-row justify-end mb-7">
             <Pressable
               className="items-center"
-              onPress={() => router.push("/instructor/profile")}
-            >
+              onPress={() => router.push("/instructor/profile")}>
               <FontAwesome name="user-circle-o" size={24} color="#893dd7" />
               <Text className="text-profile text-xs">Профіль</Text>
             </Pressable>
@@ -136,12 +137,11 @@ export default function Main() {
             <TouchableOpacity
               onPress={() => {
                 if (profile) {
-                  setIsEnabled(!isEnabled);
+                  setIsEnabled((prev) => !prev);
                 }
               }}
               activeOpacity={profile ? 0.7 : 1}
-              disabled={!profile}
-            >
+              disabled={!profile}>
               <View
                 style={{
                   width: 50,
@@ -155,8 +155,7 @@ export default function Main() {
                   justifyContent: "center",
                   padding: 3,
                   opacity: profile ? 1 : 0.5,
-                }}
-              >
+                }}>
                 <View
                   style={{
                     width: 24,
@@ -183,36 +182,34 @@ export default function Main() {
             {/* City */}
             <TouchableOpacity
               onPress={() => setActiveModal("city")}
-              className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
-            >
+              className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-4 border-2 w-full border-white mt-4">
               <Text className="text-white text-base">
                 {selectedCity || "Оберіть місто"}
               </Text>
               <Ionicons name="chevron-down" size={20} color="#fff" />
             </TouchableOpacity>
             <Modal
-              transparent
+              transparent={true}
               visible={activeModal === "city"}
-              animationType="slide"
-            >
+              animationType="fade">
               <Pressable
                 className="flex-1 bg-black/30 justify-center px-5"
-                onPress={() => setActiveModal(null)}
-              >
+                onPress={() => setActiveModal(null)}>
                 <View className="bg-white rounded-xl p-5">
-                  {cities.map((city) => (
-                    <TouchableOpacity
-                      key={city}
-                      onPress={() => {
-                        setSelectedCity(city);
-                        setActiveModal(null);
-                        setSelectedService(null); // Reset selected service when city changes");
-                      }}
-                      className="py-2"
-                    >
-                      <Text className="text-base text-black">{city}</Text>
-                    </TouchableOpacity>
-                  ))}
+                  <ScrollView>
+                    {cities.map((city) => (
+                      <TouchableOpacity
+                        key={city}
+                        onPress={() => {
+                          setSelectedCity(city);
+                          setActiveModal(null);
+                          setSelectedService(null); // Reset selected service when city changes");
+                        }}
+                        className="py-2">
+                        <Text className="text-base text-black">{city}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
                 </View>
               </Pressable>
             </Modal>
@@ -220,8 +217,7 @@ export default function Main() {
             {/* Service center*/}
             <TouchableOpacity
               onPress={() => setActiveModal("center")}
-              className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4"
-            >
+              className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-14 border-2 w-full border-white mt-4">
               <View className="shrink">
                 <Text className="text-white text-base ">
                   {formatServiceCenter(selectedService)}
@@ -238,12 +234,10 @@ export default function Main() {
             <Modal
               transparent
               visible={activeModal === "center"}
-              animationType="slide"
-            >
+              animationType="slide">
               <Pressable
                 className="flex-1 bg-black/30 justify-center px-5"
-                onPress={() => setActiveModal(null)}
-              >
+                onPress={() => setActiveModal(null)}>
                 <View className="bg-white rounded-xl p-5">
                   {centers.map((center) => (
                     <TouchableOpacity
@@ -252,8 +246,7 @@ export default function Main() {
                         setSelectedService(center);
                         setActiveModal(null);
                       }}
-                      className="py-2"
-                    >
+                      className="py-2">
                       <Text className="text-base text-black">
                         {center.id} — {center.address}
                       </Text>
@@ -266,8 +259,7 @@ export default function Main() {
 
           <TouchableOpacity
             onPress={handleToggle}
-            className="mt-3 w-[full] bg-green py-[14px] px-6 rounded-[23px]"
-          >
+            className="mt-3 w-[full] bg-green py-[14px] px-6 rounded-[23px]">
             <Text className="text-btn text-center text-[18px]  font-bold  font-ptsansnaBold">
               Підтвердити
             </Text>

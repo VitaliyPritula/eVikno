@@ -1,57 +1,61 @@
-import React from "react";
-import { View, Text, Pressable, TouchableOpacity, Linking } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  TouchableOpacity,
+  Linking,
+  ActivityIndicator,
+} from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Icon from "react-native-vector-icons/Ionicons";
 import Entypo from "@expo/vector-icons/Entypo";
+import { doc, getDoc } from "firebase/firestore";
+import { FIRESTORE_DB } from "@/firebaseConfig";
+
+type Instructor = {
+  name: string;
+  price: string;
+  phone: string;
+  carModel: string;
+  carNumber: string;
+  transmission: string;
+  licensePlate: string;
+  experience: string;
+  certificate: string;
+  city: string;
+};
 
 const makeCall = (phone: string) => {
   Linking.openURL(`tel:${phone}`);
 };
 
-const instructors = [
-  {
-    id: "1",
-    name: "Сергій Коваль",
-    price: "500грн",
-    phone: "+38 097 874 66 32",
-    car: "Skoda Octavia",
-    transmission: "Автомат",
-    licensePlate: "ВК 4536 НХ",
-    experience: "6 років",
-    certificate: "098 564",
-    city: "Сарни",
-  },
-  {
-    id: "2",
-    name: "Іван Михайлов",
-    price: "500грн",
-    phone: "+38 067 123 45 67",
-    car: "Skoda Octavia",
-    transmission: "Механіка",
-    licensePlate: "АА 1234 ВХ",
-    experience: "5 років",
-    certificate: "123 456",
-    city: "Рівне",
-  },
-  {
-    id: "3",
-    name: "Ірина Ткач",
-    price: "520грн",
-    phone: "+38 050 987 65 43",
-    car: "Hyundai i30",
-    transmission: "Механіка",
-    licensePlate: "КА 9876 НМ",
-    experience: "7 років",
-    certificate: "789 012",
-    city: "Київ",
-  },
-];
-
 export default function InstructorDetails() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const [instructor, setInstructor] = useState<Instructor | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const instructor = instructors.find((inst) => inst.id === id);
+  useEffect(() => {
+    if (typeof id === "string") {
+      const fetchInstructor = async () => {
+        try {
+          const docRef = doc(FIRESTORE_DB, "instructors", id);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setInstructor(docSnap.data() as Instructor);
+          } else {
+            setInstructor(null);
+          }
+        } catch (error) {
+          console.error("Помилка при завантаженні інструктора:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchInstructor();
+    }
+  }, [id]);
 
   if (!instructor) {
     return (
@@ -88,7 +92,7 @@ export default function InstructorDetails() {
         <View className="flex-row justify-between mb-5">
           <Text className="text-textcolor mb-2 font-manrope">Ціна</Text>
           <Text className="text-white mb-2 font-manrope text-m tracking-[-0.32px]">
-            {instructor.price}
+            500 грн
           </Text>
         </View>
         <View className="flex-row justify-between items-center gap-x-2">
@@ -106,38 +110,37 @@ export default function InstructorDetails() {
       <View className="mb-5">
         <Text className="text-white text-left text-sm font-manrope">Опис</Text>
       </View>
-
       <View className="bg-grey border-2 w-[320px] border-white rounded-xl px-[12px] py-[16px] mb-8">
         <View className="flex-row justify-between mb-5">
-          <View className="gap-y-3">
-            <Text className="text-textcolor font-manrope text-s mb-8">
-              Деталі авто
-            </Text>
-            <Text className="text-textcolor font-manrope text-s">
-              Номер авто
-            </Text>
-            <Text className="text-textcolor font-manrope text-s">Досвід</Text>
-            <Text className="text-textcolor font-manrope text-s">Атестат</Text>
-          </View>
-          <View className="items-start gap-y-3">
-            <View>
-              <Text className="text-white font-manrope text-[15px] tracking-[-0.32px]">
-                {instructor.car}
-              </Text>
-              <Text className="text-white font-manrope text-[15px] tracking-[-0.32px]">
-                {instructor.transmission}
-              </Text>
-            </View>
+          <Text className="text-textcolor font-manrope text-s mb-8">
+            Деталі авто
+          </Text>
+          <View>
             <Text className="text-white font-manrope text-[15px] tracking-[-0.32px]">
-              {instructor.licensePlate}
+              {instructor.carModel}
             </Text>
             <Text className="text-white font-manrope text-[15px] tracking-[-0.32px]">
-              {instructor.experience}
-            </Text>
-            <Text className="text-white font-manrope text-[15px] tracking-[-0.32px]">
-              {instructor.certificate}
+              {instructor.transmission}
             </Text>
           </View>
+        </View>
+        <View className="flex-row justify-between mb-3">
+          <Text className="text-textcolor font-manrope text-s">Номер авто</Text>
+          <Text className="text-white font-manrope text-[15px] tracking-[-0.32px]">
+            {instructor.carNumber}
+          </Text>
+        </View>
+        <View className="flex-row justify-between mb-3">
+          <Text className="text-textcolor font-manrope text-s">Досвід</Text>
+          <Text className="text-white font-manrope text-[15px] tracking-[-0.32px]">
+            {instructor.experience}
+          </Text>
+        </View>
+        <View className="flex-row justify-between">
+          <Text className="text-textcolor font-manrope text-s">Атестат</Text>
+          <Text className="text-white font-manrope text-[15px] tracking-[-0.32px]">
+            {instructor.certificate}
+          </Text>
         </View>
       </View>
       <TouchableOpacity
