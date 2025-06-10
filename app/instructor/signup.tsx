@@ -59,7 +59,7 @@ export default function SignUpScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 32 }}
       >
-        <View className=" w-full mx-auto">
+        <View className="max-w-[320px] w-full mx-auto">
           <Text className="text-white text-[18px] text-center mb-3 font-bold font-manrope">
             Реєстрація
           </Text>

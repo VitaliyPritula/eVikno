@@ -121,6 +121,8 @@ export const useAuthStore = create<AuthState>((set, get) => {
         { isFree, serviceCenterId, dateUpdate: serverTimestamp() },
         { merge: true }
       );
+      // Оновлюємо profile з сервера, де вже буде справжній dateUpdate
+      await get().fetchProfile(user.uid);
 
       set((state) => ({
         profile: state.profile

@@ -76,7 +76,7 @@ const Profile = () => {
           className="bg-warning h-8 w-40 mb-8 rounded-xl flex justify-center items-center "
         >
           <Text className="text-center text-black text-lg font-semibold font-manrope">
-            --BACK
+            Назад
           </Text>
         </Pressable>
         <Pressable
@@ -84,7 +84,7 @@ const Profile = () => {
           className="bg-warning h-8 w-40 mb-8 rounded-xl flex justify-center items-center "
         >
           <Text className="text-center text-black text-lg font-semibold font-manrope">
-            LOGOUT
+            Вихід
           </Text>
         </Pressable>
       </View>
@@ -269,7 +269,7 @@ const Profile = () => {
           className="bg-warning w-full py-3 mt-16 mb-8 rounded-xl"
         >
           <Text className="text-center text-black text-lg font-semibold font-manrope">
-            DELETE ACCOUNT
+            Видалити аккаунт
           </Text>
         </Pressable>
       </ScrollView>
