@@ -13,7 +13,7 @@ export const useServiceCentersStore = create<ServiceCentersState>(
     fetchCenters: async () => {
       set({ loading: true });
       const snapshot = await getDocs(
-        collection(FIRESTORE_DB, "service_centers")
+        collection(FIRESTORE_DB, "serviceCenters")
       );
       const centers: ServiceCenter[] = snapshot.docs.map((doc) => ({
         id: doc.id,

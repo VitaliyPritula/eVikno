@@ -99,12 +99,12 @@ export default function StudentScreen() {
   );
 
   return (
-    <View className="flex-1 bg-black px-4 pt-4">
+    <View className="flex-1 bg-black px-4 pt-16">
       <ScrollView
         className="pb-20 px-[15px]"
         showsVerticalScrollIndicator={false}>
         <View className="max-w-[320px] mx-auto">
-          <View className="items-center mb-2">
+          <View className="items-center mb-5">
             <Image source={logo} className="w-[100px] h-[51px]" />
           </View>
 
@@ -148,7 +148,7 @@ export default function StudentScreen() {
           {selectedCity && (
             <TouchableOpacity
               onPress={() => setActiveModal("center")}
-              className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-6 border-2 w-full border-white mt-2">
+              className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-6 border-2 border-white mt-2">
               <Text className="text-white text-base">
                 {selectedService
                   ? `${selectedService.id} – ${selectedService.address}`

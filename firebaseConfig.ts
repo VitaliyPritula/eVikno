@@ -1,20 +1,21 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+// Конфігурація Firebase для твого проєкту
 const firebaseConfig = {
-  apiKey: "AIzaSyADNg1YdnJW61-bXWfvyZAGasgz7EknVug",
-  authDomain: "evikno-app.firebaseapp.com",
-  projectId: "evikno-app",
-  storageBucket: "evikno-app.firebasestorage.app",
-  messagingSenderId: "9906799108",
-  appId: "1:9906799108:web:9dd116419274a3ede76b51",
+  apiKey: "AIzaSyD-xKAvBP8hyVXS7Opbo-MBnkn0XWar0U0",
+  authDomain: "ivolga-6d3dd.firebaseapp.com",
+  projectId: "ivolga-6d3dd",
+  storageBucket: "ivolga-6d3dd.appspot.com",
+  messagingSenderId: "33697798039",
+  appId: "1:33697798039:android:6b82b8bcf3cab49e03d6d2",
 };
 
 // Initialize Firebase
 export const FIREBASE_APP = initializeApp(firebaseConfig);
 export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
 export const FIRESTORE_DB = getFirestore(FIREBASE_APP);
+export const GOOGLE_PROVIDER = new GoogleAuthProvider();
