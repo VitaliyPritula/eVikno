@@ -39,7 +39,7 @@ export default function StudentOnboarding() {
   const { title, subtitle, text } = steps[step];
 
   return (
-    <View className="flex-1 bg-black px-4 pt-12 justify-center relative">
+    <View className="flex-1 bg-black px-4 pt-14 justify-center relative">
       <StatusBar style="light" />
       {/* Прогрес */}
       <ProgressBar
@@ -70,7 +70,7 @@ export default function StudentOnboarding() {
 
       {/* Кнопка "Далі" */}
       <TouchableOpacity
-        className="bg-btn-next py-3 px-5 rounded-full mb-10 flex-row items-center justify-center ml-auto"
+        className="bg-[#4F525D] py-3 px-5 transform -translate-9 rounded-full mb-24 flex-row items-center justify-center ml-auto"
         onPress={handleNext}>
         <Text className="text-white font-bold text-base font-manrope">
           Далі

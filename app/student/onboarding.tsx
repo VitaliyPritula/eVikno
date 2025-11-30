@@ -38,7 +38,7 @@ export default function StudentOnboarding() {
   const { title, subtitle } = steps[step];
 
   return (
-    <View style={style("flex-1 bg-black px-4 pt-12 justify-center relative")}>
+    <View style={style("flex-1 bg-black px-4 pt-14 justify-center relative")}>
       <StatusBar style="light" />
 
       {/* Прогрес */}
@@ -64,7 +64,7 @@ export default function StudentOnboarding() {
       </View>
       {/* Кнопка "Далі" */}
       <TouchableOpacity
-        style={style("bg-[#4F525D] py-3 px-5 rounded-full mb-10 flex-row items-center justify-center ml-auto")}
+        style={style("bg-[#4F525D] py-3 px-5 transform -translate-9 rounded-full mb-24 flex-row items-center justify-center ml-auto")}
         onPress={handleNext}>
         <Text style={[style("text-white font-bold text-bas"), {fontFamily:"manrope"},]}>Далі</Text>
         <Icon name="chevron-forward" size={28} color="#fff" />
