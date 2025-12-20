@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { router } from "expo-router";
-import { View, Text, Pressable, ScrollView, Image } from "react-native";
+import { View, Text, Pressable, ScrollView, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "@/store/authStore";
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 import { FirebaseError } from "firebase/app";
 import { SIGNUP_ERROR_MESSAGES } from "@/constants/firebaseErrors";
 import { signUpSchema } from "@/shemas/signSchema";
@@ -20,6 +21,7 @@ export default function SignUpScreen() {
   const [errSignup, setErrSignup] = useState("");
 
   const signUp = useAuthStore((state) => state.signUp);
+  const { user, signInWithGoogle, isLoading } = useGoogleAuth();
 
   const {
     control,
@@ -33,6 +35,12 @@ export default function SignUpScreen() {
       confirmPassword: "",
     },
   });
+  
+  useEffect(() => {
+    if (user) {
+      router.push("/instructor/main");
+    } 
+  }, [user]);
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -137,7 +145,17 @@ export default function SignUpScreen() {
             <Text className="text-center text-[#C7C7C7] text-[16px] mb-5 font-bold font-manrope">
               Зареєструватись за допомогою
             </Text>
-            <Image source={google} style={{ width: 44, height: 44 }} />
+            <TouchableOpacity
+              onPress={signInWithGoogle}
+              disabled={isLoading}
+              className={isLoading ? "opacity-50" : ""}
+            >
+              <Image source={google} style={{ width: 44, height: 44 }} />
+            </TouchableOpacity>
+            {isLoading && (
+              <Text className="text-white mt-4">Завантаження...</Text>
+            )}
+
             <Text className="text-[#D7D7D7] text-[16px] mt-6">
               Вже є акаунт?
               <Text
