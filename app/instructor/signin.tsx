@@ -1,23 +1,35 @@
-import React, { useState } from "react";
-import { View, Text, Pressable, ScrollView, Image } from "react-native";
-import { router } from "expo-router";
+// app/instructor/signin.tsx
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { FirebaseError } from "firebase/app";
-import { SIGNIN_ERROR_MESSAGES } from "@/constants/firebaseErrors";
-import InputField from "@/components/forms/InputFieldSign";
+
 import { signInSchema } from "@/shemas/signSchema";
+import InputField from "@/components/forms/InputFieldSign";
 import { useAuthStore } from "@/store/authStore";
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
+
 import google from "../../assets/images/google.png";
 
 type LoginFormData = z.infer<typeof signInSchema>;
 
 export default function LoginScreen() {
   const signIn = useAuthStore((state) => state.signIn);
-  const [showPassword, setShowPassword] = useState(false);
   const [firebaseError, setFirebaseError] = useState("");
+
+  const { user, signInWithGoogle, isLoading } = useGoogleAuth();
 
   const {
     control,
@@ -31,6 +43,14 @@ export default function LoginScreen() {
     },
   });
 
+  // Перехід після успішного Google login
+  useEffect(() => {
+    if (user) {
+      router.push("/instructor/main");
+    }
+  }, [user]);
+
+  // Email + password
   const onSubmit = async (data: LoginFormData) => {
     setFirebaseError("");
     try {
@@ -38,10 +58,11 @@ export default function LoginScreen() {
       router.push("/instructor/main");
     } catch (error) {
       if (error instanceof FirebaseError) {
-        const message =
-          SIGNIN_ERROR_MESSAGES[error.code] ||
-          "Сталася помилка. Спробуйте пізніше";
-        setFirebaseError(message);
+        setFirebaseError(
+          error.code in SIGNIN_ERROR_MESSAGES
+            ? SIGNIN_ERROR_MESSAGES[error.code]
+            : "Сталася помилка. Спробуйте пізніше"
+        );
       } else {
         setFirebaseError("Сталася помилка");
         console.error(error);
@@ -51,16 +72,13 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-black container">
-      <ScrollView
-        contentContainerStyle={{ paddingVertical: 32 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View className="w-full mx-auto ">
-          <Text className="text-white font-manrope text-sm text-center font-semibold mb-3">
+      <ScrollView contentContainerStyle={{ paddingVertical: 32 }}>
+        <View className="w-full mx-auto">
+          <Text className="text-white text-sm text-center font-semibold mb-3">
             Увійти
           </Text>
-          <Text className="text-textcolor text-m text-center  font-semibold mb-5">
-            Введіть електрону адресу та пароль
+          <Text className="text-textcolor text-center font-semibold mb-5">
+            Введіть електронну адресу та пароль
           </Text>
 
           {/* Email */}
@@ -88,40 +106,47 @@ export default function LoginScreen() {
                 value={value}
                 onChangeText={onChange}
                 placeholder="Пароль"
-                secureTextEntry={!showPassword}
+                secureTextEntry
                 icon="lock"
-                toggleVisibility={() => setShowPassword((prev) => !prev)}
-                showPasswordToggle
                 error={errors.password?.message}
               />
             )}
           />
 
-          {firebaseError !== "" && (
-            <Text className="text-red-500 text-sm mt-1">{firebaseError}</Text>
+          {firebaseError && (
+            <Text className="text-red-500 text-sm mt-2">{firebaseError}</Text>
           )}
 
-          {/* Submit */}
+          {/* Email submit */}
           <Pressable
             onPress={handleSubmit(onSubmit)}
-            className="bg-green w-full py-3 mt-16 mb-8 rounded-xl"
+            className="bg-green w-full py-3 mt-10 rounded-xl"
           >
-            <Text className="text-center text-black text-lg font-semibold font-manrope">
+            <Text className="text-center text-black text-lg font-semibold">
               Увійти
             </Text>
           </Pressable>
 
-          {/* Divider & Google */}
-          <View className="mt-6 items-center">
-            <Text className="text-center text-grey-text text-m mb-5 font-regular font-manrope">
-              Увійти за допомогою
-            </Text>
-            <Image source={google} style={{ width: 44, height: 44 }} />
-            <Text className="text-textakount text-m mt-8 font-manrope">
+          {/* Google login */}
+          <View className="mt-10 items-center">
+            <Text className="text-grey-text mb-5">Увійти за допомогою</Text>
+            <TouchableOpacity
+              onPress={signInWithGoogle}
+              disabled={isLoading}
+              className={isLoading ? "opacity-50" : ""}
+            >
+              <Image source={google} style={{ width: 44, height: 44 }} />
+            </TouchableOpacity>
+
+            {isLoading && (
+              <Text className="text-white mt-4">Завантаження...</Text>
+            )}
+
+            <Text className="text-textakount mt-8">
               Немає акаунту?{" "}
               <Text
                 onPress={() => router.push("/instructor/signup")}
-                className="text-warning text-m font-bold font-manrope"
+                className="text-warning font-bold"
               >
                 Зареєструватися
               </Text>

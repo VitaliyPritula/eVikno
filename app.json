@@ -2,20 +2,29 @@
   "expo": {
     "name": "eVikno",
     "slug": "eVikno",
+    "owner": "vitaliypritula",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/Logo.png",
     "scheme": "eVikno",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "android": {
+      "package": "com.vitaliypritula.eVikno"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vitaliypritula.eVikno",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/Logo.png",
         "backgroundColor": "#ffffff"
       },
+      "package": "com.vitaliypritula.eVikno",
       "edgeToEdgeEnabled": true
     },
     "web": {
@@ -23,7 +32,7 @@
       "output": "static",
       "favicon": "./assets/images/Logo.png"
     },
-     "router": {
+    "router": {
       "unstable_settings": {
         "initialRouteName": "(tabs)"
       }
@@ -38,10 +47,17 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "75cec0a0-c72b-47f0-86dc-1c26174e9b15"
+      }
     }
   }
 }
