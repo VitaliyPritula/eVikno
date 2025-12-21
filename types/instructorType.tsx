@@ -12,6 +12,8 @@ export type InstructorProfile = {
   serviceCenterId: string; // послуги, які надає інструктор
   uidInstructor: string; // унікальний ідентифікатор користувача
   dateUpdate: Timestamp; // дата останнього оновлення профілю
+  rating: number;
+  reviewsCount: number;
 };
 
 export type InstructorProfileInput = Omit<
