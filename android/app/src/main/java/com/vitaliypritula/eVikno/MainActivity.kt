@@ -1,4 +1,4 @@
-package com.anonymous
+package com.vitaliypritula.eVikno
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

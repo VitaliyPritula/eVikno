@@ -5,6 +5,8 @@ export type Instructor = {
   car: string;
   transmission: string;
   city: string;
+  rating: number;
+  reviewsCount: number;
 };
 
 export type RootStackParamList = {

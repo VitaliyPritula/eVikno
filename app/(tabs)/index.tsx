@@ -25,7 +25,7 @@ const Main: React.FC = () => {
           іспитом в СЦ
         </Text>
       </View>
-
+      
       <View className="px-4 gap-3">
         {/* мені потрібно це для тесту. потім приберу */}
         {/* <TouchableOpacity

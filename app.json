@@ -9,23 +9,23 @@
     "scheme": "eVikno",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "android": {
-      "package": "com.vitaliypritula.eVikno"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.vitaliypritula.eVikno",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
-    },
+    "jsEngine": "hermes",
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/Logo.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.vitaliypritula.eVikno",
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "jsEngine": "hermes"  
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vitaliypritula.eVikno",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "jsEngine": "jsc"         
     },
     "web": {
       "bundler": "metro",
