@@ -1,4 +1,4 @@
-package com.anonymous
+package com.vitaliypritula.eVikno
 
 import android.app.Application
 import android.content.res.Configuration
