@@ -145,7 +145,7 @@ export default function StudentScreen() {
             </Pressable>
           </Modal>
 
-          {selectedCity && (
+          {!!selectedCity && (
             <TouchableOpacity
               onPress={() => setActiveModal("center")}
               className="flex-row items-center justify-between bg-[#646464] rounded-xl px-4 py-3 mb-6 border-2 border-white mt-2">

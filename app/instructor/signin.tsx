@@ -43,44 +43,40 @@ export default function LoginScreen() {
     },
   });
 
-  // Перехід після успішного Google login
   useEffect(() => {
     if (user) {
       router.push("/instructor/main");
     }
   }, [user]);
 
-  // Email + password
   const onSubmit = async (data: LoginFormData) => {
     setFirebaseError("");
     try {
       await signIn(data.email, data.password);
       router.push("/instructor/main");
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof FirebaseError) {
-        setFirebaseError(
-          error.code in SIGNIN_ERROR_MESSAGES
-            ? SIGNIN_ERROR_MESSAGES[error.code]
-            : "Сталася помилка. Спробуйте пізніше"
-        );
+        setFirebaseError("Сталася помилка. Спробуйте пізніше");
       } else {
         setFirebaseError("Сталася помилка");
         console.error(error);
       }
+      console.log("🔥 Firebase error code:", error.code);
+      console.log("🔥 Firebase error message:", error.message);
+      throw error;
     }
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black container">
+    <SafeAreaView className="flex-1 bg-black">
       <ScrollView contentContainerStyle={{ paddingVertical: 32 }}>
-        <View className="w-full mx-auto">
+        <View className="w-full mx-auto px-4">
           <Text className="text-white text-sm text-center font-semibold mb-3">
             Увійти
           </Text>
           <Text className="text-textcolor text-center font-semibold mb-5">
             Введіть електронну адресу та пароль
           </Text>
-
           {/* Email */}
           <Controller
             control={control}
@@ -90,13 +86,11 @@ export default function LoginScreen() {
                 value={value}
                 onChangeText={onChange}
                 placeholder="Електронна адреса"
-                icon="mail"
                 error={errors.email?.message}
                 keyboardType="email-address"
               />
             )}
           />
-
           {/* Password */}
           <Controller
             control={control}
@@ -106,18 +100,15 @@ export default function LoginScreen() {
                 value={value}
                 onChangeText={onChange}
                 placeholder="Пароль"
-                secureTextEntry
-                icon="lock"
                 error={errors.password?.message}
               />
             )}
           />
-
-          {firebaseError && (
-            <Text className="text-red-500 text-sm mt-2">{firebaseError}</Text>
-          )}
-
-          {/* Email submit */}
+          {firebaseError ? (
+            <Text className="text-red-500 text-sm mt-2">
+              {firebaseError}
+            </Text>
+          ) : null}
           <Pressable
             onPress={handleSubmit(onSubmit)}
             className="bg-green w-full py-3 mt-10 rounded-xl"
@@ -126,10 +117,10 @@ export default function LoginScreen() {
               Увійти
             </Text>
           </Pressable>
-
-          {/* Google login */}
           <View className="mt-10 items-center">
-            <Text className="text-grey-text mb-5">Увійти за допомогою</Text>
+            <Text className="text-grey-text mb-5">
+              Увійти за допомогою
+            </Text>
             <TouchableOpacity
               onPress={signInWithGoogle}
               disabled={isLoading}
@@ -137,11 +128,9 @@ export default function LoginScreen() {
             >
               <Image source={google} style={{ width: 44, height: 44 }} />
             </TouchableOpacity>
-
-            {isLoading && (
+            {isLoading ? (
               <Text className="text-white mt-4">Завантаження...</Text>
-            )}
-
+            ) : null}
             <Text className="text-textakount mt-8">
               Немає акаунту?{" "}
               <Text

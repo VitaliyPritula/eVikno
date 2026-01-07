@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/Logo.png",
-    "scheme": "eVikno",
+    "scheme": "com.evikno.app",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "jsEngine": "hermes",
@@ -15,13 +15,13 @@
         "foregroundImage": "./assets/images/Logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.vitaliypritula.eVikno",
+      "package": "com.evikno.app",
       "edgeToEdgeEnabled": true,
       "jsEngine": "hermes"  
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.vitaliypritula.eVikno",
+      "bundleIdentifier": "com.evikno.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
